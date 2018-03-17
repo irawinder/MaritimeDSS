@@ -2,11 +2,7 @@
  *  Ira Winder, ira@mit.edu, 2018
  *  MIT Global Teamwork Lab
  *
- *  MaritimeDSS is a front end environment to support utilization of the "MOSES" simulation 
- *  built by Shinnosuke Wanaka located at https://github.com/swanaka/ship-simulation
- *  The principal function of MaritimeDSS is to enable the study of team excises where
- *  groups of individuals decide their preferred configuration of a hypothetical
- *  shipping fleet based upon a given trade space.
+ *  Listen Functions (Superficially Isolated from Main.pde)
  *
  *  MIT LICENSE: Copyright 2018 Ira Winder
  *
@@ -26,32 +22,6 @@
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
  
-public void settings() {
-  size(1280, 800);
-  //fullScreen(P3D);
-}
-
-// Runs once when application begins
-//
-void setup() {
+void listen() {
   
-}
-
-// Runs on a infinite loop after setup
-//
-void draw() {
-  if (!initialized) {
-    
-    // A_Init.pde - runs until initialized = true
-    //
-    init();
-    
-  } else {
-    
-    // A_Listen.pde and A_Render.pde
-    //
-    listen();
-    render3D();
-    render2D();
-  }
 }

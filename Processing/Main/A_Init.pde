@@ -2,7 +2,7 @@
  *  Ira Winder, ira@mit.edu, 2018
  *  MIT Global Teamwork Lab
  *
- *  Initialize pre-calculated input and output values from CSV files
+ *  Init Functions (Superficially Isolated from Main.pde)
  *
  *  MIT LICENSE: Copyright 2018 Ira Winder
  *
@@ -21,3 +21,49 @@
  *               DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+// Counter to track which phase of initialization
+boolean initialized;
+int initPhase = 0;
+int phaseDelay = 0;
+String status[] = {
+  "Initializing Canvas ...",
+  "Initializing Toolbars ...",
+  "Importing Simulation Input Parameters ...",
+  "Importing Simulation Results ...",
+  "Ready to go!"
+};
+int NUM_PHASES = status.length;
+
+void init() {
+  
+  initialized = false;
+  
+  if (initPhase == 0) {
+    
+    // Load default background image
+    //
+    loadingBG = loadImage("data/loadingScreen.jpg");
+    
+  } else if (initPhase == 1) {
+    
+  } else if (initPhase == 2) {
+    
+    // Load valid inputs from CSV files
+    //
+    
+  } else if (initPhase == 3) {
+    
+    // Load pre-calculated results from CSV files
+    //
+    
+  } else if (initPhase == 4) {
+    
+    initialized = true;
+  }
+  
+  loadingScreen(loadingBG, initPhase, NUM_PHASES, status[initPhase]);
+  if (!initialized) initPhase++; 
+  delay(phaseDelay);
+
+}

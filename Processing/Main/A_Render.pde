@@ -2,11 +2,7 @@
  *  Ira Winder, ira@mit.edu, 2018
  *  MIT Global Teamwork Lab
  *
- *  MaritimeDSS is a front end environment to support utilization of the "MOSES" simulation 
- *  built by Shinnosuke Wanaka located at https://github.com/swanaka/ship-simulation
- *  The principal function of MaritimeDSS is to enable the study of team excises where
- *  groups of individuals decide their preferred configuration of a hypothetical
- *  shipping fleet based upon a given trade space.
+ *  Draw Functions (Superficially Isolated from Main.pde)
  *
  *  MIT LICENSE: Copyright 2018 Ira Winder
  *
@@ -26,32 +22,35 @@
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
  
-public void settings() {
-  size(1280, 800);
-  //fullScreen(P3D);
-}
-
-// Runs once when application begins
-//
-void setup() {
+void render3D() {
   
 }
 
-// Runs on a infinite loop after setup
-//
-void draw() {
-  if (!initialized) {
-    
-    // A_Init.pde - runs until initialized = true
-    //
-    init();
-    
-  } else {
-    
-    // A_Listen.pde and A_Render.pde
-    //
-    listen();
-    render3D();
-    render2D();
-  }
+void render2D() {
+  
+}
+
+PImage loadingBG;
+void loadingScreen(PImage bg, int phase, int numPhases, String status) {
+  image(bg, 0, 0, width, height);
+  pushMatrix(); translate(width/2, height/2);
+  int lW = 400;
+  int lH = 48;
+  int lB = 10;
+  
+  // Draw Loading Bar Outline
+  noStroke(); fill(255, 200);
+  rect(-lW/2, -lH/2, lW, lH, lH/2);
+  noStroke(); fill(0, 200);
+  rect(-lW/2+lB, -lH/2+lB, lW-2*lB, lH-2*lB, lH/2);
+  
+  // Draw Loading Bar Fill
+  float percent = float(phase+1)/numPhases;
+  noStroke(); fill(255, 150);
+  rect(-lW/2 + lH/4, -lH/4, percent*(lW - lH/2), lH/2, lH/4);
+  
+  textAlign(CENTER, CENTER); fill(255);
+  text(status, 0, 0);
+  
+  popMatrix();
 }
