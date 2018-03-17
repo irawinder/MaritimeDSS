@@ -2,7 +2,7 @@
  *  Ira Winder, ira@mit.edu, 2018
  *  MIT Global Teamwork Lab
  *
- *  Listen Functions (Superficially Isolated from Main.pde)
+ *  Update Functions (Superficially Isolated from Main.pde)
  *
  *  MIT LICENSE: Copyright 2018 Ira Winder
  *
@@ -24,4 +24,58 @@
  
 void listen() {
   
+  // Update camera position settings for a number of frames after key updates
+  //
+  if (cam.moveTimer > 0) {
+    cam.moved();
+  }
+ 
+}
+
+void mousePressed() {
+  if (initialized) {
+    cam.pressed();
+    bar_left.pressed();
+    bar_right.pressed();
+  }
+}
+
+void mouseReleased() {
+  if (initialized) {
+    bar_left.released();
+    bar_right.released();
+    cam.moved();
+  }
+}
+
+void mouseMoved() {
+  if (initialized) {
+    cam.moved();
+  }
+}
+
+void keyPressed() {
+  if (initialized) {
+    cam.moved();
+    bar_left.pressed();
+    bar_right.pressed();
+    
+    switch(key) {
+      case 'f':
+        cam.showFrameRate = !cam.showFrameRate;
+        break;
+      case 'c':
+        cam.reset();
+        break;
+      case 'r':
+        bar_left.restoreDefault();
+        bar_right.restoreDefault();
+        break;
+      case 'p':
+        println("cam.offset.x = " + cam.offset.x);
+        println("cam.offset.x = " + cam.offset.x);
+        println("cam.zoom = "     + cam.zoom);
+        println("cam.rotation = " + cam.rotation);
+    }
+  }
 }

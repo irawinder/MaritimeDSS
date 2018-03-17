@@ -27,7 +27,7 @@
  */
  
 public void settings() {
-  size(1280, 800);
+  size(1280, 800, P3D);
   //fullScreen(P3D);
 }
 
@@ -48,9 +48,12 @@ void draw() {
     
   } else {
     
-    // A_Listen.pde and A_Render.pde
+    // A_Listen.pde - Updates settings and values for this frame
     //
     listen();
+    
+    // A_Render.pde - Renders current frame of visualization
+    background(0);
     render3D();
     render2D();
   }

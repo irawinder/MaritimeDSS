@@ -21,34 +21,75 @@
  *               DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
- 
+
+// Begin Drawing 3D Elements
+//
 void render3D() {
+  // ****
+  // NOTE: Objects draw earlier in the loop will obstruct 
+  // objects drawn afterward (despite alpha value!)
+  // ****
+  
+  // Draw and Calculate 3D Graphics 
+  //
+  cam.on();
+  
+  // Field: Draw Rectangular plane comprising boundary area 
+  //
+  fill(255, 50);
+  rect(0, 0, B.x, B.y);
+  
+  // Field: Draw Selection Field
+  //
+  pushMatrix(); translate(0, 0, 1);
+  image(cam.chunkField.img, 0, 0, B.x, B.y);
+  popMatrix();
   
 }
 
 void render2D() {
   
+  // Begin Drawing 2D Elements
+  //
+  cam.off();
+  
+  // Draw Slider Bars for Controlling Zoom and Rotation (2D canvas begins)
+  //
+  cam.drawControls();
+  
+  // Draw Margin ToolBar
+  //
+  bar_left.draw();
+  bar_right.draw();
+  
 }
 
 PImage loadingBG;
 void loadingScreen(PImage bg, int phase, int numPhases, String status) {
+  
+  // Place Loading Bar Background
+  //
   image(bg, 0, 0, width, height);
   pushMatrix(); translate(width/2, height/2);
-  int lW = 400;
-  int lH = 48;
-  int lB = 10;
+  int BAR_WIDTH  = 400;
+  int BAR_HEIGHT =  48;
+  int BAR_BORDER =  10;
   
   // Draw Loading Bar Outline
+  //
   noStroke(); fill(255, 200);
-  rect(-lW/2, -lH/2, lW, lH, lH/2);
+  rect(-BAR_WIDTH/2, -BAR_HEIGHT/2, BAR_WIDTH, BAR_HEIGHT, BAR_HEIGHT/2);
   noStroke(); fill(0, 200);
-  rect(-lW/2+lB, -lH/2+lB, lW-2*lB, lH-2*lB, lH/2);
+  rect(-BAR_WIDTH/2+BAR_BORDER, -BAR_HEIGHT/2+BAR_BORDER, BAR_WIDTH-2*BAR_BORDER, BAR_HEIGHT-2*BAR_BORDER, BAR_HEIGHT/2);
   
   // Draw Loading Bar Fill
+  //
   float percent = float(phase+1)/numPhases;
   noStroke(); fill(255, 150);
-  rect(-lW/2 + lH/4, -lH/4, percent*(lW - lH/2), lH/2, lH/4);
+  rect(-BAR_WIDTH/2 + BAR_HEIGHT/4, -BAR_HEIGHT/4, percent*(BAR_WIDTH - BAR_HEIGHT/2), BAR_HEIGHT/2, BAR_HEIGHT/4);
   
+  // Draw Loading Bar Text
+  //
   textAlign(CENTER, CENTER); fill(255);
   text(status, 0, 0);
   
