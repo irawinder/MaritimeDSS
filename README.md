@@ -1,5 +1,5 @@
 # MaritimeDSS
-MaritimeDSS is a front end environment to support utilization of the "MOSES" simulation built by Shinnosuke Wanaka located at https://github.com/swanaka/ship-simulation
+MaritimeDSS is a front end environment to explore pre-calculated results of the "MOSES" simulation built by Shinnosuke Wanaka located at https://github.com/swanaka/ship-simulation
 
 ## How to Use
 
