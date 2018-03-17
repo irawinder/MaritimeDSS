@@ -22,6 +22,8 @@
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+Table simConfig, simResult;
+
 // Counter to track which phase of initialization
 boolean initialized;
 int initPhase = 0;
@@ -51,11 +53,13 @@ void init() {
     
     // Load valid inputs from CSV files
     //
+    initSimConfig();
     
   } else if (initPhase == 3) {
     
     // Load pre-calculated results from CSV files
     //
+    initSimResult();
     
   } else if (initPhase == 4) {
     
@@ -66,4 +70,12 @@ void init() {
   if (!initialized) initPhase++; 
   delay(phaseDelay);
 
+}
+
+void initSimConfig() {
+  simConfig = loadTable("data/simulation/config/case_table4Workshop.csv");
+}
+
+void initSimResult() {
+  simResult = loadTable("data/simulation/result/1.csv");
 }
