@@ -35,9 +35,14 @@ Table simConfig, simResult;
 Fleet fleet;
 
 // Graphics Objects
+//
 PImage map;
 PImage[] maps;
 PGraphics canvas;
+
+// Graphics mode (Globe or Mercator)
+//
+String displayMode;
 
 // Map Setting
 int mapIndex;
@@ -100,6 +105,10 @@ void init() {
     // Create canvas for drawing everything to earth surface
     //
     canvas = createGraphics(map.width, map.height, P3D);
+    
+    // Graphics mode (Globe or Mercator)
+    //
+    displayMode = "flat";
     
     // Set up Spherical Projection Map
     //

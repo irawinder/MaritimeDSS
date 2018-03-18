@@ -34,7 +34,7 @@ float rotate3d_init, pitch3d_init;
 boolean orient;
 void mousePressed() {
   if (initialized) {
-    cam.pressed();
+    if (displayMode.equals("flat")) cam.pressed();
     bar_left.pressed();
     bar_right.pressed();
     if (!barHover()) {
@@ -58,7 +58,7 @@ void mouseDragged() {
 
 void mouseReleased() {
   if (initialized) {
-    cam.moved();
+    if (displayMode.equals("flat")) cam.moved();
     bar_left.released();
     bar_right.released();
     orient = false;
@@ -67,22 +67,22 @@ void mouseReleased() {
 
 void mouseMoved() {
   if (initialized) {
-    cam.moved();
+    if (displayMode.equals("flat")) cam.moved();
   }
 }
 
 void keyPressed() {
   if (initialized) {
-    cam.moved();
+    if (displayMode.equals("flat")) cam.moved();
     bar_left.pressed();
     bar_right.pressed();
     
     switch(key) {
       case 'f':
-        cam.showFrameRate = !cam.showFrameRate;
+        if (displayMode.equals("flat")) cam.showFrameRate = !cam.showFrameRate;
         break;
       case 'c':
-        cam.reset();
+        if (displayMode.equals("flat")) cam.reset();
         break;
       case 'r':
         bar_left.restoreDefault();
@@ -93,11 +93,16 @@ void keyPressed() {
         if (mapIndex >= maps.length) mapIndex = 0;
         map = maps[mapIndex];
         break;
+      case 'd':
+        nextDisplayMode();
+        break;
       case 'p':
-        println("cam.offset.x = " + cam.offset.x);
-        println("cam.offset.y = " + cam.offset.y);
-        println("cam.zoom = "     + cam.zoom);
-        println("cam.rotation = " + cam.rotation);
+        if (displayMode.equals("flat")) {
+          println("cam.offset.x = " + cam.offset.x);
+          println("cam.offset.y = " + cam.offset.y);
+          println("cam.zoom = "     + cam.zoom);
+          println("cam.rotation = " + cam.rotation);
+        }
         break;
     }
   }
@@ -107,4 +112,12 @@ boolean barHover() {
   boolean hoverLeft  = mouseX > bar_left.barX  && mouseX < bar_left.barX+bar_left.barW   && mouseY > bar_left.barY  && mouseY < bar_left.barY+bar_left.barH;
   boolean hoverRight = mouseX > bar_right.barX && mouseX < bar_right.barX+bar_right.barW && mouseY > bar_right.barY && mouseY < bar_right.barY+bar_right.barH;
   return hoverLeft || hoverRight;
+}
+
+void nextDisplayMode() {
+  if(displayMode.equals("flat")) {
+    displayMode = "globe";
+  } else {
+    displayMode = "flat";
+  }
 }

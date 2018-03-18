@@ -60,16 +60,26 @@ void render3D() {
   
   hint(ENABLE_DEPTH_TEST);
   
-  // Update camera position settings for a number of frames after key updates
-  if (cam.moveTimer > 0) {
-    cam.moved();
+  // Draw Canvas to Screen
+  switch(displayMode) {
+    case "flat":
+    
+      // Update camera position settings for a number of frames after key updates
+      if (cam.moveTimer > 0) {
+        cam.moved();
+      }
+      
+      // Draw and Calculate 3D Graphics 
+      cam.on();
+  
+      image(canvas, 0, 0, B.x, B.y);
+      break;
+      
+    case "globe":
+    
+      drawSphere(30,60);
+      break;
   }
-  
-  // Draw and Calculate 3D Graphics 
-  cam.on();
-  
-  image(canvas, 0, 0, B.x, B.y);
-  //drawSphere(30,60);
   
 }
 
@@ -79,7 +89,7 @@ void render2D() {
   cam.off();
   
   // Draw Slider Bars for Controlling Zoom and Rotation (2D canvas begins)
-  cam.drawControls();
+  if (displayMode.equals("flat")) cam.drawControls();
   
   // Draw Margin ToolBar
   //
