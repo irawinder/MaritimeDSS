@@ -55,7 +55,7 @@ class Toolbar {
     controlY = 8*CONTROL_H;
   }
   
-  void addSlider(String name, String unit, int valMin, int valMax, float DEFAULT_VALUE, char keyMinus, char keyPlus, boolean keyCommand) {
+  void addSlider(String name, String unit, int valMin, int valMax, float DEFAULT_VALUE, float inc, char keyMinus, char keyPlus, boolean keyCommand) {
     float num = sliders.size() + buttons.size() + 6*tSliders.size();
     ControlSlider s;
     s = new ControlSlider();
@@ -71,6 +71,7 @@ class Toolbar {
     s.valMax = valMax;
     s.DEFAULT_VALUE = DEFAULT_VALUE;
     s.value = s.DEFAULT_VALUE;
+    s.s_increment = inc;
     sliders.add(s);
   }
   
@@ -201,6 +202,7 @@ class ControlSlider {
   int valMax;
   float value;
   float DEFAULT_VALUE = 0;
+  float s_increment;
   
   ControlSlider() {
     xpos = 0;
@@ -214,11 +216,13 @@ class ControlSlider {
     valMin = 0;
     valMax = 0;
     value = 0;
+    s_increment = 1;
   }
   
   void update() {
     if (isDragged) value = (mouseX-xpos)*(valMax-valMin)/len+valMin;
     checkLimit();
+    value = s_increment*int(value/s_increment);
   }
   
   void listen() {
@@ -308,7 +312,7 @@ class RadioButton {
     }
     
     // Keyboard Controls
-    if ((keyPressed == true) && (key == keyToggle)) {value = !value;}
+    //if ((keyPressed == true) && (key == keyToggle)) {value = !value;}
   }
   
   boolean hover() {
@@ -329,7 +333,8 @@ class RadioButton {
     if (value) { fill(255); }
     else       { fill(150); } 
     textAlign(LEFT, CENTER);
-    text("[" + keyToggle + "] " + name,int(xpos + 1.5*diameter),int(ypos) );
+    //text("[" + keyToggle + "] " + name,int(xpos + 1.5*diameter),int(ypos) );
+    text(name,int(xpos + 1.5*diameter),int(ypos) );
     
     // Button Holder
     noStroke(); fill(50);

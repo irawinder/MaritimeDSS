@@ -52,7 +52,7 @@ String[] mapFile = { // Names of map files in /data/maps folder
 // Camera Object with built-in GUI for navigation and selection
 //
 Camera cam;
-PVector B; // Bounding Box for 3D Environment
+PVector B = new PVector(3000, 1500, 0); // Bounding Box for 3D Environment
 int MARGIN = 25; // Pixel margin allowed around edge of screen
 
 // Semi-transparent Toolbar for information and sliders
@@ -89,12 +89,21 @@ void init() {
     maps = new PImage[mapFile.length];
     for (int i=0; i<maps.length; i++) {
       maps[i] = loadImage("maps/" + mapFile[i]);
+      maps[i].resize(maps[0].width, maps[0].height);
     }
       
     // Select the image to display in the program 
     //
     mapIndex = 0;
     map = maps[mapIndex];
+    
+    // Create canvas for drawing everything to earth surface
+    //
+    canvas = createGraphics(map.width, map.height, P3D);
+    
+    // Set up Spherical Projection Map
+    //
+    defaultSphere();
     
   } else if (initPhase == 1) {
     
@@ -119,8 +128,7 @@ void init() {
     
     // Initialize Fleet of Ships
     //
-    initWorld();
-    initFleet();
+    //initFleet();
     
   } else if (initPhase == 5) {
     
@@ -152,11 +160,32 @@ void initToolbars() {
   // Left Toolbar
   bar_left = new Toolbar(BAR_X, BAR_Y, BAR_W, BAR_H, MARGIN);
   bar_left.title = "MaritimeDSS\n";
-  bar_left.credit = "Global Teamwork Lab";
+  bar_left.credit = "Global Teamwork Lab\n\n";
   bar_left.explanation = "";
-  //bar_left.controlY = BAR_Y + bar_left.margin + 2*bar_left.CONTROL_H;
-  //bar_left.addSlider("Slider A", "%", 0, 100, 25, 'q', 'w', true);
-  //bar_left.addButton("Item A", 200, true, '1');
+  bar_left.controlY = BAR_Y + bar_left.margin + 4*bar_left.CONTROL_H;
+  //bar_left.addSlider("Zoom",     "\u00b0",  150,  400, 340, 1, 'q', 'w', false);
+  bar_left.addSlider("# HFO fueled ships",             "", 0,  20, 20, 5, 'q', 'w', false);
+  bar_left.addSlider("# LSFO fueled ships",            "", 0,  20,  0, 5, 'q', 'w', false);
+  bar_left.addSlider("# LNG fueled ships",             "", 0,  20,  0, 5, 'q', 'w', false);
+  bar_left.addSlider("# Dual fueled ships (HFO + LNG)","", 0,  20,  0, 5, 'q', 'w', false);
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("0", 200, true, '1');
+  bar_left.addButton("1", 200, true, '1');
+  bar_left.addButton("3", 200, true, '1');
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("0", 200, true, '1');
+  bar_left.addButton("1", 200, true, '1');
+  bar_left.addButton("3", 200, true, '1');
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("0", 200, true, '1');
+  bar_left.addButton("1", 200, true, '1');
+  bar_left.addButton("3", 200, true, '1');
+  
+  bar_left.buttons.remove(9);
+  bar_left.buttons.remove(5);
+  bar_left.buttons.remove(1);
+  bar_left.buttons.remove(0);
   
   // Right Toolbar
   bar_right = new Toolbar(width - (BAR_X + BAR_W), BAR_Y, BAR_W, BAR_H, MARGIN);
@@ -168,50 +197,39 @@ void initToolbars() {
   //bar_right.addSlider("Slider 1", "kg", 50, 100, 72, '<', '>', true);
 }
 
-void initWorld() {
-  
-  //  Parameter Space for Geometric Area
-  //
-  latCtr = +42.350;
-  lonCtr = -71.066;
-  bound    =  0.035;
-  latMin = latCtr - bound;
-  latMax = latCtr + bound;
-  lonMin = lonCtr - bound;
-  lonMax = lonCtr + bound;
-}
-
 void initCamera() {
-  
-  // Bounding box for our 3D environment
-  B = new PVector(3000, 1500, 0);
-  
-  // Initialize 3D World Camera Defaults
-  cam = new Camera (B, MARGIN);
-  // eX, eW (extentsX ...) prevents accidental dragging when interactiong with toolbar
-  cam.eX = MARGIN + BAR_W;
-  cam.eW = width - 2*(BAR_W + MARGIN);
-  cam.ZOOM_DEFAULT = 0.25;
-  cam.ZOOM_POW     = 1.75;
-  cam.ZOOM_MAX     = 0.10;
-  cam.ZOOM_MIN     = 0.75;
-  cam.ROTATION_DEFAULT = PI; // (0 - 2*PI)
-  cam.init(); //Must End with init() if any variables within Camera() are changed from default
-  cam.off(); // turn cam off while still initializing
+  // Initialize the Camera
+    // cam = new Camera(toolbar_width, b, -350, 50, 0.7, 0.1, 2.0, 0.45);
+    // Initialize 3D World Camera Defaults
+    cam = new Camera (B, MARGIN);
+    // eX, eW (extentsX ...) prevents accidental dragging when interactiong with toolbar
+    cam.eX = MARGIN + BAR_W;
+    cam.eW = width - 2*(BAR_W + MARGIN);
+    cam.X_DEFAULT    = -1000;
+    cam.Y_DEFAULT    =   130;
+    cam.ZOOM_DEFAULT = 0.25;
+    cam.ZOOM_POW     = 1.75;
+    cam.ZOOM_MAX     = 0.10;
+    cam.ZOOM_MIN     = 0.40;
+    cam.ROTATION_DEFAULT = PI; // (0 - 2*PI)
+    cam.enableChunks = false;  // Enable/Disable 3D mouse cursor field for continuous object placement
+    cam.init(); //Must End with init() if any variables within Camera() are changed from default
+    cam.off(); // turn cam off while still initializing
 }
 
 void initFleet() {
   
   fleet = new Fleet();
+  fleet.duration = simResult.getRowCount();
   for (int i=0; i<20; i++) {
     Ship s = new Ship();
-    for (int j=0; j<simResult.getRowCount(); j++) {
+    for (int j=0; j<fleet.duration; j++) {
       TableRow row = simResult.getRow(j);
       float lat = row.getFloat(  9 + 11*i );
       float lon = row.getFloat( 10 + 11*i );
       PVector latlon = new PVector(lat, lon);
       s.location_LatLon.add(latlon);
-      PVector xy = LatLonToXY(latlon, B.x, B.y, -90.0, 90.0, -180.0, 180.0);
+      PVector xy = LatLonToXY(latlon, canvas.width, canvas.height, -90.0, 90.0, -180.0, 180.0);
       s.location_Canvas.add(xy);
     }
     fleet.ships.add(s);

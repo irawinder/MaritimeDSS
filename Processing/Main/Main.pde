@@ -34,7 +34,7 @@ public void settings() {
 // Runs once when application begins
 //
 void setup() {
-  
+
 }
 
 // Runs on a infinite loop after setup
@@ -53,6 +53,8 @@ void draw() {
     listen();
     
     // A_Render.pde - Renders current frame of visualization
+    //
+    renderEarth(); // Write to PGraphics canvas
     background(0);
     render3D();
     render2D();

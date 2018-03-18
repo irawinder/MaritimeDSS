@@ -24,27 +24,44 @@
  
 void listen() {
   
-  // Update camera position settings for a number of frames after key updates
-  //
-  if (cam.moveTimer > 0) {
-    cam.moved();
-  }
- 
+  //zoom3d     = bar_left.sliders.get(0).value;
+  //fleet.time = int(bar_left.sliders.get(3).value) - 1;
+
 }
 
+int x_0, y_0;
+float rotate3d_init, pitch3d_init;
+boolean orient;
 void mousePressed() {
   if (initialized) {
     cam.pressed();
     bar_left.pressed();
     bar_right.pressed();
+    if (!barHover()) {
+      x_0 = mouseX;
+      y_0 = mouseY;
+      rotate3d_init = rotate3d;
+      pitch3d_init = pitch3d;
+      orient = true;
+    }
+  }
+}
+
+void mouseDragged() {
+  if (initialized) {
+    if (orient) {
+      rotate3d = rotate3d_init + (mouseX - x_0)/5.0;
+      pitch3d  = pitch3d_init  + (mouseY - y_0)/5.0;
+    }
   }
 }
 
 void mouseReleased() {
   if (initialized) {
+    cam.moved();
     bar_left.released();
     bar_right.released();
-    cam.moved();
+    orient = false;
   }
 }
 
@@ -71,11 +88,23 @@ void keyPressed() {
         bar_left.restoreDefault();
         bar_right.restoreDefault();
         break;
+      case 'm':
+        mapIndex++;
+        if (mapIndex >= maps.length) mapIndex = 0;
+        map = maps[mapIndex];
+        break;
       case 'p':
         println("cam.offset.x = " + cam.offset.x);
-        println("cam.offset.x = " + cam.offset.x);
+        println("cam.offset.y = " + cam.offset.y);
         println("cam.zoom = "     + cam.zoom);
         println("cam.rotation = " + cam.rotation);
+        break;
     }
   }
+}
+
+boolean barHover() {
+  boolean hoverLeft  = mouseX > bar_left.barX  && mouseX < bar_left.barX+bar_left.barW   && mouseY > bar_left.barY  && mouseY < bar_left.barY+bar_left.barH;
+  boolean hoverRight = mouseX > bar_right.barX && mouseX < bar_right.barX+bar_right.barW && mouseY > bar_right.barY && mouseY < bar_right.barY+bar_right.barH;
+  return hoverLeft || hoverRight;
 }

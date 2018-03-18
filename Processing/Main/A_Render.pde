@@ -22,6 +22,33 @@
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// Begin Drawing Earth Canvas
+//
+void renderEarth() {
+  
+  canvas.beginDraw();
+  canvas.background(0);
+  
+  // Field: Draw Rectangular plane comprising boundary area 
+  //
+  canvas.fill(255, 50);
+  canvas.rect(0, 0, map.width, map.height);
+  
+  // Field: Draw Selection Field
+  //
+  canvas.pushMatrix(); canvas.translate(0, 0, 1);
+  canvas.image(map, 0, 0);
+  canvas.popMatrix();
+  
+  // Draw Ship Paths
+  //
+  canvas.pushMatrix(); canvas.translate(0, 0, 5);
+  //fleet.drawShips();
+  canvas.popMatrix();
+  
+  canvas.endDraw();
+}
+
 // Begin Drawing 3D Elements
 //
 void render3D() {
@@ -31,43 +58,37 @@ void render3D() {
   // objects drawn afterward (despite alpha value!)
   // ****
   
+  hint(ENABLE_DEPTH_TEST);
+  
+  // Update camera position settings for a number of frames after key updates
+  if (cam.moveTimer > 0) {
+    cam.moved();
+  }
+  
   // Draw and Calculate 3D Graphics 
-  //
   cam.on();
   
-  // Field: Draw Rectangular plane comprising boundary area 
-  //
-  fill(255, 50);
-  rect(0, 0, B.x, B.y);
-  
-  // Field: Draw Selection Field
-  //
-  pushMatrix(); translate(0, 0, 1);
-  image(map, 0, 0, B.x, B.y);
-  popMatrix();
-  
-  // Draw Ship Paths
-  //
-  pushMatrix(); translate(0, 0, 1);
-  for (Ship s: fleet.ships) s.drawPath();
-  popMatrix();
+  image(canvas, 0, 0, B.x, B.y);
+  //drawSphere(30,60);
   
 }
 
 void render2D() {
   
-  // Begin Drawing 2D Elements
-  //
+  hint(DISABLE_DEPTH_TEST);
   cam.off();
   
   // Draw Slider Bars for Controlling Zoom and Rotation (2D canvas begins)
-  //
   cam.drawControls();
   
   // Draw Margin ToolBar
   //
   bar_left.draw();
   bar_right.draw();
+  
+  pushMatrix(); translate(bar_left.barX + bar_left.margin, bar_left.barY + bar_left.margin + 48);
+  //text("Simulation Time\n" + fleet.time/24 + " of " + fleet.duration/24 + " days", 0, 0);
+  popMatrix();
   
 }
 
