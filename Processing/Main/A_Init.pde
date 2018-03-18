@@ -173,10 +173,14 @@ void initToolbars() {
   bar_left.explanation = "";
   bar_left.controlY = BAR_Y + bar_left.margin + 4*bar_left.CONTROL_H;
   //bar_left.addSlider("Zoom",     "\u00b0",  150,  400, 340, 1, 'q', 'w', false);
+  
+  // Ship Attributes
   bar_left.addSlider("# HFO fueled ships",             "", 0,  20, 20, 5, 'q', 'w', false);
   bar_left.addSlider("# LSFO fueled ships",            "", 0,  20,  0, 5, 'q', 'w', false);
   bar_left.addSlider("# LNG fueled ships",             "", 0,  20,  0, 5, 'q', 'w', false);
   bar_left.addSlider("# Dual fueled ships (HFO + LNG)","", 0,  20,  0, 5, 'q', 'w', false);
+  
+  // # Bunkers
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("0", 200, true, '1');
@@ -190,6 +194,31 @@ void initToolbars() {
   bar_left.addButton("0", 200, true, '1');
   bar_left.addButton("1", 200, true, '1');
   bar_left.addButton("3", 200, true, '1');
+  
+  // Bunker Method
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("Truck to Ship",  200, true, '1');
+  bar_left.addButton("Ship to Ship",   200, true, '1');
+  bar_left.addButton("Shote to Shipt", 200, true, '1');
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("Truck to Ship",  200, true, '1');
+  bar_left.addButton("Ship to Ship",   200, true, '1');
+  bar_left.addButton("Shote to Shipt", 200, true, '1');
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("Truck to Ship",  200, true, '1');
+  bar_left.addButton("Ship to Ship",   200, true, '1');
+  bar_left.addButton("Shote to Shipt", 200, true, '1');
+  
+  for (int i=13; i<=25; i++) {   // Shift Bunker Method buttons right
+    bar_left.buttons.get(i).xpos = bar_left.barX + bar_left.barW/2; 
+    bar_left.buttons.get(i).ypos = bar_left.buttons.get(i-13).ypos;
+  }
+  
+  bar_left.buttons.remove(22);
+  bar_left.buttons.remove(18);
+  bar_left.buttons.remove(14);
+  bar_left.buttons.remove(13);
   
   bar_left.buttons.remove(9);
   bar_left.buttons.remove(5);

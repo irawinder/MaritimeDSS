@@ -57,3 +57,23 @@ void defaultSphere() {
   pitch3d = 15;
   rotate3d = 85;
 }
+
+int x_0, y_0;
+float rotate3d_init, pitch3d_init;
+boolean orient;
+void spherePressed() {
+  if (!barHover()) {
+    x_0 = mouseX;
+    y_0 = mouseY;
+    rotate3d_init = rotate3d;
+    pitch3d_init = pitch3d;
+    orient = true;
+  }
+}
+
+void sphereDragged() {
+  if (orient) {
+    rotate3d = rotate3d_init + (mouseX - x_0)/5.0;
+    pitch3d  = pitch3d_init  + (mouseY - y_0)/5.0;
+  }
+}

@@ -29,30 +29,18 @@ void listen() {
 
 }
 
-int x_0, y_0;
-float rotate3d_init, pitch3d_init;
-boolean orient;
 void mousePressed() {
   if (initialized) {
-    if (displayMode.equals("flat")) cam.pressed();
+    if (displayMode.equals("flat"))  cam.pressed();
+    if (displayMode.equals("globe")) spherePressed();
     bar_left.pressed();
     bar_right.pressed();
-    if (!barHover()) {
-      x_0 = mouseX;
-      y_0 = mouseY;
-      rotate3d_init = rotate3d;
-      pitch3d_init = pitch3d;
-      orient = true;
-    }
   }
 }
 
 void mouseDragged() {
   if (initialized) {
-    if (orient) {
-      rotate3d = rotate3d_init + (mouseX - x_0)/5.0;
-      pitch3d  = pitch3d_init  + (mouseY - y_0)/5.0;
-    }
+    if (displayMode.equals("globe")) sphereDragged();
   }
 }
 
