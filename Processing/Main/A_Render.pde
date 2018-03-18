@@ -25,6 +25,7 @@
 // Begin Drawing 3D Elements
 //
 void render3D() {
+  
   // ****
   // NOTE: Objects draw earlier in the loop will obstruct 
   // objects drawn afterward (despite alpha value!)
@@ -42,7 +43,13 @@ void render3D() {
   // Field: Draw Selection Field
   //
   pushMatrix(); translate(0, 0, 1);
-  image(cam.chunkField.img, 0, 0, B.x, B.y);
+  image(map, 0, 0, B.x, B.y);
+  popMatrix();
+  
+  // Draw Ship Paths
+  //
+  pushMatrix(); translate(0, 0, 1);
+  for (Ship s: fleet.ships) s.drawPath();
   popMatrix();
   
 }

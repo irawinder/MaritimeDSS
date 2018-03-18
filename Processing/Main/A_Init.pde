@@ -22,13 +22,37 @@
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// Output edit requests for Shinnosuke:
+// - Each Column name in {case_number}.csv should be unique.  For instance, call "Lat" column "Lat_{ship_num}".
+
+//  GeoLocation Parameters
+//
+float latCtr, lonCtr, bound, latMin, latMax, lonMin, lonMax;
+
 // Tables Containing current simulation configuration and results
+//
 Table simConfig, simResult;
+Fleet fleet;
+
+// Graphics Objects
+PImage map;
+PImage[] maps;
+PGraphics canvas;
+
+// Map Setting
+int mapIndex;
+String[] mapFile = { // Names of map files in /data/maps folder
+  "world.topo.bathy.200407.3x5400x2700.jpg",
+  "Equirectangular_projection_crop.png",
+  "BlankMap-Equirectangular.png",
+  "BlankMap-Equirectangular_night.png",
+  "Earth_night_homemade.jpg"
+};
 
 // Camera Object with built-in GUI for navigation and selection
 //
 Camera cam;
-PVector B = new PVector(3000, 3000, 0); // Bounding Box for 3D Environment
+PVector B; // Bounding Box for 3D Environment
 int MARGIN = 25; // Pixel margin allowed around edge of screen
 
 // Semi-transparent Toolbar for information and sliders
@@ -45,6 +69,7 @@ String status[] = {
   "Initializing Toolbars and 3D Environment...",
   "Importing Simulation Input Parameters ...",
   "Importing Simulation Results ...",
+  "Initializing Fleet ...",
   "Ready to go!"
 };
 int NUM_PHASES = status.length;
@@ -52,12 +77,24 @@ int NUM_PHASES = status.length;
 void init() {
   
   initialized = false;
-  
+    
   if (initPhase == 0) {
     
     // Load default background image
     //
     loadingBG = loadImage("data/loadingScreen.jpg");
+    
+    // Load all the images into the program 
+    //
+    maps = new PImage[mapFile.length];
+    for (int i=0; i<maps.length; i++) {
+      maps[i] = loadImage("maps/" + mapFile[i]);
+    }
+      
+    // Select the image to display in the program 
+    //
+    mapIndex = 0;
+    map = maps[mapIndex];
     
   } else if (initPhase == 1) {
     
@@ -80,6 +117,13 @@ void init() {
     
   } else if (initPhase == 4) {
     
+    // Initialize Fleet of Ships
+    //
+    initWorld();
+    initFleet();
+    
+  } else if (initPhase == 5) {
+    
     initialized = true;
   }
   
@@ -90,14 +134,15 @@ void init() {
 }
 
 void initSimConfig() {
-  simConfig = loadTable("data/simulation/config/case_table4Workshop.csv");
+  simConfig = loadTable("data/simulation/config/case_table4Workshop.csv", "header");
 }
 
 void initSimResult() {
-  simResult = loadTable("data/simulation/result/1.csv");
+  simResult = loadTable("data/simulation/result/1.csv", "header");
 }
 
 void initToolbars() {
+  
   // Initialize Toolbar
   BAR_X = MARGIN;
   BAR_Y = MARGIN;
@@ -123,7 +168,24 @@ void initToolbars() {
   //bar_right.addSlider("Slider 1", "kg", 50, 100, 72, '<', '>', true);
 }
 
+void initWorld() {
+  
+  //  Parameter Space for Geometric Area
+  //
+  latCtr = +42.350;
+  lonCtr = -71.066;
+  bound    =  0.035;
+  latMin = latCtr - bound;
+  latMax = latCtr + bound;
+  lonMin = lonCtr - bound;
+  lonMax = lonCtr + bound;
+}
+
 void initCamera() {
+  
+  // Bounding box for our 3D environment
+  B = new PVector(3000, 1500, 0);
+  
   // Initialize 3D World Camera Defaults
   cam = new Camera (B, MARGIN);
   // eX, eW (extentsX ...) prevents accidental dragging when interactiong with toolbar
@@ -135,4 +197,23 @@ void initCamera() {
   cam.ZOOM_MIN     = 0.75;
   cam.ROTATION_DEFAULT = PI; // (0 - 2*PI)
   cam.init(); //Must End with init() if any variables within Camera() are changed from default
+  cam.off(); // turn cam off while still initializing
+}
+
+void initFleet() {
+  
+  fleet = new Fleet();
+  for (int i=0; i<20; i++) {
+    Ship s = new Ship();
+    for (int j=0; j<simResult.getRowCount(); j++) {
+      TableRow row = simResult.getRow(j);
+      float lat = row.getFloat(  9 + 11*i );
+      float lon = row.getFloat( 10 + 11*i );
+      PVector latlon = new PVector(lat, lon);
+      s.location_LatLon.add(latlon);
+      PVector xy = LatLonToXY(latlon, B.x, B.y, -90.0, 90.0, -180.0, 180.0);
+      s.location_Canvas.add(xy);
+    }
+    fleet.ships.add(s);
+  }
 }

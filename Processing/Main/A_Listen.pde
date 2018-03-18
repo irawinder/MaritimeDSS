@@ -2,7 +2,7 @@
  *  Ira Winder, ira@mit.edu, 2018
  *  MIT Global Teamwork Lab
  *
- *  Update Functions (Superficially Isolated from Main.pde)
+ *  Update / Listening Functions (Superficially Isolated from Main.pde)
  *
  *  MIT LICENSE: Copyright 2018 Ira Winder
  *
