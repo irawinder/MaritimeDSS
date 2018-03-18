@@ -24,6 +24,17 @@
  
 void listen() {
   
+  fleet.update();
+  if (bar_right.buttons.get(0).value) {
+    fleet.TIME_PAUSE = 2;
+    fleet.TIME_INCREMENT = 1;
+  } else if (bar_right.buttons.get(1).value) {
+    fleet.TIME_PAUSE = 0;
+    fleet.TIME_INCREMENT = 1;
+  } else if (bar_right.buttons.get(2).value) {
+    fleet.TIME_PAUSE = 0;
+    fleet.TIME_INCREMENT = 2;
+  }
   //zoom3d     = bar_left.sliders.get(0).value;
   //fleet.time = int(bar_left.sliders.get(3).value) - 1;
 
@@ -35,6 +46,7 @@ void mousePressed() {
     if (displayMode.equals("globe")) spherePressed();
     bar_left.pressed();
     bar_right.pressed();
+    constrainButtons();
   }
 }
 
@@ -107,5 +119,69 @@ void nextDisplayMode() {
     displayMode = "globe";
   } else {
     displayMode = "flat";
+  }
+}
+
+void constrainButtons() {
+  
+  // Set mutually exclusive buttons to false
+  //
+  for (int i=0; i<6*3; i+=3) {
+    if(bar_left.buttons.get(i+0).hover() && bar_left.buttons.get(i+0).value) {
+      bar_left.buttons.get(i+1).value = false;
+      bar_left.buttons.get(i+2).value = false;
+    } else if(bar_left.buttons.get(i+1).hover() && bar_left.buttons.get(i+1).value) {
+      bar_left.buttons.get(i+0).value = false;
+      bar_left.buttons.get(i+2).value = false;
+    } else if(bar_left.buttons.get(i+2).hover() && bar_left.buttons.get(i+2).value) {
+      bar_left.buttons.get(i+1).value = false;
+      bar_left.buttons.get(i+0).value = false;
+    } 
+  }
+  
+  // Set redundant buttons to false; 1 button is always true
+  //
+  for (int i=0; i<6*3; i+=3) {
+    if(bar_left.buttons.get(i+0).value) {
+      if(bar_left.buttons.get(i+1).value) bar_left.buttons.get(i+1).value = false;
+      if(bar_left.buttons.get(i+2).value) bar_left.buttons.get(i+2).value = false;
+    } else if(bar_left.buttons.get(i+1).value) {
+      if(bar_left.buttons.get(i+0).value) bar_left.buttons.get(i+0).value = false;
+      if(bar_left.buttons.get(i+2).value) bar_left.buttons.get(i+2).value = false;
+    } else if(bar_left.buttons.get(i+2).value) {
+      if(bar_left.buttons.get(i+1).value) bar_left.buttons.get(i+1).value = false;
+      if(bar_left.buttons.get(i+0).value) bar_left.buttons.get(i+0).value = false;
+    } else {
+      bar_left.buttons.get(i+0).value = true;
+    }
+  }
+  
+  // Set mutually exclusive buttons to false
+  //
+  int i=0;
+  if(bar_right.buttons.get(i+0).hover() && bar_right.buttons.get(i+0).value) {
+    bar_right.buttons.get(i+1).value = false;
+    bar_right.buttons.get(i+2).value = false;
+  } else if(bar_right.buttons.get(i+1).hover() && bar_right.buttons.get(i+1).value) {
+    bar_right.buttons.get(i+0).value = false;
+    bar_right.buttons.get(i+2).value = false;
+  } else if(bar_right.buttons.get(i+2).hover() && bar_right.buttons.get(i+2).value) {
+    bar_right.buttons.get(i+1).value = false;
+    bar_right.buttons.get(i+0).value = false;
+  } 
+  
+  // Set redundant buttons to false; 1 button is always true
+  //
+  if(bar_right.buttons.get(i+0).value) {
+    if(bar_right.buttons.get(i+1).value) bar_right.buttons.get(i+1).value = false;
+    if(bar_right.buttons.get(i+2).value) bar_right.buttons.get(i+2).value = false;
+  } else if(bar_right.buttons.get(i+1).value) {
+    if(bar_right.buttons.get(i+0).value) bar_right.buttons.get(i+0).value = false;
+    if(bar_right.buttons.get(i+2).value) bar_right.buttons.get(i+2).value = false;
+  } else if(bar_right.buttons.get(i+2).value) {
+    if(bar_right.buttons.get(i+1).value) bar_right.buttons.get(i+1).value = false;
+    if(bar_right.buttons.get(i+0).value) bar_right.buttons.get(i+0).value = false;
+  } else {
+    bar_right.buttons.get(i+0).value = true;
   }
 }

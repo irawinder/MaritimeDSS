@@ -40,12 +40,6 @@ void renderEarth() {
   canvas.image(map, 0, 0);
   canvas.popMatrix();
   
-  // Draw Ship Paths
-  //
-  canvas.pushMatrix(); canvas.translate(0, 0, 5);
-  //fleet.drawShips();
-  canvas.popMatrix();
-  
   canvas.endDraw();
 }
 
@@ -71,7 +65,8 @@ void render3D() {
       
       // Draw and Calculate 3D Graphics 
       cam.on();
-  
+      
+      fill(255);
       image(canvas, 0, 0, B.x, B.y);
       break;
       
@@ -80,6 +75,13 @@ void render3D() {
       drawSphere(30,60);
       break;
   }
+  
+  // Draw Ships
+  //
+  pushMatrix(); translate(0, 0, 1);
+  fleet.drawShipsFlat();
+  fleet.drawShips3D();
+  popMatrix();
   
 }
 
@@ -96,8 +98,56 @@ void render2D() {
   bar_left.draw();
   bar_right.draw();
   
-  pushMatrix(); translate(bar_left.barX + bar_left.margin, bar_left.barY + bar_left.margin + 48);
-  //text("Simulation Time\n" + fleet.time/24 + " of " + fleet.duration/24 + " days", 0, 0);
+  //// Radio Button Labels:
+  ////
+  //pushMatrix(); translate(bar_left.barX + bar_left.margin, int(9.5*bar_left.CONTROL_H) );
+  //textAlign(LEFT, BOTTOM); fill(255); 
+  //text("# Bunkers", 0, 0);
+  //translate(bar_left.contentW/2, 0);
+  //text("Method", 0, 0);
+  //popMatrix();
+  
+  // Ships
+  //
+  pushMatrix(); translate(bar_left.barX + bar_left.margin, int(4.0*bar_left.CONTROL_H) );
+  textAlign(LEFT, BOTTOM); fill(255); 
+  text("# Ships", 0, 0);
+  popMatrix();
+  
+  // Bunker Locations
+  //
+  pushMatrix(); translate(bar_left.barX + bar_left.margin, int(10.5*bar_left.CONTROL_H) );
+  textAlign(LEFT, BOTTOM); fill(255); 
+  text("Persian Gulf", 0, 0);
+  translate(0, int(4*bar_left.CONTROL_H));
+  text("Japan", 0, 0);
+  translate(0, int(4*bar_left.CONTROL_H));
+  text("Singapore", 0, 0);
+  popMatrix();
+  
+  // Ships must add up to 20
+  //
+  int type1 = int(bar_left.sliders.get(0).value);
+  int type2 = int(bar_left.sliders.get(1).value);
+  int type3 = int(bar_left.sliders.get(2).value);
+  int type4 = int(bar_left.sliders.get(3).value);
+
+  pushMatrix(); translate(bar_left.barX + bar_left.barW - bar_left.margin, int(9.5*bar_left.CONTROL_H) );
+  textAlign(RIGHT, BOTTOM); fill(255); 
+  text("Fleet Size: " + (type1+type2+type3+type4), 0, 0);
+  if (type1 + type2 + type3 + type4 != 20) {
+    String error = "FLEET MUST BE 20";
+    translate(- bar_left.barW + 2*bar_left.margin, 0);
+    textAlign(LEFT, BOTTOM); fill(#FFFF00); 
+    text(error, 0, 0);
+  }
+  popMatrix();
+  
+   
+  
+  pushMatrix(); translate(bar_right.barX + bar_right.margin, bar_right.barY + bar_right.margin + 64);
+  fill(255); textAlign(LEFT, BOTTOM);
+  text("Simulation Time\n" + fleet.time/24 + " of " + fleet.duration/24 + " days", 0, 0);
   popMatrix();
   
 }

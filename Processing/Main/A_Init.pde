@@ -32,6 +32,7 @@ float latCtr, lonCtr, bound, latMin, latMax, lonMin, lonMax;
 // Tables Containing current simulation configuration and results
 //
 Table simConfig, simResult;
+boolean validConfig;
 Fleet fleet;
 
 // Graphics Objects
@@ -57,7 +58,7 @@ String[] mapFile = { // Names of map files in /data/maps folder
 // Camera Object with built-in GUI for navigation and selection
 //
 Camera cam;
-PVector B = new PVector(3000, 1500, 0); // Bounding Box for 3D Environment
+PVector B; // Bounding Box for 3D Environment
 int MARGIN = 25; // Pixel margin allowed around edge of screen
 
 // Semi-transparent Toolbar for information and sliders
@@ -105,6 +106,7 @@ void init() {
     // Create canvas for drawing everything to earth surface
     //
     canvas = createGraphics(map.width, map.height, P3D);
+    B = new PVector(canvas.width, canvas.height, 0);
     
     // Graphics mode (Globe or Mercator)
     //
@@ -120,6 +122,9 @@ void init() {
     //
     initToolbars();
     initCamera();
+    
+    // Constrain Buttons
+    constrainButtons();
     
   } else if (initPhase == 2) {
     
@@ -137,7 +142,7 @@ void init() {
     
     // Initialize Fleet of Ships
     //
-    //initFleet();
+    initFleet();
     
   } else if (initPhase == 5) {
     
@@ -151,6 +156,7 @@ void init() {
 }
 
 void initSimConfig() {
+  validConfig = false;
   simConfig = loadTable("data/simulation/config/case_table4Workshop.csv", "header");
 }
 
@@ -175,40 +181,40 @@ void initToolbars() {
   //bar_left.addSlider("Zoom",     "\u00b0",  150,  400, 340, 1, 'q', 'w', false);
   
   // Ship Attributes
-  bar_left.addSlider("# HFO fueled ships",             "", 0,  20, 20, 5, 'q', 'w', false);
-  bar_left.addSlider("# LSFO fueled ships",            "", 0,  20,  0, 5, 'q', 'w', false);
-  bar_left.addSlider("# LNG fueled ships",             "", 0,  20,  0, 5, 'q', 'w', false);
-  bar_left.addSlider("# Dual fueled ships (HFO + LNG)","", 0,  20,  0, 5, 'q', 'w', false);
+  bar_left.addSlider("HFO fueled",             "", 0,  20, 20, 5, 'q', 'w', false);
+  bar_left.addSlider("LSFO fueled",            "", 0,  20,  0, 5, 'q', 'w', false);
+  bar_left.addSlider("LNG fueled",             "", 0,  20,  0, 5, 'q', 'w', false);
+  bar_left.addSlider("Dual fueled (HFO + LNG)","", 0,  20,  0, 5, 'q', 'w', false);
   
   // # Bunkers
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("0", 200, true, '1');
-  bar_left.addButton("1", 200, true, '1');
-  bar_left.addButton("3", 200, true, '1');
+  bar_left.addButton("0 bunkers", 200, true, '1');
+  bar_left.addButton("1 bunkers", 200, true, '1');
+  bar_left.addButton("3 bunkers", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("0", 200, true, '1');
-  bar_left.addButton("1", 200, true, '1');
-  bar_left.addButton("3", 200, true, '1');
+  bar_left.addButton("0 bunkers", 200, true, '1');
+  bar_left.addButton("1 bunkers", 200, true, '1');
+  bar_left.addButton("3 bunkers", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("0", 200, true, '1');
-  bar_left.addButton("1", 200, true, '1');
-  bar_left.addButton("3", 200, true, '1');
+  bar_left.addButton("0 bunkers", 200, true, '1');
+  bar_left.addButton("1 bunkers", 200, true, '1');
+  bar_left.addButton("3 bunkers", 200, true, '1');
   
   // Bunker Method
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Truck to Ship",  200, true, '1');
   bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shote to Shipt", 200, true, '1');
+  bar_left.addButton("Shore to Ship", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Truck to Ship",  200, true, '1');
   bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shote to Shipt", 200, true, '1');
+  bar_left.addButton("Shore to Ship", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Truck to Ship",  200, true, '1');
   bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shote to Shipt", 200, true, '1');
+  bar_left.addButton("Shore to Ship", 200, true, '1');
   
   for (int i=13; i<=25; i++) {   // Shift Bunker Method buttons right
     bar_left.buttons.get(i).xpos = bar_left.barX + bar_left.barW/2; 
@@ -230,9 +236,10 @@ void initToolbars() {
   bar_right.title = "";
   bar_right.credit = "";
   bar_right.explanation = "";
-  //bar_right.controlY = BAR_Y + bar_left.margin + 6*bar_left.CONTROL_H;
-  //bar_right.addButton("Button A", 200, true, '!');
-  //bar_right.addSlider("Slider 1", "kg", 50, 100, 72, '<', '>', true);
+  bar_right.controlY = BAR_Y + bar_right.margin + 3*bar_right.CONTROL_H;
+  bar_right.addButton("30 hours / second",  200, false, '1');
+  bar_right.addButton("60 hours / second",  200, true, '1');
+  bar_right.addButton("120 hours / second", 200, false, '1');
 }
 
 void initCamera() {
@@ -243,13 +250,13 @@ void initCamera() {
     // eX, eW (extentsX ...) prevents accidental dragging when interactiong with toolbar
     cam.eX = MARGIN + BAR_W;
     cam.eW = width - 2*(BAR_W + MARGIN);
-    cam.X_DEFAULT    = -1000;
-    cam.Y_DEFAULT    =   130;
-    cam.ZOOM_DEFAULT = 0.25;
-    cam.ZOOM_POW     = 1.75;
-    cam.ZOOM_MAX     = 0.10;
+    cam.X_DEFAULT    = -900;
+    cam.Y_DEFAULT    =  200;
+    cam.ZOOM_DEFAULT = 0.16;
+    cam.ZOOM_POW     = 2.50;
+    cam.ZOOM_MAX     = 0.05;
     cam.ZOOM_MIN     = 0.40;
-    cam.ROTATION_DEFAULT = PI; // (0 - 2*PI)
+    cam.ROTATION_DEFAULT = 5.0; // (0 - 2*PI)
     cam.enableChunks = false;  // Enable/Disable 3D mouse cursor field for continuous object placement
     cam.init(); //Must End with init() if any variables within Camera() are changed from default
     cam.off(); // turn cam off while still initializing
