@@ -119,7 +119,7 @@ void render2D() {
   // Ships
   //
   pushMatrix(); 
-  translate(bar_left.barX + bar_left.margin, int(3.0*bar_left.CONTROL_H) );
+  translate(bar_left.barX + bar_left.margin, int(1.5*bar_left.CONTROL_H) );
   textAlign(LEFT, BOTTOM); 
   fill(255); 
   text("Ship Fleet:", 0, 0);
@@ -128,7 +128,7 @@ void render2D() {
   // Bunker Locations
   //
   pushMatrix(); 
-  translate(bar_left.barX + bar_left.margin, int(10.5*bar_left.CONTROL_H) );
+  translate(bar_left.barX + bar_left.margin, int(9.0*bar_left.CONTROL_H) );
   textAlign(LEFT, BOTTOM); 
   fill(255); 
   text("Port: Persian Gulf", 0, 0);
@@ -139,7 +139,7 @@ void render2D() {
   popMatrix();
 
   pushMatrix(); 
-  translate(bar_left.barX + bar_left.barW - bar_left.margin, int(8.5*bar_left.CONTROL_H) );
+  translate(bar_left.barX + bar_left.barW - bar_left.margin, int(7.0*bar_left.CONTROL_H) );
   textAlign(RIGHT, BOTTOM); 
   fill(255); if (!validFleet) fill(#FFFF00);
   text("Fleet Size: " + (fleetSize), 0, 0);

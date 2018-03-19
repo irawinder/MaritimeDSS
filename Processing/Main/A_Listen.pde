@@ -24,6 +24,15 @@
   
 void listen() {
   
+  if (simButton.trigger) {
+    fleet.time = 0;
+    simConfig = loadTable("data/simulation/config/case_table4Workshop.csv", "header");
+    simResult = loadTable("data/simulation/result/1.csv", "header");
+    initFleet();
+    result.addResult(simResult);
+    simButton.trigger = false;
+  }
+  
   fleet.update();
   
   if (bar_right.buttons.get(0).value) {
@@ -48,11 +57,6 @@ void listen() {
     simButton.enabled = true;
   } else {
     simButton.enabled = false;
-  }
-  
-  if (simButton.trigger) {
-    fleet.time = 0;
-    simButton.trigger = false;
   }
   
   updateBunkerViz();

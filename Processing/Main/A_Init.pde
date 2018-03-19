@@ -25,7 +25,7 @@
 // Output edit requests for Shinnosuke:
 // - Each Column name in {case_number}.csv should be unique.  For instance, call "Lat" column "Lat_{ship_num}".
 
-//  GeoLocation Parameters
+// GeoLocation Parameters
 //
 float latCtr, lonCtr, bound, latMin, latMax, lonMin, lonMax;
 
@@ -36,10 +36,13 @@ boolean validConfig;
 Fleet fleet;
 ArrayList<Port> ports;
 
+// Objects for Viewing and Saving Results
+//
+GamePlot result;
+
 // Colors
 //
 int colorGTL  = #9bc151;
-
 int colorHFO    = #AA0000;
 int colorLSFO   = #6666FF;
 int colorLNG    = #FF00FF;
@@ -91,7 +94,7 @@ String status[] = {
   "Importing Simulation Input Parameters ...",
   "Importing Simulation Results ...",
   "Initializing Toolbars and 3D Environment...",
-  "Initializing Fleet ...",
+  "Initializing Fleet and Ports...",
   "Ready to go!"
 };
 int NUM_PHASES = status.length;
@@ -179,6 +182,15 @@ void initSimConfig() {
 
 void initSimResult() {
   simResult = loadTable("data/simulation/result/1.csv", "header");
+  
+  result = new GamePlot();
+  result.name.add("Fuel Efficiency");
+  result.name.add("Cargo Moved");
+  result.name.add("CO2 Emission");
+  result.name.add("NOx Emission");
+  result.name.add("SOx Emission");
+  result.name.add("Waiting Time");
+  result.name.add("Initial Cost");
 }
 
 void initToolbars() {
@@ -191,10 +203,10 @@ void initToolbars() {
   
   // Left Toolbar
   bar_left = new Toolbar(BAR_X, BAR_Y, BAR_W, BAR_H, MARGIN);
-  bar_left.title = "MaritimeDSS\n";
-  bar_left.credit = "Global Teamwork Lab\n\n";
+  bar_left.title = "";
+  bar_left.credit = "";
   bar_left.explanation = "";
-  bar_left.controlY = BAR_Y + bar_left.margin + 3*bar_left.CONTROL_H;
+  bar_left.controlY = BAR_Y + bar_left.margin + int(1.5*bar_left.CONTROL_H);
   
   // Ship Attributes
   bar_left.addSlider("HFO fueled",             "", 0,  20, 20, 5, 'q', 'w', false);
@@ -267,15 +279,20 @@ void initToolbars() {
   bar_right.addButton("Pause",  200, false, '1');
   bar_right.addButton("30 hr / sec",  200, true, '1');
   bar_right.addButton("120 hr / sec", 200, false, '1');
+  
   bar_right.buttons.remove(0);
+  bar_right.buttons.get(1).xpos = bar_right.barX + 1*bar_right.barW/3; 
+  bar_right.buttons.get(1).ypos = bar_right.buttons.get(0).ypos;
+  bar_right.buttons.get(2).xpos = bar_right.barX + 2*bar_right.barW/3; 
+  bar_right.buttons.get(2).ypos = bar_right.buttons.get(0).ypos;
   
   simButton = new Button();
   simButton.name = "SIMULATE";
   simButton.col = colorGTL;
-  simButton.xpos = bar_right.barX + bar_right.barW/2;
-  simButton.ypos = 800 - bar_right.barY + bar_right.margin - 75;
-  simButton.bW = bar_right.barW - 2*bar_right.margin;
-  simButton.bH = 50;
+  simButton.xpos = bar_left.barX + bar_left.barW/2;
+  simButton.ypos = 800 - bar_left.barY + bar_left.margin - 50 - 17;
+  simButton.bW = bar_left.barW - 2*bar_left.margin;
+  simButton.bH = 35;
 }
 
 void initCamera() {
