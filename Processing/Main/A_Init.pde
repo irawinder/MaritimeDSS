@@ -39,7 +39,8 @@ ArrayList<Port> ports;
 // Objects for Viewing and Saving Results
 //
 GamePlot result;
-
+Logger userLog;
+int HOUR, MINUTE, SECOND; // Time when application starts
 // Colors
 //
 int colorGTL  = #9bc151;
@@ -95,8 +96,9 @@ String status[] = {
   "Initializing Canvas ...",
   "Importing Simulation Input Parameters ...",
   "Importing Simulation Results ...",
-  "Initializing Toolbars and 3D Environment...",
-  "Initializing Fleet and Ports...",
+  "Initializing Toolbars and 3D Environment ...",
+  "Initializing Fleet and Ports ...",
+  "Initializing Key Logger ...",
   "Ready to go!"
 };
 int NUM_PHASES = status.length;
@@ -106,6 +108,12 @@ void init() {
   initialized = false;
     
   if (initPhase == 0) {
+    
+    // Time when application starts
+    //
+    HOUR = hour();
+    MINUTE = minute();
+    SECOND = second();
     
     // Load default background image
     //
@@ -175,6 +183,12 @@ void init() {
     initPorts();
     
   } else if (initPhase == 5) {
+    
+    // Initialize key Logger
+    //
+    userLog = new Logger();
+    
+  } else if (initPhase == 6) {
     
     initialized = true;
   }

@@ -31,6 +31,7 @@ void listen() {
     simResultOverall = loadTable("data/simulation/result/1_overall.csv", "header");
     initFleet();
     result.addResult(simResultOverall);
+    userLog.addLog("Simulate");
     simButton.trigger = false;
   }
   
