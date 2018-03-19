@@ -34,6 +34,16 @@ float latCtr, lonCtr, bound, latMin, latMax, lonMin, lonMax;
 Table simConfig, simResult;
 boolean validConfig;
 Fleet fleet;
+ArrayList<Port> ports;
+
+// Colors
+//
+int colorGTL  = #9bc151;
+
+int colorHFO    = #AA0000;
+int colorLSFO   = #FFFF00;
+int colorLNG    = #FF00FF;
+int colorHFOLNG = #00FFFF;
 
 // Simulation Timer Variables
 //
@@ -147,9 +157,10 @@ void init() {
     
   } else if (initPhase == 4) {
     
-    // Initialize Fleet of Ships
+    // Initialize Fleet of Ships and Ports
     //
     initFleet();
+    initPorts();
     
   } else if (initPhase == 5) {
     
@@ -163,8 +174,6 @@ void init() {
 }
 
 void initSimConfig() {
-  validConfig = false;
-  
   simConfig = loadTable("data/simulation/config/case_table4Workshop.csv", "header");
 }
 
@@ -185,56 +194,64 @@ void initToolbars() {
   bar_left.title = "MaritimeDSS\n";
   bar_left.credit = "Global Teamwork Lab\n\n";
   bar_left.explanation = "";
-  bar_left.controlY = BAR_Y + bar_left.margin + 4*bar_left.CONTROL_H;
+  bar_left.controlY = BAR_Y + bar_left.margin + 3*bar_left.CONTROL_H;
   
   // Ship Attributes
   bar_left.addSlider("HFO fueled",             "", 0,  20, 20, 5, 'q', 'w', false);
   bar_left.addSlider("LSFO fueled",            "", 0,  20,  0, 5, 'q', 'w', false);
   bar_left.addSlider("LNG fueled",             "", 0,  20,  0, 5, 'q', 'w', false);
   bar_left.addSlider("Dual fueled (HFO + LNG)","", 0,  20,  0, 5, 'q', 'w', false);
+  bar_left.sliders.get(0).col = colorHFO;
+  bar_left.sliders.get(1).col = colorLSFO;
+  bar_left.sliders.get(2).col = colorLNG;
+  bar_left.sliders.get(3).col = colorHFOLNG;
   
   // # Bunkers
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", 200, true, '1');
-  bar_left.addButton("3 bunkers", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", 200, true, '1');
-  bar_left.addButton("3 bunkers", 200, true, '1');
+  bar_left.addButton("1 bunkers", colorLNG, true, '1');
+  bar_left.addButton("3 bunkers", colorLNG, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", 200, true, '1');
-  bar_left.addButton("3 bunkers", 200, true, '1');
+  bar_left.addButton("1 bunkers", colorLNG, true, '1');
+  bar_left.addButton("3 bunkers", colorLNG, true, '1');
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("0 bunkers", 200, true, '1');
+  bar_left.addButton("1 bunkers", colorLNG, true, '1');
+  bar_left.addButton("3 bunkers", colorLNG, true, '1');
   
   // Bunker Method
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Truck to Ship",  200, true, '1');
-  bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shore to Ship", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Truck to Ship",  200, true, '1');
   bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shore to Ship", 200, true, '1');
+  bar_left.addButton("Shore to Ship",  200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Truck to Ship",  200, true, '1');
   bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shore to Ship", 200, true, '1');
+  bar_left.addButton("Shore to Ship",  200, true, '1');
+  bar_left.addButton("Blank", 200, true, '1');
+  bar_left.addButton("Truck to Ship",  200, true, '1');
+  bar_left.addButton("Ship to Ship",   200, true, '1');
+  bar_left.addButton("Shore to Ship",  200, true, '1');
   
-  for (int i=13; i<=25; i++) {   // Shift Bunker Method buttons right
+  for (int i=14; i<=27; i++) {   // Shift Bunker Method buttons right
     bar_left.buttons.get(i).xpos = bar_left.barX + bar_left.barW/2; 
-    bar_left.buttons.get(i).ypos = bar_left.buttons.get(i-13).ypos;
+    bar_left.buttons.get(i).ypos = bar_left.buttons.get(i-14).ypos;
   }
   
-  bar_left.buttons.remove(22);
-  bar_left.buttons.remove(18);
+  bar_left.buttons.remove(24);
+  bar_left.buttons.remove(20);
+  bar_left.buttons.remove(16);
+  bar_left.buttons.remove(15);
   bar_left.buttons.remove(14);
-  bar_left.buttons.remove(13);
   
-  bar_left.buttons.remove(9);
-  bar_left.buttons.remove(5);
+  bar_left.buttons.remove(10);
+  bar_left.buttons.remove(6);
+  bar_left.buttons.remove(2);
   bar_left.buttons.remove(1);
   bar_left.buttons.remove(0);
   
@@ -253,7 +270,7 @@ void initToolbars() {
   
   simButton = new Button();
   simButton.name = "SIMULATE";
-  simButton.col = #9bc151; //GTL Green
+  simButton.col = colorGTL;
   simButton.xpos = bar_right.barX + bar_right.barW/2;
   simButton.ypos = height - bar_right.barY + bar_right.margin - 75;
   simButton.bW = bar_right.barW - 2*bar_right.margin;
@@ -269,8 +286,8 @@ void initCamera() {
     cam.eX = MARGIN + BAR_W;
     cam.eW = width - 2*(BAR_W + MARGIN);
     cam.X_DEFAULT    = -900;
-    cam.Y_DEFAULT    =  200;
-    cam.ZOOM_DEFAULT = 0.16;
+    cam.Y_DEFAULT    =  210;
+    cam.ZOOM_DEFAULT = 0.153;
     cam.ZOOM_POW     = 2.50;
     cam.ZOOM_MAX     = 0.05;
     cam.ZOOM_MIN     = 0.40;
@@ -294,7 +311,42 @@ void initFleet() {
       s.location_LatLon.add(latlon);
       PVector xy = LatLonToXY(latlon, canvas.width, canvas.height, -90.0, 90.0, -180.0, 180.0);
       s.location_Canvas.add(xy);
+      int cargo  = row.getInt( 4 + 11*i );
+      s.cargoList.add(cargo);
+      int fuel = row.getInt( 5 + 11*i );
+      s.fuelList.add(fuel);
     }
+    s.fuelType  = simResult.getString(0, 2 + 11*i);
+    s.cargoType = simResult.getString(0, 3 + 11*i);
+    
+    if (s.fuelType.equals("HFO"))    s.col = colorHFO;
+    if (s.fuelType.equals("LSFO"))   s.col = colorLSFO;
+    if (s.fuelType.equals("LNG"))    s.col = colorLNG;
+    if (s.fuelType.equals("HFOLNG")) s.col = colorHFOLNG;
+    
     fleet.ships.add(s);
   }
+}
+
+void initPorts() {
+  ports = new ArrayList<Port>();
+  Port p; 
+  
+  p = new Port();
+  p.name = "Persian Gulf";
+  p.location = new PVector(26.884, 50.082);
+  p.location = LatLonToXY(p.location, B.x, B.y, -90, 90, -180, 180);
+  ports.add(p);
+  
+  p = new Port();
+  p.name = "Japan";
+  p.location = new PVector(35.596, 139.78);
+  p.location = LatLonToXY(p.location, B.x, B.y, -90, 90, -180, 180);
+  ports.add(p);
+  
+  p = new Port();
+  p.name = "Singapore";
+  p.location = new PVector(1.352, 103.820);
+  p.location = LatLonToXY(p.location, B.x, B.y, -90, 90, -180, 180);
+  ports.add(p);
 }

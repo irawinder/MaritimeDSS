@@ -203,6 +203,7 @@ class ControlSlider {
   float value;
   float DEFAULT_VALUE = 0;
   float s_increment;
+  int col;
   
   ControlSlider() {
     xpos = 0;
@@ -217,12 +218,17 @@ class ControlSlider {
     valMax = 0;
     value = 0;
     s_increment = 1;
+    col = 255;
   }
   
   void update() {
     if (isDragged) value = (mouseX-xpos)*(valMax-valMin)/len+valMin;
     checkLimit();
-    value = s_increment*int(value/s_increment);
+    if (value % s_increment < s_increment/2) {
+      value = s_increment*int(value/s_increment);
+    } else {
+      value = s_increment*(1+int(value/s_increment));
+    }
   }
   
   void listen() {
@@ -277,8 +283,8 @@ class ControlSlider {
     
     // Slider Circle
     noStroke();
-    fill(200);
-    if ( hover() ) fill(255);
+    fill(col, 225);
+    if ( hover() ) fill(col, 255);
     ellipse(xpos+0.5*diameter+(len-1.0*diameter)*(value-valMin)/(valMax-valMin),ypos,diameter,diameter);
   }
 }
@@ -555,7 +561,7 @@ class Button {
     rect(xpos+3,ypos+3, bW, bH, bevel);
     if (enabled) {
       int alpha = 200;
-      if ( hover() ) alpha = 255;
+      if ( hover() || pressed) alpha = 255;
       fill(col, alpha);
       rect(xpos+shift,ypos+shift, bW, bH, bevel);
     }

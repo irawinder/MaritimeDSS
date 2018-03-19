@@ -79,10 +79,10 @@ void render3D() {
 
   // Draw Ships
   //
-  pushMatrix(); 
-  translate(0, 0, 1);
+  pushMatrix(); translate(0, 0, 0.5);
   fleet.drawShipsFlat();
   fleet.drawShips3D();
+  for (Port p: ports) p.draw3D(2.0);
   popMatrix();
 }
 
@@ -119,7 +119,7 @@ void render2D() {
   // Ships
   //
   pushMatrix(); 
-  translate(bar_left.barX + bar_left.margin, int(4.0*bar_left.CONTROL_H) );
+  translate(bar_left.barX + bar_left.margin, int(3.0*bar_left.CONTROL_H) );
   textAlign(LEFT, BOTTOM); 
   fill(255); 
   text("# Ships", 0, 0);
@@ -131,34 +131,26 @@ void render2D() {
   translate(bar_left.barX + bar_left.margin, int(10.5*bar_left.CONTROL_H) );
   textAlign(LEFT, BOTTOM); 
   fill(255); 
-  text("Persian Gulf", 0, 0);
+  text("Port: Persian Gulf", 0, 0);
   translate(0, int(4*bar_left.CONTROL_H));
-  text("Japan", 0, 0);
+  text("Port: Japan", 0, 0);
   translate(0, int(4*bar_left.CONTROL_H));
-  text("Singapore", 0, 0);
+  text("Port: Singapore", 0, 0);
   popMatrix();
 
-  validConfig = true;
-
-  // Ships must add up to 20
-  //
-  int type1 = int(bar_left.sliders.get(0).value);
-  int type2 = int(bar_left.sliders.get(1).value);
-  int type3 = int(bar_left.sliders.get(2).value);
-  int type4 = int(bar_left.sliders.get(3).value);
-
   pushMatrix(); 
-  translate(bar_left.barX + bar_left.barW - bar_left.margin, int(9.5*bar_left.CONTROL_H) );
+  translate(bar_left.barX + bar_left.barW - bar_left.margin, int(8.5*bar_left.CONTROL_H) );
   textAlign(RIGHT, BOTTOM); 
-  fill(255); if (type1 + type2 + type3 + type4 != 20) fill(#FFFF00);
-  text("Fleet Size: " + (type1+type2+type3+type4), 0, 0);
-  if (type1 + type2 + type3 + type4 != 20) {
-    String error = "[FLEET MUST BE 20]";
-    translate(- bar_left.barW + 2*bar_left.margin, 0);
-    textAlign(LEFT, BOTTOM); 
-    fill(#FFFF00); 
-    text(error, 0, 0);
-    validConfig = false;
+  fill(255); if (!validFleet) fill(#FFFF00);
+  text("Fleet Size: " + (fleetSize), 0, 0);
+  translate(- bar_left.barW + 2*bar_left.margin, 0);
+  if (!validFleet) {
+    textAlign(LEFT, BOTTOM); fill(#FFFF00); 
+    text(errorFleet, 0, 0);
+  }
+  if (!validBunker) {
+    textAlign(LEFT, BOTTOM); fill(#FFFF00);
+    text(errorBunker, 0, 40);
   }
   popMatrix();
 

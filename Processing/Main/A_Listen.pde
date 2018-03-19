@@ -55,6 +55,8 @@ void listen() {
     simButton.trigger = false;
   }
   
+  updateBunkerViz();
+  
   //zoom3d     = bar_left.sliders.get(0).value;
   //fleet.time = int(bar_left.sliders.get(3).value) - 1;
 
@@ -74,6 +76,7 @@ void mousePressed() {
 void mouseDragged() {
   if (initialized) {
     if (displayMode.equals("globe")) sphereDragged();
+    constrainButtons();
   }
 }
 
@@ -83,6 +86,7 @@ void mouseReleased() {
     if (displayMode.equals("globe")) orient = false;
     bar_left.released();
     bar_right.released();
+    constrainButtons();
     simButton.released();
   }
 }
@@ -90,6 +94,7 @@ void mouseReleased() {
 void mouseMoved() {
   if (initialized) {
     if (displayMode.equals("flat")) cam.moved();
+    constrainButtons();
   }
 }
 
@@ -144,9 +149,37 @@ void nextDisplayMode() {
   }
 }
 
+// Update and Constrain Slider Locations
+boolean hasLNG, validBunker, validFleet;
+int fleetSize;
+String errorFleet = "";
+String errorBunker = "";
 void constrainButtons() {
+
+  // Pre-set validation parameters
+  //
+  validConfig = true;
+  validBunker = true;
+  validFleet  = true;
+  if (bar_left.sliders.get(2).value > 0 || bar_left.sliders.get(3).value > 0) {
+    hasLNG = true;
+  } else {
+    hasLNG = false;
+  }
   
-  // Set mutually exclusive buttons to false
+  // Ships must add up to 20
+  //
+  int type1 = int(bar_left.sliders.get(0).value);
+  int type2 = int(bar_left.sliders.get(1).value);
+  int type3 = int(bar_left.sliders.get(2).value);
+  int type4 = int(bar_left.sliders.get(3).value);
+  fleetSize = type1+type2+type3+type4;
+  if (fleetSize != 20) {
+    validFleet = false;
+    errorFleet = "[FLEET MUST BE 20]";
+  }
+  
+  // Bunkering: Set mutually exclusive buttons to false
   //
   for (int i=0; i<6*3; i+=3) {
     if(bar_left.buttons.get(i+0).hover() && bar_left.buttons.get(i+0).value) {
@@ -161,7 +194,7 @@ void constrainButtons() {
     } 
   }
   
-  // Set redundant buttons to false; 1 button is always true
+  // Bunkering: Set redundant buttons to false; 1 button is always true
   //
   for (int i=0; i<6*3; i+=3) {
     if(bar_left.buttons.get(i+0).value) {
@@ -178,32 +211,58 @@ void constrainButtons() {
     }
   }
   
-  // Set mutually exclusive buttons to false
+  // Check for valid bunker configuration
   //
-  int i=0;
-  if(bar_right.buttons.get(i+0).hover() && bar_right.buttons.get(i+0).value) {
-    bar_right.buttons.get(i+1).value = false;
-    bar_right.buttons.get(i+2).value = false;
-  } else if(bar_right.buttons.get(i+1).hover() && bar_right.buttons.get(i+1).value) {
-    bar_right.buttons.get(i+0).value = false;
-    bar_right.buttons.get(i+2).value = false;
-  } else if(bar_right.buttons.get(i+2).hover() && bar_right.buttons.get(i+2).value) {
-    bar_right.buttons.get(i+0).value = false;
-    bar_right.buttons.get(i+1).value = false;
+  boolean valid1 = !bar_left.buttons.get(0).value && !bar_left.buttons.get(3).value;
+  boolean valid2 = !bar_left.buttons.get(6).value;
+  if (!valid1 && !valid2 && hasLNG) {
+    errorBunker = "[LNG SHIPS NEED MORE BUNKERS]\ni.e. Sing. OR Japan+Persian Gulf";
+    validBunker = false;
   }
   
-  // Set redundant buttons to false; 1 button is always true
+  // Check for Valid Configuration
   //
-  if(bar_right.buttons.get(i+0).value) {
-    if(bar_right.buttons.get(i+1).value) bar_right.buttons.get(i+1).value = false;
-    if(bar_right.buttons.get(i+2).value) bar_right.buttons.get(i+2).value = false;
-  } else if(bar_right.buttons.get(i+1).value) {
-    if(bar_right.buttons.get(i+0).value) bar_right.buttons.get(i+0).value = false;
-    if(bar_right.buttons.get(i+2).value) bar_right.buttons.get(i+2).value = false;
-  } else if(bar_right.buttons.get(i+2).value) {
-    if(bar_right.buttons.get(i+1).value) bar_right.buttons.get(i+1).value = false;
-    if(bar_right.buttons.get(i+0).value) bar_right.buttons.get(i+0).value = false;
-  } else {
-    bar_right.buttons.get(i+0).value = true;
+  if (!validBunker || !validFleet) validConfig = false;
+  
+  // Simulation Speed: Set mutually exclusive buttons to false
+  //
+  if(bar_right.buttons.get(0).hover() && bar_right.buttons.get(0).value) {
+    bar_right.buttons.get(1).value = false;
+    bar_right.buttons.get(2).value = false;
+  } else if(bar_right.buttons.get(1).hover() && bar_right.buttons.get(1).value) {
+    bar_right.buttons.get(0).value = false;
+    bar_right.buttons.get(2).value = false;
+  } else if(bar_right.buttons.get(2).hover() && bar_right.buttons.get(2).value) {
+    bar_right.buttons.get(0).value = false;
+    bar_right.buttons.get(1).value = false;
   }
+  
+  // Simulation Speed: Set redundant buttons to false; 1 button is always true
+  //
+  if(bar_right.buttons.get(0).value) {
+    if(bar_right.buttons.get(1).value) bar_right.buttons.get(1).value = false;
+    if(bar_right.buttons.get(2).value) bar_right.buttons.get(2).value = false;
+  } else if(bar_right.buttons.get(1).value) {
+    if(bar_right.buttons.get(0).value) bar_right.buttons.get(0).value = false;
+    if(bar_right.buttons.get(2).value) bar_right.buttons.get(2).value = false;
+  } else if(bar_right.buttons.get(2).value) {
+    if(bar_right.buttons.get(1).value) bar_right.buttons.get(1).value = false;
+    if(bar_right.buttons.get(0).value) bar_right.buttons.get(0).value = false;
+  } else {
+    bar_right.buttons.get(0).value = true;
+  }
+}
+
+void updateBunkerViz() {
+  // Update bunker visualization
+  //
+  if (bar_left.buttons.get(0).value) ports.get(0).numBunkers = 0;
+  if (bar_left.buttons.get(1).value) ports.get(0).numBunkers = 1;
+  if (bar_left.buttons.get(2).value) ports.get(0).numBunkers = 3;
+  if (bar_left.buttons.get(3).value) ports.get(1).numBunkers = 0;
+  if (bar_left.buttons.get(4).value) ports.get(1).numBunkers = 1;
+  if (bar_left.buttons.get(5).value) ports.get(1).numBunkers = 3;
+  if (bar_left.buttons.get(6).value) ports.get(2).numBunkers = 0;
+  if (bar_left.buttons.get(7).value) ports.get(2).numBunkers = 1;
+  if (bar_left.buttons.get(8).value) ports.get(2).numBunkers = 3;
 }
