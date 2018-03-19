@@ -171,10 +171,6 @@ void init() {
     initToolbars();
     initCamera();
     
-    // Constrain Buttons to viable solutions
-    //
-    constrainButtons();
-    
   } else if (initPhase == 4) {
     
     // Initialize Fleet of Ships and Ports
@@ -262,16 +258,16 @@ void initToolbars() {
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Truck to Ship",  200, true, '1');
-  bar_left.addButton("Ship to Ship",   200, false, '1');
+  bar_left.addButton("Truck to Ship",  200, false, '1');
+  bar_left.addButton("Ship to Ship",   200, true , '1');
   bar_left.addButton("Shore to Ship",  200, false, '1');
   bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Truck to Ship",  200, true, '1');
-  bar_left.addButton("Ship to Ship",   200, false, '1');
+  bar_left.addButton("Truck to Ship",  200, false, '1');
+  bar_left.addButton("Ship to Ship",   200, true , '1');
   bar_left.addButton("Shore to Ship",  200, false, '1');
   bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Truck to Ship",  200, true, '1');
-  bar_left.addButton("Ship to Ship",   200, false, '1');
+  bar_left.addButton("Truck to Ship",  200, false, '1');
+  bar_left.addButton("Ship to Ship",   200, true , '1');
   bar_left.addButton("Shore to Ship",  200, false, '1');
   
   for (int i=14; i<=27; i++) {   // Shift Bunker Method buttons right

@@ -108,6 +108,11 @@ void render2D() {
     fill(#FFFF00); textAlign(CENTER, CENTER);
     text("Invalid Configuration. Check Inputs", simButton.xpos, simButton.ypos + simButton.bH);
   }
+  
+  if (!precalculated && validFleet && validBunker) {
+    fill(#FFFF00); textAlign(LEFT, TOP);
+    text(errorPrecalc, bar_left.barX + bar_left.barW + bar_left.margin, int(7.0*bar_left.CONTROL_H));
+  }
 
   //// Radio Button Labels:
   ////

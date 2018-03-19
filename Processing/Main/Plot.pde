@@ -25,17 +25,49 @@ class GamePlot {
     stroke(255); noFill();
     rect(0, 0, w-MARGIN, h);
     
-    // Draw Y Axis
+    // Draw Y Axis Lable
     //
     pushMatrix(); translate(0, h/2); rotate(-PI/2);
-    textAlign(CENTER, BOTTOM); text(name.get(yIndex) + "  + -->", 0, -3);
+    textAlign(CENTER, BOTTOM); text(name.get(yIndex), 0, -3);
     popMatrix();
     
-    // Draw X Axis
+    if (game.size() > 0) {
+      
+      // Draw Y Axis Min Range
+      //
+      pushMatrix(); translate(0, h); rotate(-PI/2);
+      textAlign(LEFT, BOTTOM); text(int(minRange.get(yIndex)), 0, -3);
+      popMatrix();
+      
+      // Draw Y Axis Max Range
+      //
+      pushMatrix(); translate(0, 0); rotate(-PI/2);
+      textAlign(RIGHT, BOTTOM); text(int(maxRange.get(yIndex)), 0, -3);
+      popMatrix();
+      
+    }
+    
+    // Draw X Axis Lable
     //
     pushMatrix(); translate(w/2+MARGIN/2, h+3);
-    textAlign(CENTER, TOP); text(name.get(xIndex) + "  + -->", 0, 0);
+    textAlign(CENTER, TOP); text(name.get(xIndex), 0, 0);
     popMatrix();
+    
+    if (game.size() > 0) {
+ 
+      // Draw X Axis Min Range
+      //
+      pushMatrix(); translate(0, h+3);
+      textAlign(LEFT, TOP); text(int(minRange.get(xIndex)), 0, 0);
+      popMatrix();
+      
+      // Draw X Axis Max Range
+      //
+      pushMatrix(); translate(w-MARGIN, h+3);
+      textAlign(RIGHT, TOP); text(int(maxRange.get(xIndex)), 0, 0);
+      popMatrix();
+    
+    }
     
     // Plot points
     //

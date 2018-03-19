@@ -24,14 +24,37 @@
   
 void listen() {
   
+  // Constrain Buttons to viable solutions
+  //
+  constrainButtons();
+    
+  // Trigger the Simulate Button
+  //
   if (simButton.trigger) {
+    
     fleet.time = 0;
-    simConfig = loadTable("data/simulation/config/case_table4Workshop.csv", "header");
-    simResult = loadTable("data/simulation/result/1.csv", "header");
-    simResultOverall = loadTable("data/simulation/result/1_overall.csv", "header");
-    initFleet();
-    result.addResult(simResultOverall);
-    userLog.addLog("Simulate");
+    
+    if (precalculated) {
+      
+      int caseNumber = caseNumber();
+      println("Found Case: " + caseNumber);
+      
+      if (caseNumber >= 0) {
+        String fileName1 = "simulation/result/" + caseNumber + ".csv";
+        String fileName2 = "simulation/result/" + caseNumber + "_overall.csv";
+        File f1 = new File(dataPath(fileName1));
+        File f2 = new File(dataPath(fileName2));
+        if (f1.exists()) simResult        = loadTable(fileName1, "header");
+        if (f2.exists()) simResultOverall = loadTable(fileName2, "header");
+        initFleet();
+        initPorts();
+        result.addResult(simResultOverall);
+        userLog.addLog("Simulate");
+        println(f1.exists(), f2.exists());
+      }
+      
+    }
+    
     simButton.trigger = false;
   }
   
@@ -236,7 +259,7 @@ void constrainButtons() {
   
   // Check for Valid Configuration
   //
-  if (!validBunker || !validFleet) validConfig = false;
+  if (!validBunker || !validFleet || !precalculated) validConfig = false;
   
   // Simulation Speed: Set mutually exclusive buttons to false
   //
@@ -377,6 +400,8 @@ void constrainButtons() {
       bar_right.buttons.get(3+i).value = true;
     }
   }
+  
+  caseNumber();
 }
 
 void updateBunkerViz() {
@@ -391,4 +416,76 @@ void updateBunkerViz() {
   if (bar_left.buttons.get(6).value) ports.get(2).numBunkers = 0;
   if (bar_left.buttons.get(7).value) ports.get(2).numBunkers = 1;
   if (bar_left.buttons.get(8).value) ports.get(2).numBunkers = 3;
+}
+
+boolean precalculated;
+String errorPrecalc = "Sorry! This is a valid solution but we\njust haven't precalculated the results...";
+int caseNumber() {
+  int index = -1;
+  boolean caseFound;
+  precalculated = false;
+  int ship1, ship2, ship3, ship4; 
+  int bunker1, bunker2, bunker3;
+  String method1, method2, method3;
+  for (int i=0; i<simConfig.getRowCount(); i++) {
+    
+    caseFound = true;
+    
+    ship1 = simConfig.getInt(i, 1);
+    ship2 = simConfig.getInt(i, 2);
+    ship3 = simConfig.getInt(i, 3);
+    ship4 = simConfig.getInt(i, 4);
+    
+    bunker1 = simConfig.getInt   (i,  5);
+    method1 = simConfig.getString(i,  6);
+    
+    bunker2 = simConfig.getInt   (i,  7);
+    method2 = simConfig.getString(i,  8);
+    
+    bunker3 = simConfig.getInt   (i,  9);
+    method3 = simConfig.getString(i, 10);
+    
+    // Ships
+    
+    if ( int(bar_left.sliders.get(0).value) != ship1 ) caseFound = false;
+    if ( int(bar_left.sliders.get(1).value) != ship2 ) caseFound = false;
+    if ( int(bar_left.sliders.get(2).value) != ship3 ) caseFound = false;
+    if ( int(bar_left.sliders.get(3).value) != ship4 ) caseFound = false;
+    
+    // Bunkers
+    
+    if ( bar_left.buttons.get(0).value && bunker1 != 0 ) caseFound = false;
+    if ( bar_left.buttons.get(1).value && bunker1 != 1 ) caseFound = false;
+    if ( bar_left.buttons.get(2).value && bunker1 != 3 ) caseFound = false;
+    
+    if ( bar_left.buttons.get(3).value && bunker2 != 0 ) caseFound = false;
+    if ( bar_left.buttons.get(4).value && bunker2 != 1 ) caseFound = false;
+    if ( bar_left.buttons.get(5).value && bunker2 != 3 ) caseFound = false;
+    
+    if ( bar_left.buttons.get(6).value && bunker3 != 0 ) caseFound = false;
+    if ( bar_left.buttons.get(7).value && bunker3 != 1 ) caseFound = false;
+    if ( bar_left.buttons.get(8).value && bunker3 != 3 ) caseFound = false;
+    
+    // Methods
+    
+    if ( bar_left.buttons.get( 9).value && !method1.equals("Truck to Ship")) caseFound = false;
+    if ( bar_left.buttons.get(10).value && !method1.equals("Ship to Ship") ) caseFound = false;
+    if ( bar_left.buttons.get(11).value && !method1.equals("Shore to Ship")) caseFound = false;
+    
+    if ( bar_left.buttons.get(12).value && !method2.equals("Truck to Ship")) caseFound = false;
+    if ( bar_left.buttons.get(13).value && !method2.equals("Ship to Ship") ) caseFound = false;
+    if ( bar_left.buttons.get(14).value && !method2.equals("Shore to Ship")) caseFound = false;
+    
+    if ( bar_left.buttons.get(15).value && !method3.equals("Truck to Ship")) caseFound = false;
+    if ( bar_left.buttons.get(16).value && !method3.equals("Ship to Ship") ) caseFound = false;
+    if ( bar_left.buttons.get(17).value && !method3.equals("Shore to Ship")) caseFound = false;
+    
+    if(caseFound) {
+      index = simConfig.getInt(i, 0);
+      precalculated = true;
+      break;
+    }
+  }
+  
+  return index;
 }
