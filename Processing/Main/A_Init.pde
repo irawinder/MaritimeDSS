@@ -41,9 +41,10 @@ ArrayList<Port> ports;
 GamePlot result;
 Logger userLog;
 int HOUR, MINUTE, SECOND; // Time when application starts
+
 // Colors
 //
-int colorGTL  = #9bc151;
+int colorGTL    = #9bc151;
 int colorHFO    = #AA0000;
 int colorLSFO   = #6666FF;
 int colorLNG    = #FF00FF;
@@ -294,7 +295,7 @@ void initToolbars() {
   bar_right.credit = "";
   bar_right.explanation = "";
   bar_right.controlY = BAR_Y + bar_right.margin + 2*bar_right.CONTROL_H;
-  bar_right.addSlider("Hour", "",  1,  simResult.getRowCount(), 1, 1, 'q', 'w', false);
+  bar_right.addSlider("Hour", "",  1,  simResult.getRowCount(), 1, 4, 'q', 'w', false);
   bar_right.addButton("Blank", 200, true, '1');
   bar_right.addButton("Pause",  200, false, '1');
   bar_right.addButton("30 hr / sec",  200, true, '1');

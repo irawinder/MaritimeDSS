@@ -25,7 +25,7 @@
  *               DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
- 
+
 public void settings() {
   //size(1280, 800, P3D);
   fullScreen(P3D);
@@ -34,7 +34,7 @@ public void settings() {
 // Runs once when application begins
 //
 void setup() {
-
+  
 }
 
 // Runs on a infinite loop after setup

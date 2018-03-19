@@ -64,11 +64,11 @@ void listen() {
     fleet.timeIncrement = 0;
     fleet.pauseDuration = 0;
   } else if (bar_right.buttons.get(1).value) {
-    fleet.pauseDuration = 2;
+    fleet.pauseDuration = 7;
     fleet.timeIncrement = 1;
   } else if (bar_right.buttons.get(2).value) {
-    fleet.pauseDuration = 0;
-    fleet.timeIncrement = 2;
+    fleet.pauseDuration = 1;
+    fleet.timeIncrement = 1;
   } 
   
   if (bar_right.sliders.get(0).isDragged) {
