@@ -81,6 +81,7 @@ void mousePressed() {
     bar_right.pressed();
     constrainButtons();
     simButton.listen();
+    userLog.addLog("Mouse Pressed");
   }
 }
 
@@ -99,6 +100,7 @@ void mouseReleased() {
     bar_right.released();
     constrainButtons();
     simButton.released();
+    userLog.addLog("Mouse Released");
   }
 }
 
@@ -143,6 +145,7 @@ void keyPressed() {
         }
         break;
     }
+    constrainButtons();
   }
 }
 

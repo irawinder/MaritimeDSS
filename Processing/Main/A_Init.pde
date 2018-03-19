@@ -247,32 +247,32 @@ void initToolbars() {
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", colorLNG, true, '1');
-  bar_left.addButton("3 bunkers", colorLNG, true, '1');
+  bar_left.addButton("1 bunkers", colorLNG, false, '1');
+  bar_left.addButton("3 bunkers", colorLNG, false, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", colorLNG, true, '1');
-  bar_left.addButton("3 bunkers", colorLNG, true, '1');
+  bar_left.addButton("1 bunkers", colorLNG, false, '1');
+  bar_left.addButton("3 bunkers", colorLNG, false, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", colorLNG, true, '1');
-  bar_left.addButton("3 bunkers", colorLNG, true, '1');
+  bar_left.addButton("1 bunkers", colorLNG, false, '1');
+  bar_left.addButton("3 bunkers", colorLNG, false, '1');
   
   // Bunker Method
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Truck to Ship",  200, true, '1');
-  bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shore to Ship",  200, true, '1');
+  bar_left.addButton("Ship to Ship",   200, false, '1');
+  bar_left.addButton("Shore to Ship",  200, false, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Truck to Ship",  200, true, '1');
-  bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shore to Ship",  200, true, '1');
+  bar_left.addButton("Ship to Ship",   200, false, '1');
+  bar_left.addButton("Shore to Ship",  200, false, '1');
   bar_left.addButton("Blank", 200, true, '1');
   bar_left.addButton("Truck to Ship",  200, true, '1');
-  bar_left.addButton("Ship to Ship",   200, true, '1');
-  bar_left.addButton("Shore to Ship",  200, true, '1');
+  bar_left.addButton("Ship to Ship",   200, false, '1');
+  bar_left.addButton("Shore to Ship",  200, false, '1');
   
   for (int i=14; i<=27; i++) {   // Shift Bunker Method buttons right
     bar_left.buttons.get(i).xpos = bar_left.barX + bar_left.barW/2; 

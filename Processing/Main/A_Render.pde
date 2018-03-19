@@ -164,7 +164,7 @@ void render2D() {
   textAlign(LEFT, TOP);
   text("Simulation Time\n" + fleet.time/24 + " of " + fleet.duration/24 + " days", 0, 0);
   text("Speed:", 0, 6*16);
-  text("Performace Viewer (Filter Each Axis):", 0, 10*16);
+  text("Compare Configurations (Filter Each Axis):", 0, 10*16);
   text("X-AXIS:", 20                                        , 12*16);
   text("Y-AXIS:", 20 + (bar_right.barW-2*bar_right.margin)/2, 12*16);
   result.drawPlot(0, 12*16 + 7*35, (bar_right.barW-2*bar_right.margin), int(0.8*(bar_right.barW-2*bar_right.margin)));
