@@ -99,6 +99,13 @@ void render2D() {
   bar_left.draw();
   bar_right.draw();
   simButton.drawMe();
+  
+  if (!simButton.enabled) {
+    stroke(#FFFF00); strokeWeight(2); noFill();
+    rect(simButton.xpos - simButton.bW/2, simButton.ypos - simButton.bH/2, simButton.bW, simButton.bH, simButton.bevel);
+    fill(#FFFF00); textAlign(CENTER, CENTER);
+    text("Invalid Configuration. Check Inputs", simButton.xpos, simButton.ypos - simButton.bH);
+  }
 
   //// Radio Button Labels:
   ////
@@ -143,10 +150,10 @@ void render2D() {
   pushMatrix(); 
   translate(bar_left.barX + bar_left.barW - bar_left.margin, int(9.5*bar_left.CONTROL_H) );
   textAlign(RIGHT, BOTTOM); 
-  fill(255); 
+  fill(255); if (type1 + type2 + type3 + type4 != 20) fill(#FFFF00);
   text("Fleet Size: " + (type1+type2+type3+type4), 0, 0);
   if (type1 + type2 + type3 + type4 != 20) {
-    String error = "FLEET MUST BE 20";
+    String error = "[FLEET MUST BE 20]";
     translate(- bar_left.barW + 2*bar_left.margin, 0);
     textAlign(LEFT, BOTTOM); 
     fill(#FFFF00); 
@@ -154,8 +161,6 @@ void render2D() {
     validConfig = false;
   }
   popMatrix();
-
-
 
   pushMatrix(); 
   translate(bar_right.barX + bar_right.margin, bar_right.barY + bar_right.margin);

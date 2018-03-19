@@ -495,12 +495,13 @@ class Button {
   int col;
   int xpos;
   int ypos;
-  int bW, bH;
+  int bW, bH, bevel;
   char keyToggle;
   int valMin;
   int valMax;
   boolean trigger;
   boolean pressed;
+  boolean enabled;
   boolean DEFAULT_VALUE;
   
   Button() {
@@ -511,13 +512,15 @@ class Button {
     keyToggle = ' ';
     trigger = false;
     pressed = false;
+    enabled = true;
     col = 200;
+    bevel = 25;
   }
   
   void listen() {
     
     // Mouse Controls
-    if( mousePressed && hover() ) {
+    if( mousePressed && hover() && enabled) {
       pressed = true;
     }
     
@@ -526,7 +529,7 @@ class Button {
   }
   
   void released() {
-    if (pressed) {
+    if (pressed && enabled) {
       trigger = true;
       pressed = false;
     }
@@ -549,18 +552,17 @@ class Button {
     if (pressed) shift = 3;
     // Button Holder
     noStroke(); fill(50);
-    rect(xpos+3,ypos+3, bW, bH, 25);
-    int alpha = 200;
-    if ( hover() ) alpha = 255;
-    fill(col, alpha);
-    rect(xpos+shift,ypos+shift, bW, bH, 25);
+    rect(xpos+3,ypos+3, bW, bH, bevel);
+    if (enabled) {
+      int alpha = 200;
+      if ( hover() ) alpha = 255;
+      fill(col, alpha);
+      rect(xpos+shift,ypos+shift, bW, bH, bevel);
+    }
     
     // Button Info
     strokeWeight(1);
-    if (trigger) { fill(255); }
-    else         { fill(150); } 
     textAlign(CENTER, CENTER); fill(255);
-    //text("[" + keyToggle + "] " + name,int(xpos + 1.5*diameter),int(ypos) );
     text(name,int(xpos + 0.5*bW)+shift,int(ypos + 0.5*bH)+shift );
     
     popMatrix();

@@ -44,6 +44,12 @@ void listen() {
     bar_right.sliders.get(0).value = fleet.time;
   }
   
+  if (validConfig) {
+    simButton.enabled = true;
+  } else {
+    simButton.enabled = false;
+  }
+  
   if (simButton.trigger) {
     fleet.time = 0;
     simButton.trigger = false;
