@@ -280,11 +280,34 @@ void initToolbars() {
   bar_right.addButton("30 hr / sec",  200, true, '1');
   bar_right.addButton("120 hr / sec", 200, false, '1');
   
+  bar_right.addButton(result.name.get(0), 200, false, '1');
+  bar_right.addButton(result.name.get(1), 200, false, '1');
+  bar_right.addButton(result.name.get(2), 200, false, '1');
+  bar_right.addButton(result.name.get(3), 200, false, '1');
+  bar_right.addButton(result.name.get(4), 200, false, '1');
+  bar_right.addButton(result.name.get(5), 200, false, '1');
+  bar_right.addButton(result.name.get(6), 200, false, '1');
+  
+  bar_right.addButton(result.name.get(0), 200, false, '1');
+  bar_right.addButton(result.name.get(1), 200, false, '1');
+  bar_right.addButton(result.name.get(2), 200, false, '1');
+  bar_right.addButton(result.name.get(3), 200, false, '1');
+  bar_right.addButton(result.name.get(4), 200, false, '1');
+  bar_right.addButton(result.name.get(5), 200, false, '1');
+  bar_right.addButton(result.name.get(6), 200, false, '1');
+  
   bar_right.buttons.remove(0);
   bar_right.buttons.get(1).xpos = bar_right.barX + 1*bar_right.barW/3; 
   bar_right.buttons.get(1).ypos = bar_right.buttons.get(0).ypos;
   bar_right.buttons.get(2).xpos = bar_right.barX + 2*bar_right.barW/3; 
   bar_right.buttons.get(2).ypos = bar_right.buttons.get(0).ypos;
+  for (int i=10; i<17; i++) {
+    bar_right.buttons.get(i).xpos = bar_right.barX + bar_right.barW/2;
+    bar_right.buttons.get(i).ypos = bar_right.buttons.get(i-7).ypos;
+  }
+  for (int i=3; i<17; i++) {
+    bar_right.buttons.get(i).ypos -= ((i-3)%7)*10;
+  }
   
   simButton = new Button();
   simButton.name = "SIMULATE";
