@@ -102,17 +102,19 @@ void render2D() {
   simButton.drawMe();
   textFont(f12);
   
-  if (!simButton.enabled) {
+  if (!precalculated && validFleet && validBunker) {
     stroke(#FFFF00); strokeWeight(2); noFill();
     rect(simButton.xpos - simButton.bW/2, simButton.ypos - simButton.bH/2, simButton.bW, simButton.bH, simButton.bevel);
-    fill(#FFFF00); textAlign(CENTER, CENTER);
-    text("Invalid Configuration. Check Inputs", simButton.xpos, simButton.ypos + simButton.bH);
+    fill(#FFFF00); textAlign(LEFT, CENTER);
+    text(errorPrecalc, bar_left.barX + bar_left.barW + bar_left.margin, 800 - 2*bar_left.margin - simButton.bH/2);
+  } else if (!simButton.enabled) {
+    stroke(#FFFF00); strokeWeight(2); noFill();
+    rect(simButton.xpos - simButton.bW/2, simButton.ypos - simButton.bH/2, simButton.bW, simButton.bH, simButton.bevel);
+    fill(#FFFF00); textAlign(LEFT, CENTER);
+    text("Invalid Configuration. Check Inputs", bar_left.barX + bar_left.barW + bar_left.margin, 800 - 2*bar_left.margin - simButton.bH/2);
   }
   
-  if (!precalculated && validFleet && validBunker) {
-    fill(#FFFF00); textAlign(LEFT, TOP);
-    text(errorPrecalc, bar_left.barX + bar_left.barW + bar_left.margin, int(7.0*bar_left.CONTROL_H));
-  }
+  
 
   //// Radio Button Labels:
   ////

@@ -27,8 +27,8 @@
  */
  
 public void settings() {
-  size(1280, 800, P3D);
-  //fullScreen(P3D);
+  //size(1280, 800, P3D);
+  fullScreen(P3D);
 }
 
 // Runs once when application begins
