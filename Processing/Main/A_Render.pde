@@ -98,13 +98,15 @@ void render2D() {
   //
   bar_left.draw();
   bar_right.draw();
+  textFont(f18);
   simButton.drawMe();
+  textFont(f12);
   
   if (!simButton.enabled) {
     stroke(#FFFF00); strokeWeight(2); noFill();
     rect(simButton.xpos - simButton.bW/2, simButton.ypos - simButton.bH/2, simButton.bW, simButton.bH, simButton.bevel);
     fill(#FFFF00); textAlign(CENTER, CENTER);
-    text("Invalid Configuration. Check Inputs", simButton.xpos, simButton.ypos - simButton.bH);
+    text("Invalid Configuration. Check Inputs", simButton.xpos, simButton.ypos + simButton.bH);
   }
 
   //// Radio Button Labels:
@@ -138,6 +140,7 @@ void render2D() {
   text("Port: Singapore", 0, 0);
   popMatrix();
 
+  // Input Error Messages
   pushMatrix(); 
   translate(bar_left.barX + bar_left.barW - bar_left.margin, int(7.0*bar_left.CONTROL_H) );
   textAlign(RIGHT, BOTTOM); 
@@ -154,6 +157,7 @@ void render2D() {
   }
   popMatrix();
 
+  // Right-hand Toolbar Titles
   pushMatrix(); 
   translate(bar_right.barX + bar_right.margin, bar_right.barY + bar_right.margin);
   fill(255); 
@@ -161,8 +165,9 @@ void render2D() {
   text("Simulation Time\n" + fleet.time/24 + " of " + fleet.duration/24 + " days", 0, 0);
   text("Speed:", 0, 6*16);
   text("Performace Viewer (Filter Each Axis):", 0, 10*16);
-  text("X-AXIS:", 0, 12*16);
-  text("Y-AXIS:", (bar_right.barW-2*bar_right.margin)/2, 12*16);
+  text("X-AXIS:", 20                                        , 12*16);
+  text("Y-AXIS:", 20 + (bar_right.barW-2*bar_right.margin)/2, 12*16);
+  result.drawPlot(0, 12*16 + 7*35, (bar_right.barW-2*bar_right.margin), int(0.8*(bar_right.barW-2*bar_right.margin)));
   popMatrix();
 }
 

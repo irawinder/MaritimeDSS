@@ -31,7 +31,7 @@ float latCtr, lonCtr, bound, latMin, latMax, lonMin, lonMax;
 
 // Tables Containing current simulation configuration and results
 //
-Table simConfig, simResult;
+Table simConfig, simResult, simResultOverall;
 boolean validConfig;
 Fleet fleet;
 ArrayList<Port> ports;
@@ -85,6 +85,8 @@ Toolbar bar_left, bar_right;
 int BAR_X, BAR_Y, BAR_W, BAR_H;
 Button simButton;
 
+PFont f12, f18, f24;
+
 // Counter to track which phase of initialization
 boolean initialized;
 int initPhase = 0;
@@ -121,6 +123,13 @@ void init() {
     //
     mapIndex = 0;
     map = maps[mapIndex];
+    
+    //Set Font
+    //
+    f12 = createFont("Helvetica", 12);
+    f18 = createFont("Helvetica", 18);
+    f24 = createFont("Helvetica", 24);
+    textFont(f12);
     
     // Create canvas for drawing everything to earth surface
     //
@@ -182,6 +191,7 @@ void initSimConfig() {
 
 void initSimResult() {
   simResult = loadTable("data/simulation/result/1.csv", "header");
+  simResultOverall = loadTable("data/simulation/result/1_overall.csv", "header");
   
   result = new GamePlot();
   result.name.add("Fuel Efficiency");
@@ -280,7 +290,7 @@ void initToolbars() {
   bar_right.addButton("30 hr / sec",  200, true, '1');
   bar_right.addButton("120 hr / sec", 200, false, '1');
   
-  bar_right.addButton(result.name.get(0), 200, false, '1');
+  bar_right.addButton(result.name.get(0), 200, true, '1');
   bar_right.addButton(result.name.get(1), 200, false, '1');
   bar_right.addButton(result.name.get(2), 200, false, '1');
   bar_right.addButton(result.name.get(3), 200, false, '1');
@@ -289,7 +299,7 @@ void initToolbars() {
   bar_right.addButton(result.name.get(6), 200, false, '1');
   
   bar_right.addButton(result.name.get(0), 200, false, '1');
-  bar_right.addButton(result.name.get(1), 200, false, '1');
+  bar_right.addButton(result.name.get(1), 200, true, '1');
   bar_right.addButton(result.name.get(2), 200, false, '1');
   bar_right.addButton(result.name.get(3), 200, false, '1');
   bar_right.addButton(result.name.get(4), 200, false, '1');
@@ -306,6 +316,7 @@ void initToolbars() {
     bar_right.buttons.get(i).ypos = bar_right.buttons.get(i-7).ypos;
   }
   for (int i=3; i<17; i++) {
+    bar_right.buttons.get(i).xpos += 20;
     bar_right.buttons.get(i).ypos -= ((i-3)%7)*10;
   }
   

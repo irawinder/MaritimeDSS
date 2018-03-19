@@ -28,8 +28,9 @@ void listen() {
     fleet.time = 0;
     simConfig = loadTable("data/simulation/config/case_table4Workshop.csv", "header");
     simResult = loadTable("data/simulation/result/1.csv", "header");
+    simResultOverall = loadTable("data/simulation/result/1_overall.csv", "header");
     initFleet();
-    result.addResult(simResult);
+    result.addResult(simResultOverall);
     simButton.trigger = false;
   }
   
@@ -57,6 +58,11 @@ void listen() {
     simButton.enabled = true;
   } else {
     simButton.enabled = false;
+  }
+  
+  for (int i=0; i<7; i++) {
+    if (bar_right.buttons.get(i+ 3).value) result.xIndex = i;
+    if (bar_right.buttons.get(i+10).value) result.yIndex = i;
   }
   
   updateBunkerViz();
@@ -254,6 +260,118 @@ void constrainButtons() {
     if(bar_right.buttons.get(0).value) bar_right.buttons.get(0).value = false;
   } else {
     bar_right.buttons.get(0).value = true;
+  }
+  
+  // Results View: X-AXIS and Y-Axis - Set mutually exclusive buttons to false
+  //
+  for (int i=0; i<8; i+=7) {
+    if(bar_right.buttons.get(3+i).hover() && bar_right.buttons.get(3+i).value) {
+      bar_right.buttons.get(4+i).value = false;
+      bar_right.buttons.get(5+i).value = false;
+      bar_right.buttons.get(6+i).value = false;
+      bar_right.buttons.get(7+i).value = false;
+      bar_right.buttons.get(8+i).value = false;
+      bar_right.buttons.get(9+i).value = false;
+    } else if(bar_right.buttons.get(4+i).hover() && bar_right.buttons.get(4+i).value) {
+      bar_right.buttons.get(3+i).value = false;
+      bar_right.buttons.get(5+i).value = false;
+      bar_right.buttons.get(6+i).value = false;
+      bar_right.buttons.get(7+i).value = false;
+      bar_right.buttons.get(8+i).value = false;
+      bar_right.buttons.get(9+i).value = false;
+    } else if(bar_right.buttons.get(5+i).hover() && bar_right.buttons.get(5+i).value) {
+      bar_right.buttons.get(4+i).value = false;
+      bar_right.buttons.get(3+i).value = false;
+      bar_right.buttons.get(6+i).value = false;
+      bar_right.buttons.get(7+i).value = false;
+      bar_right.buttons.get(8+i).value = false;
+      bar_right.buttons.get(9+i).value = false;
+    } else if(bar_right.buttons.get(6+i).hover() && bar_right.buttons.get(6+i).value) {
+      bar_right.buttons.get(4+i).value = false;
+      bar_right.buttons.get(5+i).value = false;
+      bar_right.buttons.get(3+i).value = false;
+      bar_right.buttons.get(7+i).value = false;
+      bar_right.buttons.get(8+i).value = false;
+      bar_right.buttons.get(9+i).value = false;
+    } else if(bar_right.buttons.get(7+i).hover() && bar_right.buttons.get(7+i).value) {
+      bar_right.buttons.get(4+i).value = false;
+      bar_right.buttons.get(5+i).value = false;
+      bar_right.buttons.get(6+i).value = false;
+      bar_right.buttons.get(3+i).value = false;
+      bar_right.buttons.get(8+i).value = false;
+      bar_right.buttons.get(9+i).value = false;
+    } else if(bar_right.buttons.get(8+i).hover() && bar_right.buttons.get(8+i).value) {
+      bar_right.buttons.get(4+i).value = false;
+      bar_right.buttons.get(5+i).value = false;
+      bar_right.buttons.get(6+i).value = false;
+      bar_right.buttons.get(7+i).value = false;
+      bar_right.buttons.get(3+i).value = false;
+      bar_right.buttons.get(9+i).value = false;
+    } else if(bar_right.buttons.get(9+i).hover() && bar_right.buttons.get(9+i).value) {
+      bar_right.buttons.get(4+i).value = false;
+      bar_right.buttons.get(5+i).value = false;
+      bar_right.buttons.get(6+i).value = false;
+      bar_right.buttons.get(7+i).value = false;
+      bar_right.buttons.get(8+i).value = false;
+      bar_right.buttons.get(3+i).value = false;
+    } 
+  }
+  
+  // Results View: X-AXIS and Y-Axis - Set redundant buttons to false; 1 button is always true
+  //
+  for (int i=0; i<8; i+=7) {
+    if(bar_right.buttons.get(3+i).value) {
+      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
+    } else if(bar_right.buttons.get(4+i).value) {
+      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
+    } else if(bar_right.buttons.get(5+i).value) {
+      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
+    } else if(bar_right.buttons.get(6+i).value) {
+      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
+    } else if(bar_right.buttons.get(7+i).value) {
+      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
+    } else if(bar_right.buttons.get(8+i).value) {
+      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
+    } else if(bar_right.buttons.get(9+i).value) {
+      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
+      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
+      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(2+i).value = false;
+    } else {
+      bar_right.buttons.get(3+i).value = true;
+    }
   }
 }
 
