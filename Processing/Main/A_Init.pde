@@ -35,6 +35,11 @@ Table simConfig, simResult;
 boolean validConfig;
 Fleet fleet;
 
+// Simulation Timer Variables
+//
+int pauseDuration;
+int TIME_INCREMENT;
+
 // Graphics Objects
 //
 PImage map;
@@ -65,6 +70,7 @@ int MARGIN = 25; // Pixel margin allowed around edge of screen
 //
 Toolbar bar_left, bar_right; 
 int BAR_X, BAR_Y, BAR_W, BAR_H;
+Button simButton;
 
 // Counter to track which phase of initialization
 boolean initialized;
@@ -72,9 +78,9 @@ int initPhase = 0;
 int phaseDelay = 0;
 String status[] = {
   "Initializing Canvas ...",
-  "Initializing Toolbars and 3D Environment...",
   "Importing Simulation Input Parameters ...",
   "Importing Simulation Results ...",
+  "Initializing Toolbars and 3D Environment...",
   "Initializing Fleet ...",
   "Ready to go!"
 };
@@ -118,25 +124,26 @@ void init() {
     
   } else if (initPhase == 1) {
     
+    // Load valid inputs from CSV files
+    //
+    initSimConfig();
+    
+  } else if (initPhase == 2) {
+    
+    // Load pre-calculated results from CSV files
+    //
+    initSimResult();
+    
+  } else if (initPhase == 3) {
+    
     // Initialize GUI3D
     //
     initToolbars();
     initCamera();
     
-    // Constrain Buttons
+    // Constrain Buttons to viable solutions
+    //
     constrainButtons();
-    
-  } else if (initPhase == 2) {
-    
-    // Load valid inputs from CSV files
-    //
-    initSimConfig();
-    
-  } else if (initPhase == 3) {
-    
-    // Load pre-calculated results from CSV files
-    //
-    initSimResult();
     
   } else if (initPhase == 4) {
     
@@ -157,6 +164,7 @@ void init() {
 
 void initSimConfig() {
   validConfig = false;
+  
   simConfig = loadTable("data/simulation/config/case_table4Workshop.csv", "header");
 }
 
@@ -178,7 +186,6 @@ void initToolbars() {
   bar_left.credit = "Global Teamwork Lab\n\n";
   bar_left.explanation = "";
   bar_left.controlY = BAR_Y + bar_left.margin + 4*bar_left.CONTROL_H;
-  //bar_left.addSlider("Zoom",     "\u00b0",  150,  400, 340, 1, 'q', 'w', false);
   
   // Ship Attributes
   bar_left.addSlider("HFO fueled",             "", 0,  20, 20, 5, 'q', 'w', false);
@@ -236,10 +243,21 @@ void initToolbars() {
   bar_right.title = "";
   bar_right.credit = "";
   bar_right.explanation = "";
-  bar_right.controlY = BAR_Y + bar_right.margin + 3*bar_right.CONTROL_H;
-  bar_right.addButton("30 hours / second",  200, false, '1');
-  bar_right.addButton("60 hours / second",  200, true, '1');
-  bar_right.addButton("120 hours / second", 200, false, '1');
+  bar_right.controlY = BAR_Y + bar_right.margin + 2*bar_right.CONTROL_H;
+  bar_right.addSlider("Hour", "",  1,  simResult.getRowCount(), 1, 1, 'q', 'w', false);
+  bar_right.addButton("Blank", 200, true, '1');
+  bar_right.addButton("Pause",  200, false, '1');
+  bar_right.addButton("30 hr / sec",  200, true, '1');
+  bar_right.addButton("120 hr / sec", 200, false, '1');
+  bar_right.buttons.remove(0);
+  
+  simButton = new Button();
+  simButton.name = "SIMULATE";
+  simButton.col = #9bc151; //GTL Green
+  simButton.xpos = bar_right.barX + bar_right.barW/2;
+  simButton.ypos = height - bar_right.barY + bar_right.margin - 75;
+  simButton.bW = bar_right.barW - 2*bar_right.margin;
+  simButton.bH = 50;
 }
 
 void initCamera() {

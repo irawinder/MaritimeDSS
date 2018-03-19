@@ -1,25 +1,28 @@
 class Fleet {
   int time, duration;
-  int TIME_PAUSE = 4;
-  int timePause, TIME_INCREMENT;
+  int timePause, pauseDuration, timeIncrement;
+  boolean pause;
   ArrayList<Ship> ships;
   
   Fleet() {
     ships = new ArrayList<Ship>();
-    time = 0;
+    
     timePause = 0;
-    TIME_INCREMENT = 1;
+    timeIncrement = 1;
+    pause = false;
   }
   
   void update() {
-    if (timePause < TIME_PAUSE) {
-      timePause++;
-    } else {
-      timePause = 0;
+    if (!pause) {
+      if (timePause < pauseDuration) {
+        timePause++;
+      } else {
+        timePause = 0;
+      }
+      if (timePause == 0) time += timeIncrement;
+      if (time >= duration) time = 0;
+      for (Ship s: ships) s.update(time, timePause, pauseDuration);
     }
-    if (timePause == 0) time += TIME_INCREMENT;
-    if (time >= duration) time = 0;
-    for (Ship s: ships) s.update(time, timePause, TIME_PAUSE);
   }
   
   void drawShipsFlat() {
@@ -50,7 +53,7 @@ class Ship {
     heading = 0;
   }
   
-  void update(int time, int timePause, int TIME_PAUSE) {
+  void update(int time, int timePause, int pauseDuration) {
     
     canvasLocation = new PVector(location_Canvas.get(time).x, location_Canvas.get(time).y);
     
@@ -61,7 +64,7 @@ class Ship {
       
       if (timePause > 0) {
         float dist = displacement.mag();
-        canvasLocation.add(displacement.setMag(dist*float(timePause)/TIME_PAUSE));
+        canvasLocation.add(displacement.setMag(dist*float(timePause)/pauseDuration));
       }
     }
     
@@ -70,7 +73,7 @@ class Ship {
   void drawFlat(int time) {
     PVector loc = canvasLocation;
     colorMode(HSB); fill(hue, 255, 255, 255); colorMode(RGB); noStroke();
-    pushMatrix(); translate(loc.x + randomOffset.x, loc.y + randomOffset.y + 5, randomOffset.z); rotate(heading);
+    pushMatrix(); translate(loc.x + randomOffset.x, loc.y + randomOffset.y + 3, randomOffset.z); rotate(heading);
     fill(0, 100); ellipse(0, 0, 15, 5);
     
     popMatrix();

@@ -489,3 +489,80 @@ class TriSlider {
     text("   " + int(100*value3+0.5) + "%", int(corner3.x) , int(corner3.y) );
   }
 }
+
+class Button {
+  String name;
+  int col;
+  int xpos;
+  int ypos;
+  int bW, bH;
+  char keyToggle;
+  int valMin;
+  int valMax;
+  boolean trigger;
+  boolean pressed;
+  boolean DEFAULT_VALUE;
+  
+  Button() {
+    xpos = 0;
+    ypos = 0;
+    bW = 100;
+    bH = 25;
+    keyToggle = ' ';
+    trigger = false;
+    pressed = false;
+    col = 200;
+  }
+  
+  void listen() {
+    
+    // Mouse Controls
+    if( mousePressed && hover() ) {
+      pressed = true;
+    }
+    
+    // Keyboard Controls
+    //if ((keyPressed == true) && (key == keyToggle)) {value = !value;}
+  }
+  
+  void released() {
+    if (pressed) {
+      trigger = true;
+      pressed = false;
+    }
+  }
+  
+  boolean hover() {
+    if( mouseY > ypos - bH/2 && mouseY < ypos + bH/2 && 
+        mouseX > xpos - bW/2 && mouseX < xpos + bW/2 ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  void drawMe() {
+    
+    pushMatrix(); translate(-0.5*bW, -0.5*bH, 0);
+    
+    int shift = 0;
+    if (pressed) shift = 3;
+    // Button Holder
+    noStroke(); fill(50);
+    rect(xpos+3,ypos+3, bW, bH, 25);
+    int alpha = 200;
+    if ( hover() ) alpha = 255;
+    fill(col, alpha);
+    rect(xpos+shift,ypos+shift, bW, bH, 25);
+    
+    // Button Info
+    strokeWeight(1);
+    if (trigger) { fill(255); }
+    else         { fill(150); } 
+    textAlign(CENTER, CENTER); fill(255);
+    //text("[" + keyToggle + "] " + name,int(xpos + 1.5*diameter),int(ypos) );
+    text(name,int(xpos + 0.5*bW)+shift,int(ypos + 0.5*bH)+shift );
+    
+    popMatrix();
+  }
+}

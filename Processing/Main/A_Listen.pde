@@ -21,20 +21,34 @@
  *               DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
  *               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
- 
+  
 void listen() {
   
   fleet.update();
+  
   if (bar_right.buttons.get(0).value) {
-    fleet.TIME_PAUSE = 2;
-    fleet.TIME_INCREMENT = 1;
+    fleet.timeIncrement = 0;
+    fleet.pauseDuration = 0;
   } else if (bar_right.buttons.get(1).value) {
-    fleet.TIME_PAUSE = 0;
-    fleet.TIME_INCREMENT = 1;
+    fleet.pauseDuration = 2;
+    fleet.timeIncrement = 1;
   } else if (bar_right.buttons.get(2).value) {
-    fleet.TIME_PAUSE = 0;
-    fleet.TIME_INCREMENT = 2;
+    fleet.pauseDuration = 0;
+    fleet.timeIncrement = 2;
+  } 
+  
+  if (bar_right.sliders.get(0).isDragged) {
+    fleet.time = int(bar_right.sliders.get(0).value);
+    fleet.pauseDuration = 0;
+  } else {
+    bar_right.sliders.get(0).value = fleet.time;
   }
+  
+  if (simButton.trigger) {
+    fleet.time = 0;
+    simButton.trigger = false;
+  }
+  
   //zoom3d     = bar_left.sliders.get(0).value;
   //fleet.time = int(bar_left.sliders.get(3).value) - 1;
 
@@ -47,6 +61,7 @@ void mousePressed() {
     bar_left.pressed();
     bar_right.pressed();
     constrainButtons();
+    simButton.listen();
   }
 }
 
@@ -58,10 +73,11 @@ void mouseDragged() {
 
 void mouseReleased() {
   if (initialized) {
-    if (displayMode.equals("flat")) cam.moved();
+    if (displayMode.equals("flat"))  cam.moved();
+    if (displayMode.equals("globe")) orient = false;
     bar_left.released();
     bar_right.released();
-    orient = false;
+    simButton.released();
   }
 }
 
@@ -166,9 +182,9 @@ void constrainButtons() {
     bar_right.buttons.get(i+0).value = false;
     bar_right.buttons.get(i+2).value = false;
   } else if(bar_right.buttons.get(i+2).hover() && bar_right.buttons.get(i+2).value) {
-    bar_right.buttons.get(i+1).value = false;
     bar_right.buttons.get(i+0).value = false;
-  } 
+    bar_right.buttons.get(i+1).value = false;
+  }
   
   // Set redundant buttons to false; 1 button is always true
   //
