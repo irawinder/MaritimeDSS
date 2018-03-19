@@ -41,7 +41,7 @@ ArrayList<Port> ports;
 int colorGTL  = #9bc151;
 
 int colorHFO    = #AA0000;
-int colorLSFO   = #FFFF00;
+int colorLSFO   = #6666FF;
 int colorLNG    = #FF00FF;
 int colorHFOLNG = #00FFFF;
 
@@ -256,6 +256,7 @@ void initToolbars() {
   bar_left.buttons.remove(0);
   
   // Right Toolbar
+  BAR_W  *= 1.5;
   bar_right = new Toolbar(width - (BAR_X + BAR_W), BAR_Y, BAR_W, BAR_H, MARGIN);
   bar_right.title = "";
   bar_right.credit = "";
@@ -272,7 +273,7 @@ void initToolbars() {
   simButton.name = "SIMULATE";
   simButton.col = colorGTL;
   simButton.xpos = bar_right.barX + bar_right.barW/2;
-  simButton.ypos = height - bar_right.barY + bar_right.margin - 75;
+  simButton.ypos = 800 - bar_right.barY + bar_right.margin - 75;
   simButton.bW = bar_right.barW - 2*bar_right.margin;
   simButton.bH = 50;
 }
@@ -283,14 +284,14 @@ void initCamera() {
     // Initialize 3D World Camera Defaults
     cam = new Camera (B, MARGIN);
     // eX, eW (extentsX ...) prevents accidental dragging when interactiong with toolbar
-    cam.eX = MARGIN + BAR_W;
-    cam.eW = width - 2*(BAR_W + MARGIN);
+    cam.eX = bar_left.barX + bar_left.barW;
+    cam.eW = width - (bar_left.barW + bar_right.barW + 2*MARGIN);
     cam.X_DEFAULT    = -900;
-    cam.Y_DEFAULT    =  210;
+    cam.Y_DEFAULT    =  220;
     cam.ZOOM_DEFAULT = 0.153;
     cam.ZOOM_POW     = 2.50;
     cam.ZOOM_MAX     = 0.05;
-    cam.ZOOM_MIN     = 0.40;
+    cam.ZOOM_MIN     = 0.70;
     cam.ROTATION_DEFAULT = 5.0; // (0 - 2*PI)
     cam.enableChunks = false;  // Enable/Disable 3D mouse cursor field for continuous object placement
     cam.init(); //Must End with init() if any variables within Camera() are changed from default

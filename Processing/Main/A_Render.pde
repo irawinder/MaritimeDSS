@@ -122,7 +122,7 @@ void render2D() {
   translate(bar_left.barX + bar_left.margin, int(3.0*bar_left.CONTROL_H) );
   textAlign(LEFT, BOTTOM); 
   fill(255); 
-  text("# Ships", 0, 0);
+  text("Ship Fleet:", 0, 0);
   popMatrix();
 
   // Bunker Locations

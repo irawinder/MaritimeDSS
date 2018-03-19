@@ -119,7 +119,7 @@ class Ship {
     //
     ratio = float(cargo)/maxCargo;
     pushMatrix(); translate(scaler*(5.75*ratio - 4.5), 0, scaler*1.6);
-    fill(#00AA00, 150); if (cargo > 0) box(scaler*ratio*11.5, scaler*4, scaler*1.5);
+    fill(colorGTL, 150); if (cargo > 0) box(scaler*ratio*11.5, scaler*4, scaler*1.5);
     popMatrix();
     
     // Draw Fuel Tank

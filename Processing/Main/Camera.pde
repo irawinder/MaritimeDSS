@@ -294,8 +294,8 @@ class Camera {
     if (showFrameRate) text("(F)ramerate: " + int(frameRate*10)/10.0, 0, 32);
     popMatrix();
     
-    pushMatrix(); translate(width/4 + eX/2 - 0.075*height, height - 1.5*margin);
-    textAlign(CENTER, CENTER);
+    pushMatrix(); translate(eX + margin, height - 1.5*margin);
+    textAlign(LEFT, CENTER);
     fill(LINE_COLOR, 255-2*BASE_ALPHA);
     text("Copyright 2018 Ira Winder", 0, 0);
     popMatrix();
