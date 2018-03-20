@@ -6,6 +6,10 @@ class Logger {
     log = new Table();
     log.addColumn("Time");
     log.addColumn("Action");
+    log.addColumn("Mouse X");
+    log.addColumn("Mouse Y");
+    log.addColumn("Screen Width");
+    log.addColumn("Screen Height");
     
     //Ships
     log.addColumn(bar_left.sliders.get(0).name);
@@ -60,6 +64,10 @@ class Logger {
     TableRow row = log.addRow();
     row.setString("Time", hour() + ":" + minute() + ":" + second());
     row.setString("Action", action);
+    row.setInt("Mouse X", mouseX);
+    row.setInt("Mouse Y", mouseY);
+    row.setInt("Screen Width",  width);
+    row.setInt("Screen Height", height);
     
     // Ships
     row.setInt(bar_left.sliders.get(0).name, int(bar_left.sliders.get(0).value));
