@@ -337,23 +337,35 @@ void initToolbars() {
 }
 
 void initCamera() {
-  // Initialize the Camera
-    // cam = new Camera(toolbar_width, b, -350, 50, 0.7, 0.1, 2.0, 0.45);
-    // Initialize 3D World Camera Defaults
-    cam = new Camera (B, MARGIN);
-    // eX, eW (extentsX ...) prevents accidental dragging when interactiong with toolbar
-    cam.eX = bar_left.barX + bar_left.barW;
-    cam.eW = width - (bar_left.barW + bar_right.barW + 2*MARGIN);
-    cam.X_DEFAULT    = -900;
-    cam.Y_DEFAULT    =  220;
-    cam.ZOOM_DEFAULT = 0.153;
-    cam.ZOOM_POW     = 2.50;
-    cam.ZOOM_MAX     = 0.05;
-    cam.ZOOM_MIN     = 0.70;
-    cam.ROTATION_DEFAULT = 5.0; // (0 - 2*PI)
-    cam.enableChunks = false;  // Enable/Disable 3D mouse cursor field for continuous object placement
-    cam.init(); //Must End with init() if any variables within Camera() are changed from default
-    cam.off(); // turn cam off while still initializing
+  
+  // Initialize 3D World Camera Defaults
+  //
+  cam = new Camera (B, MARGIN);
+  cam.X_DEFAULT    = -900;
+  cam.Y_DEFAULT    =  220;
+  cam.ZOOM_DEFAULT = 0.153;
+  cam.ZOOM_POW     = 2.50;
+  cam.ZOOM_MAX     = 0.05;
+  cam.ZOOM_MIN     = 0.70;
+  cam.ROTATION_DEFAULT = 5.0; // (0 - 2*PI)
+  cam.enableChunks = false;  // Enable/Disable 3D mouse cursor field for continuous object placement
+  
+  // Must End with init() if any BASIC variables within Camera() are changed from default
+  //
+  cam.init(); 
+  
+  // Edit blockers and UI characteristics AFTER cam.init()
+  //
+  cam.vs.xpos = width - 3*MARGIN - BAR_W;
+  //cam.hs.enable = false; //disable rotation
+  cam.drag.addBlocker(MARGIN, MARGIN, BAR_W, BAR_H);
+  cam.drag.addBlocker(width - bar_right.barW - MARGIN, MARGIN, bar_right.barW, BAR_H);
+  cam.drag.addBlocker(int(cam.hs.xpos), int(cam.hs.ypos), int(cam.hs.swidth), int(cam.hs.sheight));
+  cam.drag.addBlocker(int(cam.vs.xpos), int(cam.vs.ypos), int(cam.vs.swidth), int(cam.vs.sheight));
+  
+  // Turn cam off while still initializing
+  //
+  cam.off();
 }
 
 void initFleet() {
