@@ -80,8 +80,10 @@ void render3D() {
   // Draw Ships
   //
   pushMatrix(); translate(0, 0, 0.5);
-  fleet.drawShipsFlat();
-  fleet.drawShips3D();
+  if (showFleet) {
+    fleet.drawShipsFlat();
+    fleet.drawShips3D();
+  }
   for (Port p: ports) p.draw3D(2.0);
   popMatrix();
 }

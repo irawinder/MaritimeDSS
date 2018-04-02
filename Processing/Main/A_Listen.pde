@@ -55,6 +55,7 @@ void listen() {
       
     }
     
+    showFleet = true;
     bar_left.buttons.get(0).trigger = false;
   }
   

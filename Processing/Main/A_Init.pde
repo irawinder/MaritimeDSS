@@ -34,6 +34,7 @@ float latCtr, lonCtr, bound, latMin, latMax, lonMin, lonMax;
 Table simConfig, simResult, simResultOverall;
 boolean validConfig;
 Fleet fleet;
+boolean showFleet;
 ArrayList<Port> ports;
 
 // Objects for Viewing and Saving Results
@@ -384,6 +385,7 @@ void initFleet() {
     
     fleet.ships.add(s);
   }
+  showFleet = false;
 }
 
 void initPorts() {
