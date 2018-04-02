@@ -240,36 +240,36 @@ void initToolbars() {
   bar_left.sliders.get(3).col = colorHFOLNG;
   
   // # Bunkers
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", colorLNG, false, '1');
-  bar_left.addButton("3 bunkers", colorLNG, false, '1');
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", colorLNG, false, '1');
-  bar_left.addButton("3 bunkers", colorLNG, false, '1');
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("0 bunkers", 200, true, '1');
-  bar_left.addButton("1 bunkers", colorLNG, false, '1');
-  bar_left.addButton("3 bunkers", colorLNG, false, '1');
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("0 bunkers", 200, true, '1', false);
+  bar_left.addButton("1 bunkers", colorLNG, false, '1', false);
+  bar_left.addButton("3 bunkers", colorLNG, false, '1', false);
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("0 bunkers", 200, true, '1', false);
+  bar_left.addButton("1 bunkers", colorLNG, false, '1', false);
+  bar_left.addButton("3 bunkers", colorLNG, false, '1', false);
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("0 bunkers", 200, true, '1', false);
+  bar_left.addButton("1 bunkers", colorLNG, false, '1', false);
+  bar_left.addButton("3 bunkers", colorLNG, false, '1', false);
   
   // Bunker Method
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Truck to Ship",  200, false, '1');
-  bar_left.addButton("Ship to Ship",   200, true , '1');
-  bar_left.addButton("Shore to Ship",  200, false, '1');
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Truck to Ship",  200, false, '1');
-  bar_left.addButton("Ship to Ship",   200, true , '1');
-  bar_left.addButton("Shore to Ship",  200, false, '1');
-  bar_left.addButton("Blank", 200, true, '1');
-  bar_left.addButton("Truck to Ship",  200, false, '1');
-  bar_left.addButton("Ship to Ship",   200, true , '1');
-  bar_left.addButton("Shore to Ship",  200, false, '1');
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("Truck to Ship",  200, false, '1', false);
+  bar_left.addButton("Ship to Ship",   200, true , '1', false);
+  bar_left.addButton("Shore to Ship",  200, false, '1', false);
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("Truck to Ship",  200, false, '1', false);
+  bar_left.addButton("Ship to Ship",   200, true , '1', false);
+  bar_left.addButton("Shore to Ship",  200, false, '1', false);
+  bar_left.addButton("Blank", 200, true, '1', false);
+  bar_left.addButton("Truck to Ship",  200, false, '1', false);
+  bar_left.addButton("Ship to Ship",   200, true , '1', false);
+  bar_left.addButton("Shore to Ship",  200, false, '1', false);
   
   for (int i=14; i<=27; i++) {   // Shift Bunker Method buttons right
     bar_left.buttons.get(i).xpos = bar_left.barX + bar_left.barW/2; 
@@ -296,26 +296,26 @@ void initToolbars() {
   bar_right.explanation = "";
   bar_right.controlY = BAR_Y + bar_right.margin + 2*bar_right.CONTROL_H;
   bar_right.addSlider("Hour", "",  1,  simResult.getRowCount(), 1, 4, 'q', 'w', false);
-  bar_right.addButton("Blank", 200, true, '1');
-  bar_right.addButton("Pause",  200, false, '1');
-  bar_right.addButton("30 hr / sec",  200, true, '1');
-  bar_right.addButton("120 hr / sec", 200, false, '1');
+  bar_right.addButton("Blank", 200, true, '1', false);
+  bar_right.addButton("Pause",  200, false, '1', false);
+  bar_right.addButton("30 hr / sec",  200, true, '1', false);
+  bar_right.addButton("120 hr / sec", 200, false, '1', false);
   
-  bar_right.addButton(result.name.get(0), 200, true, '1');
-  bar_right.addButton(result.name.get(1), 200, false, '1');
-  bar_right.addButton(result.name.get(2), 200, false, '1');
-  bar_right.addButton(result.name.get(3), 200, false, '1');
-  bar_right.addButton(result.name.get(4), 200, false, '1');
-  bar_right.addButton(result.name.get(5), 200, false, '1');
-  bar_right.addButton(result.name.get(6), 200, false, '1');
+  bar_right.addButton(result.name.get(0), 200, true, '1', false);
+  bar_right.addButton(result.name.get(1), 200, false, '1', false);
+  bar_right.addButton(result.name.get(2), 200, false, '1', false);
+  bar_right.addButton(result.name.get(3), 200, false, '1', false);
+  bar_right.addButton(result.name.get(4), 200, false, '1', false);
+  bar_right.addButton(result.name.get(5), 200, false, '1', false);
+  bar_right.addButton(result.name.get(6), 200, false, '1', false);
   
-  bar_right.addButton(result.name.get(0), 200, false, '1');
-  bar_right.addButton(result.name.get(1), 200, true, '1');
-  bar_right.addButton(result.name.get(2), 200, false, '1');
-  bar_right.addButton(result.name.get(3), 200, false, '1');
-  bar_right.addButton(result.name.get(4), 200, false, '1');
-  bar_right.addButton(result.name.get(5), 200, false, '1');
-  bar_right.addButton(result.name.get(6), 200, false, '1');
+  bar_right.addButton(result.name.get(0), 200, false, '1', false);
+  bar_right.addButton(result.name.get(1), 200, true, '1', false);
+  bar_right.addButton(result.name.get(2), 200, false, '1', false);
+  bar_right.addButton(result.name.get(3), 200, false, '1', false);
+  bar_right.addButton(result.name.get(4), 200, false, '1', false);
+  bar_right.addButton(result.name.get(5), 200, false, '1', false);
+  bar_right.addButton(result.name.get(6), 200, false, '1', false);
   
   bar_right.buttons.remove(0);
   bar_right.buttons.get(1).xpos = bar_right.barX + 1*bar_right.barW/3; 

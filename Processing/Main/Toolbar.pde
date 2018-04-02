@@ -75,12 +75,13 @@ class Toolbar {
     sliders.add(s);
   }
   
-  void addButton(String name, int col, boolean DEFAULT_VALUE, char keyToggle) {
+  void addButton(String name, int col, boolean DEFAULT_VALUE, char keyToggle, boolean keyCommand) {
     float num = sliders.size() + buttons.size() + 6*tSliders.size();
     RadioButton b;
     b = new RadioButton();
     b.name = name;
     b.keyToggle = keyToggle;
+    b.keyCommand = keyCommand;
     b.xpos = barX + margin;
     b.ypos = controlY + int(num*CONTROL_H);
     b.DEFAULT_VALUE = DEFAULT_VALUE;
@@ -296,6 +297,7 @@ class RadioButton {
   int ypos;
   int diameter;
   char keyToggle;
+  boolean keyCommand;
   int valMin;
   int valMax;
   boolean value;
@@ -306,6 +308,7 @@ class RadioButton {
     ypos = 0;
     diameter = 20;
     keyToggle = ' ';
+    keyCommand = true;
     value = false;
     col = 200;
   }
@@ -318,7 +321,7 @@ class RadioButton {
     }
     
     // Keyboard Controls
-    //if ((keyPressed == true) && (key == keyToggle)) {value = !value;}
+    if (keyCommand) if ((keyPressed == true) && (key == keyToggle)) {value = !value;}
   }
   
   boolean hover() {
@@ -339,8 +342,10 @@ class RadioButton {
     if (value) { fill(255); }
     else       { fill(150); } 
     textAlign(LEFT, CENTER);
-    //text("[" + keyToggle + "] " + name,int(xpos + 1.5*diameter),int(ypos) );
-    text(name,int(xpos + 1.5*diameter),int(ypos) );
+    String label = "";
+    if (keyCommand) label += "[" + keyToggle + "] ";
+    label += name;
+    text(label,int(xpos + 1.5*diameter),int(ypos) );
     
     // Button Holder
     noStroke(); fill(50);
