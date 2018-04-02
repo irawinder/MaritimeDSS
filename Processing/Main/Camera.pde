@@ -302,6 +302,16 @@ class Camera {
       popMatrix();
     }
   }
+  
+  // Check if mouse is hovering over any of the camera GUI components
+  //
+  boolean hoverGUI() {
+    if (cam.drag.inExtents() && !cam.drag.inBlocker() && !(cam.hs.overEvent() && cam.hs.enable) && !(cam.vs.overEvent() && cam.vs.enable) ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 
 // Horizontal Slider

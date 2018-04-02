@@ -349,19 +349,14 @@ void initCamera() {
   cam.ZOOM_MIN     = 0.70;
   cam.ROTATION_DEFAULT = 5.0; // (0 - 2*PI)
   cam.enableChunks = false;  // Enable/Disable 3D mouse cursor field for continuous object placement
+  cam.init(); // Must End with init() if any BASIC variables within Camera() are changed from default 
   
-  // Must End with init() if any BASIC variables within Camera() are changed from default
-  //
-  cam.init(); 
-  
-  // Edit blockers and UI characteristics AFTER cam.init()
+  // Add non-camera UI blockers and edit camera UI characteristics AFTER cam.init()
   //
   cam.vs.xpos = width - 3*MARGIN - BAR_W;
   //cam.hs.enable = false; //disable rotation
   cam.drag.addBlocker(MARGIN, MARGIN, BAR_W, BAR_H);
-  cam.drag.addBlocker(width - bar_right.barW - MARGIN, MARGIN, bar_right.barW, BAR_H);
-  cam.drag.addBlocker(int(cam.hs.xpos), int(cam.hs.ypos), int(cam.hs.swidth), int(cam.hs.sheight));
-  cam.drag.addBlocker(int(cam.vs.xpos), int(cam.vs.ypos), int(cam.vs.swidth), int(cam.vs.sheight));
+  cam.drag.addBlocker(width - MARGIN - BAR_W, MARGIN, BAR_W, BAR_H);
   
   // Turn cam off while still initializing
   //
