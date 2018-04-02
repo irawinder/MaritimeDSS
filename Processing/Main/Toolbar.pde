@@ -508,7 +508,6 @@ class Button {
   boolean trigger;
   boolean pressed;
   boolean enabled;
-  boolean DEFAULT_VALUE;
   
   Button() {
     xpos = 0;

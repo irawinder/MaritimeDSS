@@ -122,7 +122,7 @@ class Logger {
   }
   
   void save() {
-    String fileName = "data//logs/";
+    String fileName = "data/logs/";
     fileName += HOUR + "_" + MINUTE + "_" + SECOND + "_log.csv";
     saveTable(log, fileName);
   }
