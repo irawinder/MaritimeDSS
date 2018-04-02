@@ -19,36 +19,36 @@ class Logger {
     
     //Port 1
     port1 = "Persian Gulf_";
-    log.addColumn(port1 + bar_left.buttons.get(0).name);
-    log.addColumn(port1 + bar_left.buttons.get(1).name);
-    log.addColumn(port1 + bar_left.buttons.get(2).name);
-    log.addColumn(port1 + bar_left.buttons.get(9).name);
-    log.addColumn(port1 + bar_left.buttons.get(10).name);
-    log.addColumn(port1 + bar_left.buttons.get(11).name);
+    log.addColumn(port1 + bar_left.radios.get(0).name);
+    log.addColumn(port1 + bar_left.radios.get(1).name);
+    log.addColumn(port1 + bar_left.radios.get(2).name);
+    log.addColumn(port1 + bar_left.radios.get(9).name);
+    log.addColumn(port1 + bar_left.radios.get(10).name);
+    log.addColumn(port1 + bar_left.radios.get(11).name);
     
     //Port 2
     port2 = "Japan_";
-    log.addColumn(port2 + bar_left.buttons.get(3).name);
-    log.addColumn(port2 + bar_left.buttons.get(4).name);
-    log.addColumn(port2 + bar_left.buttons.get(5).name);
-    log.addColumn(port2 + bar_left.buttons.get(12).name);
-    log.addColumn(port2 + bar_left.buttons.get(13).name);
-    log.addColumn(port2 + bar_left.buttons.get(14).name);
+    log.addColumn(port2 + bar_left.radios.get(3).name);
+    log.addColumn(port2 + bar_left.radios.get(4).name);
+    log.addColumn(port2 + bar_left.radios.get(5).name);
+    log.addColumn(port2 + bar_left.radios.get(12).name);
+    log.addColumn(port2 + bar_left.radios.get(13).name);
+    log.addColumn(port2 + bar_left.radios.get(14).name);
     
     //Port 3
     port3 = "Singapore_";
-    log.addColumn(port3 + bar_left.buttons.get(6).name);
-    log.addColumn(port3 + bar_left.buttons.get(7).name);
-    log.addColumn(port3 + bar_left.buttons.get(8).name);
-    log.addColumn(port3 + bar_left.buttons.get(15).name);
-    log.addColumn(port3 + bar_left.buttons.get(16).name);
-    log.addColumn(port3 + bar_left.buttons.get(17).name);
+    log.addColumn(port3 + bar_left.radios.get(6).name);
+    log.addColumn(port3 + bar_left.radios.get(7).name);
+    log.addColumn(port3 + bar_left.radios.get(8).name);
+    log.addColumn(port3 + bar_left.radios.get(15).name);
+    log.addColumn(port3 + bar_left.radios.get(16).name);
+    log.addColumn(port3 + bar_left.radios.get(17).name);
     
     //Timing
     log.addColumn(bar_right.sliders.get(0).name);
-    log.addColumn(bar_right.buttons.get(0).name);
-    log.addColumn(bar_right.buttons.get(1).name);
-    log.addColumn(bar_right.buttons.get(2).name);
+    log.addColumn(bar_right.radios.get(0).name);
+    log.addColumn(bar_right.radios.get(1).name);
+    log.addColumn(bar_right.radios.get(2).name);
     
     //XY AXIS
     log.addColumn("X_AXIS");
@@ -76,34 +76,34 @@ class Logger {
     row.setInt(bar_left.sliders.get(3).name, int(bar_left.sliders.get(3).value));
     
     //Port1
-    row.setString(port1 + bar_left.buttons.get( 0).name, "" + bar_left.buttons.get( 0).value);
-    row.setString(port1 + bar_left.buttons.get( 1).name, "" + bar_left.buttons.get( 1).value);
-    row.setString(port1 + bar_left.buttons.get( 2).name, "" + bar_left.buttons.get( 2).value);
-    row.setString(port1 + bar_left.buttons.get( 9).name, "" + bar_left.buttons.get( 9).value);
-    row.setString(port1 + bar_left.buttons.get(10).name, "" + bar_left.buttons.get(10).value);
-    row.setString(port1 + bar_left.buttons.get(11).name, "" + bar_left.buttons.get(11).value);
+    row.setString(port1 + bar_left.radios.get( 0).name, "" + bar_left.radios.get( 0).value);
+    row.setString(port1 + bar_left.radios.get( 1).name, "" + bar_left.radios.get( 1).value);
+    row.setString(port1 + bar_left.radios.get( 2).name, "" + bar_left.radios.get( 2).value);
+    row.setString(port1 + bar_left.radios.get( 9).name, "" + bar_left.radios.get( 9).value);
+    row.setString(port1 + bar_left.radios.get(10).name, "" + bar_left.radios.get(10).value);
+    row.setString(port1 + bar_left.radios.get(11).name, "" + bar_left.radios.get(11).value);
     
     //Port2
-    row.setString(port2 + bar_left.buttons.get( 3).name, "" + bar_left.buttons.get( 3).value);
-    row.setString(port2 + bar_left.buttons.get( 4).name, "" + bar_left.buttons.get( 4).value);
-    row.setString(port2 + bar_left.buttons.get( 5).name, "" + bar_left.buttons.get( 5).value);
-    row.setString(port2 + bar_left.buttons.get(12).name, "" + bar_left.buttons.get(12).value);
-    row.setString(port2 + bar_left.buttons.get(13).name, "" + bar_left.buttons.get(13).value);
-    row.setString(port2 + bar_left.buttons.get(14).name, "" + bar_left.buttons.get(14).value);
+    row.setString(port2 + bar_left.radios.get( 3).name, "" + bar_left.radios.get( 3).value);
+    row.setString(port2 + bar_left.radios.get( 4).name, "" + bar_left.radios.get( 4).value);
+    row.setString(port2 + bar_left.radios.get( 5).name, "" + bar_left.radios.get( 5).value);
+    row.setString(port2 + bar_left.radios.get(12).name, "" + bar_left.radios.get(12).value);
+    row.setString(port2 + bar_left.radios.get(13).name, "" + bar_left.radios.get(13).value);
+    row.setString(port2 + bar_left.radios.get(14).name, "" + bar_left.radios.get(14).value);
     
     //Port3
-    row.setString(port3 + bar_left.buttons.get( 6).name, "" + bar_left.buttons.get( 6).value);
-    row.setString(port3 + bar_left.buttons.get( 7).name, "" + bar_left.buttons.get( 7).value);
-    row.setString(port3 + bar_left.buttons.get( 8).name, "" + bar_left.buttons.get( 8).value);
-    row.setString(port3 + bar_left.buttons.get(15).name, "" + bar_left.buttons.get(15).value);
-    row.setString(port3 + bar_left.buttons.get(16).name, "" + bar_left.buttons.get(16).value);
-    row.setString(port3 + bar_left.buttons.get(17).name, "" + bar_left.buttons.get(17).value);
+    row.setString(port3 + bar_left.radios.get( 6).name, "" + bar_left.radios.get( 6).value);
+    row.setString(port3 + bar_left.radios.get( 7).name, "" + bar_left.radios.get( 7).value);
+    row.setString(port3 + bar_left.radios.get( 8).name, "" + bar_left.radios.get( 8).value);
+    row.setString(port3 + bar_left.radios.get(15).name, "" + bar_left.radios.get(15).value);
+    row.setString(port3 + bar_left.radios.get(16).name, "" + bar_left.radios.get(16).value);
+    row.setString(port3 + bar_left.radios.get(17).name, "" + bar_left.radios.get(17).value);
     
     //Timing
     row.setInt(   bar_right.sliders.get(0).name,  int(bar_right.sliders.get(0).value));
-    row.setString(bar_right.buttons.get(0).name, "" + bar_right.buttons.get(0).value);
-    row.setString(bar_right.buttons.get(1).name, "" + bar_right.buttons.get(1).value);
-    row.setString(bar_right.buttons.get(2).name, "" + bar_right.buttons.get(2).value);
+    row.setString(bar_right.radios.get(0).name, "" + bar_right.radios.get(0).value);
+    row.setString(bar_right.radios.get(1).name, "" + bar_right.radios.get(1).value);
+    row.setString(bar_right.radios.get(2).name, "" + bar_right.radios.get(2).value);
     
     //XY AXIS
     row.setString("X_AXIS", result.name.get(result.xIndex));

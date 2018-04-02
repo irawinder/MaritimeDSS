@@ -85,7 +85,6 @@ int MARGIN = 25; // Pixel margin allowed around edge of screen
 //
 Toolbar bar_left, bar_right; 
 int BAR_X, BAR_Y, BAR_W, BAR_H;
-Button simButton;
 
 PFont f12, f18, f24;
 
@@ -240,53 +239,57 @@ void initToolbars() {
   bar_left.sliders.get(3).col = colorHFOLNG;
   
   // # Bunkers
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("0 bunkers", 200, true, '1', false);
-  bar_left.addButton("1 bunkers", colorLNG, false, '1', false);
-  bar_left.addButton("3 bunkers", colorLNG, false, '1', false);
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("0 bunkers", 200, true, '1', false);
-  bar_left.addButton("1 bunkers", colorLNG, false, '1', false);
-  bar_left.addButton("3 bunkers", colorLNG, false, '1', false);
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("0 bunkers", 200, true, '1', false);
-  bar_left.addButton("1 bunkers", colorLNG, false, '1', false);
-  bar_left.addButton("3 bunkers", colorLNG, false, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("0 bunkers", 200, true, '1', false);
+  bar_left.addRadio("1 bunkers", colorLNG, false, '1', false);
+  bar_left.addRadio("3 bunkers", colorLNG, false, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("0 bunkers", 200, true, '1', false);
+  bar_left.addRadio("1 bunkers", colorLNG, false, '1', false);
+  bar_left.addRadio("3 bunkers", colorLNG, false, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("0 bunkers", 200, true, '1', false);
+  bar_left.addRadio("1 bunkers", colorLNG, false, '1', false);
+  bar_left.addRadio("3 bunkers", colorLNG, false, '1', false);
+  
+  // Simulate Button
+  //
+  bar_left.addButton("SIMULATE", colorGTL, 's', false);
   
   // Bunker Method
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("Truck to Ship",  200, false, '1', false);
-  bar_left.addButton("Ship to Ship",   200, true , '1', false);
-  bar_left.addButton("Shore to Ship",  200, false, '1', false);
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("Truck to Ship",  200, false, '1', false);
-  bar_left.addButton("Ship to Ship",   200, true , '1', false);
-  bar_left.addButton("Shore to Ship",  200, false, '1', false);
-  bar_left.addButton("Blank", 200, true, '1', false);
-  bar_left.addButton("Truck to Ship",  200, false, '1', false);
-  bar_left.addButton("Ship to Ship",   200, true , '1', false);
-  bar_left.addButton("Shore to Ship",  200, false, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("Truck to Ship",  200, false, '1', false);
+  bar_left.addRadio("Ship to Ship",   200, true , '1', false);
+  bar_left.addRadio("Shore to Ship",  200, false, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("Truck to Ship",  200, false, '1', false);
+  bar_left.addRadio("Ship to Ship",   200, true , '1', false);
+  bar_left.addRadio("Shore to Ship",  200, false, '1', false);
+  bar_left.addRadio("Blank", 200, true, '1', false);
+  bar_left.addRadio("Truck to Ship",  200, false, '1', false);
+  bar_left.addRadio("Ship to Ship",   200, true , '1', false);
+  bar_left.addRadio("Shore to Ship",  200, false, '1', false);
   
   for (int i=14; i<=27; i++) {   // Shift Bunker Method buttons right
-    bar_left.buttons.get(i).xpos = bar_left.barX + bar_left.barW/2; 
-    bar_left.buttons.get(i).ypos = bar_left.buttons.get(i-14).ypos;
+    bar_left.radios.get(i).xpos = bar_left.barX + bar_left.barW/2; 
+    bar_left.radios.get(i).ypos = bar_left.radios.get(i-14).ypos;
   }
   
-  bar_left.buttons.remove(24);
-  bar_left.buttons.remove(20);
-  bar_left.buttons.remove(16);
-  bar_left.buttons.remove(15);
-  bar_left.buttons.remove(14);
+  bar_left.radios.remove(24);
+  bar_left.radios.remove(20);
+  bar_left.radios.remove(16);
+  bar_left.radios.remove(15);
+  bar_left.radios.remove(14);
   
-  bar_left.buttons.remove(10);
-  bar_left.buttons.remove(6);
-  bar_left.buttons.remove(2);
-  bar_left.buttons.remove(1);
-  bar_left.buttons.remove(0);
+  bar_left.radios.remove(10);
+  bar_left.radios.remove(6);
+  bar_left.radios.remove(2);
+  bar_left.radios.remove(1);
+  bar_left.radios.remove(0);
   
   // Right Toolbar
   BAR_W  *= 1.5;
@@ -296,48 +299,40 @@ void initToolbars() {
   bar_right.explanation = "";
   bar_right.controlY = BAR_Y + bar_right.margin + 2*bar_right.CONTROL_H;
   bar_right.addSlider("Hour", "",  1,  simResult.getRowCount(), 1, 4, 'q', 'w', false);
-  bar_right.addButton("Blank", 200, true, '1', false);
-  bar_right.addButton("Pause",  200, false, '1', false);
-  bar_right.addButton("30 hr / sec",  200, true, '1', false);
-  bar_right.addButton("120 hr / sec", 200, false, '1', false);
+  bar_right.addRadio("Blank", 200, true, '1', false);
+  bar_right.addRadio("Pause",  200, false, '1', false);
+  bar_right.addRadio("30 hr / sec",  200, true, '1', false);
+  bar_right.addRadio("120 hr / sec", 200, false, '1', false);
   
-  bar_right.addButton(result.name.get(0), 200, true, '1', false);
-  bar_right.addButton(result.name.get(1), 200, false, '1', false);
-  bar_right.addButton(result.name.get(2), 200, false, '1', false);
-  bar_right.addButton(result.name.get(3), 200, false, '1', false);
-  bar_right.addButton(result.name.get(4), 200, false, '1', false);
-  bar_right.addButton(result.name.get(5), 200, false, '1', false);
-  bar_right.addButton(result.name.get(6), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(0), 200, true, '1', false);
+  bar_right.addRadio(result.name.get(1), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(2), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(3), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(4), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(5), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(6), 200, false, '1', false);
   
-  bar_right.addButton(result.name.get(0), 200, false, '1', false);
-  bar_right.addButton(result.name.get(1), 200, true, '1', false);
-  bar_right.addButton(result.name.get(2), 200, false, '1', false);
-  bar_right.addButton(result.name.get(3), 200, false, '1', false);
-  bar_right.addButton(result.name.get(4), 200, false, '1', false);
-  bar_right.addButton(result.name.get(5), 200, false, '1', false);
-  bar_right.addButton(result.name.get(6), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(0), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(1), 200, true, '1', false);
+  bar_right.addRadio(result.name.get(2), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(3), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(4), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(5), 200, false, '1', false);
+  bar_right.addRadio(result.name.get(6), 200, false, '1', false);
   
-  bar_right.buttons.remove(0);
-  bar_right.buttons.get(1).xpos = bar_right.barX + 1*bar_right.barW/3; 
-  bar_right.buttons.get(1).ypos = bar_right.buttons.get(0).ypos;
-  bar_right.buttons.get(2).xpos = bar_right.barX + 2*bar_right.barW/3; 
-  bar_right.buttons.get(2).ypos = bar_right.buttons.get(0).ypos;
+  bar_right.radios.remove(0);
+  bar_right.radios.get(1).xpos = bar_right.barX + 1*bar_right.barW/3; 
+  bar_right.radios.get(1).ypos = bar_right.radios.get(0).ypos;
+  bar_right.radios.get(2).xpos = bar_right.barX + 2*bar_right.barW/3; 
+  bar_right.radios.get(2).ypos = bar_right.radios.get(0).ypos;
   for (int i=10; i<17; i++) {
-    bar_right.buttons.get(i).xpos = bar_right.barX + bar_right.barW/2;
-    bar_right.buttons.get(i).ypos = bar_right.buttons.get(i-7).ypos;
+    bar_right.radios.get(i).xpos = bar_right.barX + bar_right.barW/2;
+    bar_right.radios.get(i).ypos = bar_right.radios.get(i-7).ypos;
   }
   for (int i=3; i<17; i++) {
-    bar_right.buttons.get(i).xpos += 20;
-    bar_right.buttons.get(i).ypos -= ((i-3)%7)*10;
+    bar_right.radios.get(i).xpos += 20;
+    bar_right.radios.get(i).ypos -= ((i-3)%7)*10;
   }
-  
-  simButton = new Button();
-  simButton.name = "SIMULATE";
-  simButton.col = colorGTL;
-  simButton.xpos = bar_left.barX + bar_left.barW/2;
-  simButton.ypos = 800 - bar_left.barY + bar_left.margin - 50 - 17;
-  simButton.bW = bar_left.barW - 2*bar_left.margin;
-  simButton.bH = 35;
 }
 
 void initCamera() {

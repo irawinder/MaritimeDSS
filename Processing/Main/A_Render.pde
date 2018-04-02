@@ -99,19 +99,20 @@ void render2D() {
   bar_left.draw();
   bar_right.draw();
   textFont(f18);
-  simButton.drawMe();
+  bar_left.buttons.get(0).drawMe();
   textFont(f12);
   
+  Button b = bar_left.buttons.get(0);
   if (!precalculated && validFleet && validBunker) {
     stroke(#FFFF00); strokeWeight(2); noFill();
-    rect(simButton.xpos - simButton.bW/2, simButton.ypos - simButton.bH/2, simButton.bW, simButton.bH, simButton.bevel);
+    rect(b.xpos, b.ypos, b.bW, b.bH, b.bevel);
     fill(#FFFF00); textAlign(LEFT, CENTER);
-    text(errorPrecalc, bar_left.barX + bar_left.barW + bar_left.margin, 800 - 2*bar_left.margin - simButton.bH/2);
-  } else if (!simButton.enabled) {
+    text(errorPrecalc, bar_left.barX + bar_left.barW + bar_left.margin, 800 - 2*bar_left.margin - b.bH/2);
+  } else if (!b.enabled) {
     stroke(#FFFF00); strokeWeight(2); noFill();
-    rect(simButton.xpos - simButton.bW/2, simButton.ypos - simButton.bH/2, simButton.bW, simButton.bH, simButton.bevel);
+    rect(b.xpos, b.ypos, b.bW, b.bH, b.bevel);
     fill(#FFFF00); textAlign(LEFT, CENTER);
-    text("Invalid Configuration. Check Inputs", bar_left.barX + bar_left.barW + bar_left.margin, 800 - 2*bar_left.margin - simButton.bH/2);
+    text("Invalid Configuration. Check Inputs", bar_left.barX + bar_left.barW + bar_left.margin, 800 - 2*bar_left.margin - b.bH/2);
   }
   
   

@@ -30,7 +30,7 @@ void listen() {
     
   // Trigger the Simulate Button
   //
-  if (simButton.trigger) {
+  if (bar_left.buttons.get(0).trigger) {
     
     fleet.time = 0;
     
@@ -55,18 +55,18 @@ void listen() {
       
     }
     
-    simButton.trigger = false;
+    bar_left.buttons.get(0).trigger = false;
   }
   
   fleet.update();
   
-  if (bar_right.buttons.get(0).value) {
+  if (bar_right.radios.get(0).value) {
     fleet.timeIncrement = 0;
     fleet.pauseDuration = 0;
-  } else if (bar_right.buttons.get(1).value) {
+  } else if (bar_right.radios.get(1).value) {
     fleet.pauseDuration = 7;
     fleet.timeIncrement = 1;
-  } else if (bar_right.buttons.get(2).value) {
+  } else if (bar_right.radios.get(2).value) {
     fleet.pauseDuration = 1;
     fleet.timeIncrement = 1;
   } 
@@ -79,14 +79,14 @@ void listen() {
   }
   
   if (validConfig) {
-    simButton.enabled = true;
+    bar_left.buttons.get(0).enabled = true;
   } else {
-    simButton.enabled = false;
+    bar_left.buttons.get(0).enabled = false;
   }
   
   for (int i=0; i<7; i++) {
-    if (bar_right.buttons.get(i+ 3).value) result.xIndex = i;
-    if (bar_right.buttons.get(i+10).value) result.yIndex = i;
+    if (bar_right.radios.get(i+ 3).value) result.xIndex = i;
+    if (bar_right.radios.get(i+10).value) result.yIndex = i;
   }
   
   updateBunkerViz();
@@ -103,7 +103,6 @@ void mousePressed() {
     bar_left.pressed();
     bar_right.pressed();
     constrainButtons();
-    simButton.listen();
     userLog.addLog("Mouse Pressed");
   }
 }
@@ -122,7 +121,6 @@ void mouseReleased() {
     bar_left.released();
     bar_right.released();
     constrainButtons();
-    simButton.released();
     userLog.addLog("Mouse Released");
   }
 }
@@ -216,42 +214,42 @@ void constrainButtons() {
     errorFleet = "[FLEET MUST BE 20]";
   }
   
-  // Bunkering: Set mutually exclusive buttons to false
+  // Bunkering: Set mutually exclusive radios to false
   //
   for (int i=0; i<6*3; i+=3) {
-    if(bar_left.buttons.get(i+0).hover() && bar_left.buttons.get(i+0).value) {
-      bar_left.buttons.get(i+1).value = false;
-      bar_left.buttons.get(i+2).value = false;
-    } else if(bar_left.buttons.get(i+1).hover() && bar_left.buttons.get(i+1).value) {
-      bar_left.buttons.get(i+0).value = false;
-      bar_left.buttons.get(i+2).value = false;
-    } else if(bar_left.buttons.get(i+2).hover() && bar_left.buttons.get(i+2).value) {
-      bar_left.buttons.get(i+1).value = false;
-      bar_left.buttons.get(i+0).value = false;
+    if(bar_left.radios.get(i+0).hover() && bar_left.radios.get(i+0).value) {
+      bar_left.radios.get(i+1).value = false;
+      bar_left.radios.get(i+2).value = false;
+    } else if(bar_left.radios.get(i+1).hover() && bar_left.radios.get(i+1).value) {
+      bar_left.radios.get(i+0).value = false;
+      bar_left.radios.get(i+2).value = false;
+    } else if(bar_left.radios.get(i+2).hover() && bar_left.radios.get(i+2).value) {
+      bar_left.radios.get(i+1).value = false;
+      bar_left.radios.get(i+0).value = false;
     } 
   }
   
-  // Bunkering: Set redundant buttons to false; 1 button is always true
+  // Bunkering: Set redundant radios to false; 1 button is always true
   //
   for (int i=0; i<6*3; i+=3) {
-    if(bar_left.buttons.get(i+0).value) {
-      if(bar_left.buttons.get(i+1).value) bar_left.buttons.get(i+1).value = false;
-      if(bar_left.buttons.get(i+2).value) bar_left.buttons.get(i+2).value = false;
-    } else if(bar_left.buttons.get(i+1).value) {
-      if(bar_left.buttons.get(i+0).value) bar_left.buttons.get(i+0).value = false;
-      if(bar_left.buttons.get(i+2).value) bar_left.buttons.get(i+2).value = false;
-    } else if(bar_left.buttons.get(i+2).value) {
-      if(bar_left.buttons.get(i+1).value) bar_left.buttons.get(i+1).value = false;
-      if(bar_left.buttons.get(i+0).value) bar_left.buttons.get(i+0).value = false;
+    if(bar_left.radios.get(i+0).value) {
+      if(bar_left.radios.get(i+1).value) bar_left.radios.get(i+1).value = false;
+      if(bar_left.radios.get(i+2).value) bar_left.radios.get(i+2).value = false;
+    } else if(bar_left.radios.get(i+1).value) {
+      if(bar_left.radios.get(i+0).value) bar_left.radios.get(i+0).value = false;
+      if(bar_left.radios.get(i+2).value) bar_left.radios.get(i+2).value = false;
+    } else if(bar_left.radios.get(i+2).value) {
+      if(bar_left.radios.get(i+1).value) bar_left.radios.get(i+1).value = false;
+      if(bar_left.radios.get(i+0).value) bar_left.radios.get(i+0).value = false;
     } else {
-      bar_left.buttons.get(i+0).value = true;
+      bar_left.radios.get(i+0).value = true;
     }
   }
   
   // Check for valid bunker configuration
   //
-  boolean valid1 = !bar_left.buttons.get(0).value && !bar_left.buttons.get(3).value;
-  boolean valid2 = !bar_left.buttons.get(6).value;
+  boolean valid1 = !bar_left.radios.get(0).value && !bar_left.radios.get(3).value;
+  boolean valid2 = !bar_left.radios.get(6).value;
   if (!valid1 && !valid2 && hasLNG) {
     errorBunker = "[LNG SHIPS NEED MORE BUNKERS]\ni.e. Sing. OR Japan+Persian Gulf";
     validBunker = false;
@@ -261,143 +259,143 @@ void constrainButtons() {
   //
   if (!validBunker || !validFleet || !precalculated) validConfig = false;
   
-  // Simulation Speed: Set mutually exclusive buttons to false
+  // Simulation Speed: Set mutually exclusive radios to false
   //
-  if(bar_right.buttons.get(0).hover() && bar_right.buttons.get(0).value) {
-    bar_right.buttons.get(1).value = false;
-    bar_right.buttons.get(2).value = false;
-  } else if(bar_right.buttons.get(1).hover() && bar_right.buttons.get(1).value) {
-    bar_right.buttons.get(0).value = false;
-    bar_right.buttons.get(2).value = false;
-  } else if(bar_right.buttons.get(2).hover() && bar_right.buttons.get(2).value) {
-    bar_right.buttons.get(0).value = false;
-    bar_right.buttons.get(1).value = false;
+  if(bar_right.radios.get(0).hover() && bar_right.radios.get(0).value) {
+    bar_right.radios.get(1).value = false;
+    bar_right.radios.get(2).value = false;
+  } else if(bar_right.radios.get(1).hover() && bar_right.radios.get(1).value) {
+    bar_right.radios.get(0).value = false;
+    bar_right.radios.get(2).value = false;
+  } else if(bar_right.radios.get(2).hover() && bar_right.radios.get(2).value) {
+    bar_right.radios.get(0).value = false;
+    bar_right.radios.get(1).value = false;
   }
   
-  // Simulation Speed: Set redundant buttons to false; 1 button is always true
+  // Simulation Speed: Set redundant radios to false; 1 button is always true
   //
-  if(bar_right.buttons.get(0).value) {
-    if(bar_right.buttons.get(1).value) bar_right.buttons.get(1).value = false;
-    if(bar_right.buttons.get(2).value) bar_right.buttons.get(2).value = false;
-  } else if(bar_right.buttons.get(1).value) {
-    if(bar_right.buttons.get(0).value) bar_right.buttons.get(0).value = false;
-    if(bar_right.buttons.get(2).value) bar_right.buttons.get(2).value = false;
-  } else if(bar_right.buttons.get(2).value) {
-    if(bar_right.buttons.get(1).value) bar_right.buttons.get(1).value = false;
-    if(bar_right.buttons.get(0).value) bar_right.buttons.get(0).value = false;
+  if(bar_right.radios.get(0).value) {
+    if(bar_right.radios.get(1).value) bar_right.radios.get(1).value = false;
+    if(bar_right.radios.get(2).value) bar_right.radios.get(2).value = false;
+  } else if(bar_right.radios.get(1).value) {
+    if(bar_right.radios.get(0).value) bar_right.radios.get(0).value = false;
+    if(bar_right.radios.get(2).value) bar_right.radios.get(2).value = false;
+  } else if(bar_right.radios.get(2).value) {
+    if(bar_right.radios.get(1).value) bar_right.radios.get(1).value = false;
+    if(bar_right.radios.get(0).value) bar_right.radios.get(0).value = false;
   } else {
-    bar_right.buttons.get(0).value = true;
+    bar_right.radios.get(0).value = true;
   }
   
-  // Results View: X-AXIS and Y-Axis - Set mutually exclusive buttons to false
+  // Results View: X-AXIS and Y-Axis - Set mutually exclusive radios to false
   //
   for (int i=0; i<8; i+=7) {
-    if(bar_right.buttons.get(3+i).hover() && bar_right.buttons.get(3+i).value) {
-      bar_right.buttons.get(4+i).value = false;
-      bar_right.buttons.get(5+i).value = false;
-      bar_right.buttons.get(6+i).value = false;
-      bar_right.buttons.get(7+i).value = false;
-      bar_right.buttons.get(8+i).value = false;
-      bar_right.buttons.get(9+i).value = false;
-    } else if(bar_right.buttons.get(4+i).hover() && bar_right.buttons.get(4+i).value) {
-      bar_right.buttons.get(3+i).value = false;
-      bar_right.buttons.get(5+i).value = false;
-      bar_right.buttons.get(6+i).value = false;
-      bar_right.buttons.get(7+i).value = false;
-      bar_right.buttons.get(8+i).value = false;
-      bar_right.buttons.get(9+i).value = false;
-    } else if(bar_right.buttons.get(5+i).hover() && bar_right.buttons.get(5+i).value) {
-      bar_right.buttons.get(4+i).value = false;
-      bar_right.buttons.get(3+i).value = false;
-      bar_right.buttons.get(6+i).value = false;
-      bar_right.buttons.get(7+i).value = false;
-      bar_right.buttons.get(8+i).value = false;
-      bar_right.buttons.get(9+i).value = false;
-    } else if(bar_right.buttons.get(6+i).hover() && bar_right.buttons.get(6+i).value) {
-      bar_right.buttons.get(4+i).value = false;
-      bar_right.buttons.get(5+i).value = false;
-      bar_right.buttons.get(3+i).value = false;
-      bar_right.buttons.get(7+i).value = false;
-      bar_right.buttons.get(8+i).value = false;
-      bar_right.buttons.get(9+i).value = false;
-    } else if(bar_right.buttons.get(7+i).hover() && bar_right.buttons.get(7+i).value) {
-      bar_right.buttons.get(4+i).value = false;
-      bar_right.buttons.get(5+i).value = false;
-      bar_right.buttons.get(6+i).value = false;
-      bar_right.buttons.get(3+i).value = false;
-      bar_right.buttons.get(8+i).value = false;
-      bar_right.buttons.get(9+i).value = false;
-    } else if(bar_right.buttons.get(8+i).hover() && bar_right.buttons.get(8+i).value) {
-      bar_right.buttons.get(4+i).value = false;
-      bar_right.buttons.get(5+i).value = false;
-      bar_right.buttons.get(6+i).value = false;
-      bar_right.buttons.get(7+i).value = false;
-      bar_right.buttons.get(3+i).value = false;
-      bar_right.buttons.get(9+i).value = false;
-    } else if(bar_right.buttons.get(9+i).hover() && bar_right.buttons.get(9+i).value) {
-      bar_right.buttons.get(4+i).value = false;
-      bar_right.buttons.get(5+i).value = false;
-      bar_right.buttons.get(6+i).value = false;
-      bar_right.buttons.get(7+i).value = false;
-      bar_right.buttons.get(8+i).value = false;
-      bar_right.buttons.get(3+i).value = false;
+    if(bar_right.radios.get(3+i).hover() && bar_right.radios.get(3+i).value) {
+      bar_right.radios.get(4+i).value = false;
+      bar_right.radios.get(5+i).value = false;
+      bar_right.radios.get(6+i).value = false;
+      bar_right.radios.get(7+i).value = false;
+      bar_right.radios.get(8+i).value = false;
+      bar_right.radios.get(9+i).value = false;
+    } else if(bar_right.radios.get(4+i).hover() && bar_right.radios.get(4+i).value) {
+      bar_right.radios.get(3+i).value = false;
+      bar_right.radios.get(5+i).value = false;
+      bar_right.radios.get(6+i).value = false;
+      bar_right.radios.get(7+i).value = false;
+      bar_right.radios.get(8+i).value = false;
+      bar_right.radios.get(9+i).value = false;
+    } else if(bar_right.radios.get(5+i).hover() && bar_right.radios.get(5+i).value) {
+      bar_right.radios.get(4+i).value = false;
+      bar_right.radios.get(3+i).value = false;
+      bar_right.radios.get(6+i).value = false;
+      bar_right.radios.get(7+i).value = false;
+      bar_right.radios.get(8+i).value = false;
+      bar_right.radios.get(9+i).value = false;
+    } else if(bar_right.radios.get(6+i).hover() && bar_right.radios.get(6+i).value) {
+      bar_right.radios.get(4+i).value = false;
+      bar_right.radios.get(5+i).value = false;
+      bar_right.radios.get(3+i).value = false;
+      bar_right.radios.get(7+i).value = false;
+      bar_right.radios.get(8+i).value = false;
+      bar_right.radios.get(9+i).value = false;
+    } else if(bar_right.radios.get(7+i).hover() && bar_right.radios.get(7+i).value) {
+      bar_right.radios.get(4+i).value = false;
+      bar_right.radios.get(5+i).value = false;
+      bar_right.radios.get(6+i).value = false;
+      bar_right.radios.get(3+i).value = false;
+      bar_right.radios.get(8+i).value = false;
+      bar_right.radios.get(9+i).value = false;
+    } else if(bar_right.radios.get(8+i).hover() && bar_right.radios.get(8+i).value) {
+      bar_right.radios.get(4+i).value = false;
+      bar_right.radios.get(5+i).value = false;
+      bar_right.radios.get(6+i).value = false;
+      bar_right.radios.get(7+i).value = false;
+      bar_right.radios.get(3+i).value = false;
+      bar_right.radios.get(9+i).value = false;
+    } else if(bar_right.radios.get(9+i).hover() && bar_right.radios.get(9+i).value) {
+      bar_right.radios.get(4+i).value = false;
+      bar_right.radios.get(5+i).value = false;
+      bar_right.radios.get(6+i).value = false;
+      bar_right.radios.get(7+i).value = false;
+      bar_right.radios.get(8+i).value = false;
+      bar_right.radios.get(3+i).value = false;
     } 
   }
   
-  // Results View: X-AXIS and Y-Axis - Set redundant buttons to false; 1 button is always true
+  // Results View: X-AXIS and Y-Axis - Set redundant radios to false; 1 button is always true
   //
   for (int i=0; i<8; i+=7) {
-    if(bar_right.buttons.get(3+i).value) {
-      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
-    } else if(bar_right.buttons.get(4+i).value) {
-      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
-    } else if(bar_right.buttons.get(5+i).value) {
-      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
-    } else if(bar_right.buttons.get(6+i).value) {
-      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
-    } else if(bar_right.buttons.get(7+i).value) {
-      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
-    } else if(bar_right.buttons.get(8+i).value) {
-      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(9+i).value) bar_right.buttons.get(2+i).value = false;
-    } else if(bar_right.buttons.get(9+i).value) {
-      if(bar_right.buttons.get(4+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(5+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(6+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(7+i).value) bar_right.buttons.get(2+i).value = false;
-      if(bar_right.buttons.get(8+i).value) bar_right.buttons.get(1+i).value = false;
-      if(bar_right.buttons.get(3+i).value) bar_right.buttons.get(2+i).value = false;
+    if(bar_right.radios.get(3+i).value) {
+      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
+    } else if(bar_right.radios.get(4+i).value) {
+      if(bar_right.radios.get(3+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
+    } else if(bar_right.radios.get(5+i).value) {
+      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(3+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
+    } else if(bar_right.radios.get(6+i).value) {
+      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(3+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
+    } else if(bar_right.radios.get(7+i).value) {
+      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(3+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
+    } else if(bar_right.radios.get(8+i).value) {
+      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(3+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
+    } else if(bar_right.radios.get(9+i).value) {
+      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
+      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
+      if(bar_right.radios.get(3+i).value) bar_right.radios.get(2+i).value = false;
     } else {
-      bar_right.buttons.get(3+i).value = true;
+      bar_right.radios.get(3+i).value = true;
     }
   }
   
@@ -407,15 +405,15 @@ void constrainButtons() {
 void updateBunkerViz() {
   // Update bunker visualization
   //
-  if (bar_left.buttons.get(0).value) ports.get(0).numBunkers = 0;
-  if (bar_left.buttons.get(1).value) ports.get(0).numBunkers = 1;
-  if (bar_left.buttons.get(2).value) ports.get(0).numBunkers = 3;
-  if (bar_left.buttons.get(3).value) ports.get(1).numBunkers = 0;
-  if (bar_left.buttons.get(4).value) ports.get(1).numBunkers = 1;
-  if (bar_left.buttons.get(5).value) ports.get(1).numBunkers = 3;
-  if (bar_left.buttons.get(6).value) ports.get(2).numBunkers = 0;
-  if (bar_left.buttons.get(7).value) ports.get(2).numBunkers = 1;
-  if (bar_left.buttons.get(8).value) ports.get(2).numBunkers = 3;
+  if (bar_left.radios.get(0).value) ports.get(0).numBunkers = 0;
+  if (bar_left.radios.get(1).value) ports.get(0).numBunkers = 1;
+  if (bar_left.radios.get(2).value) ports.get(0).numBunkers = 3;
+  if (bar_left.radios.get(3).value) ports.get(1).numBunkers = 0;
+  if (bar_left.radios.get(4).value) ports.get(1).numBunkers = 1;
+  if (bar_left.radios.get(5).value) ports.get(1).numBunkers = 3;
+  if (bar_left.radios.get(6).value) ports.get(2).numBunkers = 0;
+  if (bar_left.radios.get(7).value) ports.get(2).numBunkers = 1;
+  if (bar_left.radios.get(8).value) ports.get(2).numBunkers = 3;
 }
 
 boolean precalculated;
@@ -454,31 +452,31 @@ int caseNumber() {
     
     // Bunkers
     
-    if ( bar_left.buttons.get(0).value && bunker1 != 0 ) caseFound = false;
-    if ( bar_left.buttons.get(1).value && bunker1 != 1 ) caseFound = false;
-    if ( bar_left.buttons.get(2).value && bunker1 != 3 ) caseFound = false;
+    if ( bar_left.radios.get(0).value && bunker1 != 0 ) caseFound = false;
+    if ( bar_left.radios.get(1).value && bunker1 != 1 ) caseFound = false;
+    if ( bar_left.radios.get(2).value && bunker1 != 3 ) caseFound = false;
     
-    if ( bar_left.buttons.get(3).value && bunker2 != 0 ) caseFound = false;
-    if ( bar_left.buttons.get(4).value && bunker2 != 1 ) caseFound = false;
-    if ( bar_left.buttons.get(5).value && bunker2 != 3 ) caseFound = false;
+    if ( bar_left.radios.get(3).value && bunker2 != 0 ) caseFound = false;
+    if ( bar_left.radios.get(4).value && bunker2 != 1 ) caseFound = false;
+    if ( bar_left.radios.get(5).value && bunker2 != 3 ) caseFound = false;
     
-    if ( bar_left.buttons.get(6).value && bunker3 != 0 ) caseFound = false;
-    if ( bar_left.buttons.get(7).value && bunker3 != 1 ) caseFound = false;
-    if ( bar_left.buttons.get(8).value && bunker3 != 3 ) caseFound = false;
+    if ( bar_left.radios.get(6).value && bunker3 != 0 ) caseFound = false;
+    if ( bar_left.radios.get(7).value && bunker3 != 1 ) caseFound = false;
+    if ( bar_left.radios.get(8).value && bunker3 != 3 ) caseFound = false;
     
     // Methods
     
-    if ( bar_left.buttons.get( 9).value && !method1.equals("Truck to Ship")) caseFound = false;
-    if ( bar_left.buttons.get(10).value && !method1.equals("Ship to Ship") ) caseFound = false;
-    if ( bar_left.buttons.get(11).value && !method1.equals("Shore to Ship")) caseFound = false;
+    if ( bar_left.radios.get( 9).value && !method1.equals("Truck to Ship")) caseFound = false;
+    if ( bar_left.radios.get(10).value && !method1.equals("Ship to Ship") ) caseFound = false;
+    if ( bar_left.radios.get(11).value && !method1.equals("Shore to Ship")) caseFound = false;
     
-    if ( bar_left.buttons.get(12).value && !method2.equals("Truck to Ship")) caseFound = false;
-    if ( bar_left.buttons.get(13).value && !method2.equals("Ship to Ship") ) caseFound = false;
-    if ( bar_left.buttons.get(14).value && !method2.equals("Shore to Ship")) caseFound = false;
+    if ( bar_left.radios.get(12).value && !method2.equals("Truck to Ship")) caseFound = false;
+    if ( bar_left.radios.get(13).value && !method2.equals("Ship to Ship") ) caseFound = false;
+    if ( bar_left.radios.get(14).value && !method2.equals("Shore to Ship")) caseFound = false;
     
-    if ( bar_left.buttons.get(15).value && !method3.equals("Truck to Ship")) caseFound = false;
-    if ( bar_left.buttons.get(16).value && !method3.equals("Ship to Ship") ) caseFound = false;
-    if ( bar_left.buttons.get(17).value && !method3.equals("Shore to Ship")) caseFound = false;
+    if ( bar_left.radios.get(15).value && !method3.equals("Truck to Ship")) caseFound = false;
+    if ( bar_left.radios.get(16).value && !method3.equals("Ship to Ship") ) caseFound = false;
+    if ( bar_left.radios.get(17).value && !method3.equals("Shore to Ship")) caseFound = false;
     
     if(caseFound) {
       index = simConfig.getInt(i, 0);
