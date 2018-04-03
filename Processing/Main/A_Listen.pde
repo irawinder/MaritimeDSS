@@ -290,114 +290,29 @@ void constrainButtons() {
   
   // Results View: X-AXIS and Y-Axis - Set mutually exclusive radios to false
   //
-  for (int i=0; i<8; i+=7) {
-    if(bar_right.radios.get(3+i).hover() && bar_right.radios.get(3+i).value) {
-      bar_right.radios.get(4+i).value = false;
-      bar_right.radios.get(5+i).value = false;
-      bar_right.radios.get(6+i).value = false;
-      bar_right.radios.get(7+i).value = false;
-      bar_right.radios.get(8+i).value = false;
-      bar_right.radios.get(9+i).value = false;
-    } else if(bar_right.radios.get(4+i).hover() && bar_right.radios.get(4+i).value) {
-      bar_right.radios.get(3+i).value = false;
-      bar_right.radios.get(5+i).value = false;
-      bar_right.radios.get(6+i).value = false;
-      bar_right.radios.get(7+i).value = false;
-      bar_right.radios.get(8+i).value = false;
-      bar_right.radios.get(9+i).value = false;
-    } else if(bar_right.radios.get(5+i).hover() && bar_right.radios.get(5+i).value) {
-      bar_right.radios.get(4+i).value = false;
-      bar_right.radios.get(3+i).value = false;
-      bar_right.radios.get(6+i).value = false;
-      bar_right.radios.get(7+i).value = false;
-      bar_right.radios.get(8+i).value = false;
-      bar_right.radios.get(9+i).value = false;
-    } else if(bar_right.radios.get(6+i).hover() && bar_right.radios.get(6+i).value) {
-      bar_right.radios.get(4+i).value = false;
-      bar_right.radios.get(5+i).value = false;
-      bar_right.radios.get(3+i).value = false;
-      bar_right.radios.get(7+i).value = false;
-      bar_right.radios.get(8+i).value = false;
-      bar_right.radios.get(9+i).value = false;
-    } else if(bar_right.radios.get(7+i).hover() && bar_right.radios.get(7+i).value) {
-      bar_right.radios.get(4+i).value = false;
-      bar_right.radios.get(5+i).value = false;
-      bar_right.radios.get(6+i).value = false;
-      bar_right.radios.get(3+i).value = false;
-      bar_right.radios.get(8+i).value = false;
-      bar_right.radios.get(9+i).value = false;
-    } else if(bar_right.radios.get(8+i).hover() && bar_right.radios.get(8+i).value) {
-      bar_right.radios.get(4+i).value = false;
-      bar_right.radios.get(5+i).value = false;
-      bar_right.radios.get(6+i).value = false;
-      bar_right.radios.get(7+i).value = false;
-      bar_right.radios.get(3+i).value = false;
-      bar_right.radios.get(9+i).value = false;
-    } else if(bar_right.radios.get(9+i).hover() && bar_right.radios.get(9+i).value) {
-      bar_right.radios.get(4+i).value = false;
-      bar_right.radios.get(5+i).value = false;
-      bar_right.radios.get(6+i).value = false;
-      bar_right.radios.get(7+i).value = false;
-      bar_right.radios.get(8+i).value = false;
-      bar_right.radios.get(3+i).value = false;
-    } 
+  int num = result.name.size();
+  int beg = 3;
+  for (int i=0; i<num+1; i+=num) {
+    for (int j=0; j<num; j++) {
+      if(bar_right.radios.get(beg+i+j).hover() && bar_right.radios.get(beg+i+j).value) {
+        for (int k=0; k<num; k++) bar_right.radios.get(beg+i+k).value = false;
+        bar_right.radios.get(beg+i+j).value = true;
+      }
+    }
   }
   
   // Results View: X-AXIS and Y-Axis - Set redundant radios to false; 1 button is always true
   //
-  for (int i=0; i<8; i+=7) {
-    if(bar_right.radios.get(3+i).value) {
-      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
-    } else if(bar_right.radios.get(4+i).value) {
-      if(bar_right.radios.get(3+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
-    } else if(bar_right.radios.get(5+i).value) {
-      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(3+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
-    } else if(bar_right.radios.get(6+i).value) {
-      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(3+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
-    } else if(bar_right.radios.get(7+i).value) {
-      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(3+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
-    } else if(bar_right.radios.get(8+i).value) {
-      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(3+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(9+i).value) bar_right.radios.get(2+i).value = false;
-    } else if(bar_right.radios.get(9+i).value) {
-      if(bar_right.radios.get(4+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(5+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(6+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(7+i).value) bar_right.radios.get(2+i).value = false;
-      if(bar_right.radios.get(8+i).value) bar_right.radios.get(1+i).value = false;
-      if(bar_right.radios.get(3+i).value) bar_right.radios.get(2+i).value = false;
-    } else {
-      bar_right.radios.get(3+i).value = true;
+  for (int i=0; i<num+1; i+=num) {
+    boolean found = false;
+    for (int j=0; j<num; j++) {
+      if(bar_right.radios.get(beg+i+j).value) {
+        for (int k=0; k<num; k++) bar_right.radios.get(beg+i+k).value = false;
+        bar_right.radios.get(beg+i+j).value = true;
+        found = true;
+      }
     }
+    if (!found) bar_right.radios.get(beg+i).value = true;
   }
   
   caseNumber();
