@@ -48,7 +48,8 @@ void listen() {
         if (f2.exists()) simResultOverall = loadTable(fileName2, "header");
         initFleet();
         initPorts();
-        result.addResult(simResultOverall);
+        int time = 60*60*hour() + 60*minute() + second();
+        result.addResult(simResultOverall, time);
         userLog.addLog("Simulate");
         println(f1.exists(), f2.exists());
       }
@@ -105,6 +106,7 @@ void mousePressed() {
     bar_right.pressed();
     constrainButtons();
     userLog.addLog("Mouse Pressed");
+    result.click();
   }
 }
 
@@ -123,6 +125,7 @@ void mouseReleased() {
     bar_right.released();
     constrainButtons();
     userLog.addLog("Mouse Released");
+    result.release();
   }
 }
 
@@ -165,6 +168,17 @@ void keyPressed() {
           println("cam.zoom = "     + cam.zoom);
           println("cam.rotation = " + cam.rotation);
         }
+        break;
+      case '+':
+        result.zoom += 0.05;
+        break;
+      case '-':
+        result.zoom -= 0.05;
+        break;
+      case 'z':
+        result.zoom = 0.0;
+        result.offset_x = 0;
+        result.offset_y = 0;
         break;
     }
     constrainButtons();

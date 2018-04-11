@@ -177,8 +177,19 @@ void render2D() {
   text("Compare Configurations (Filter Each Axis):", 0, 10*16);
   text("X-AXIS:", 20                                        , 12*16);
   text("Y-AXIS:", 20 + (bar_right.barW-2*bar_right.margin)/2, 12*16);
-  result.drawPlot(0, 12*16 + 7*35, (bar_right.barW-2*bar_right.margin), int(0.8*(bar_right.barW-2*bar_right.margin)));
   popMatrix();
+  
+  // Plot Results Over Time
+  //
+  int x = bar_right.barX + bar_right.margin + 0;
+  int y = bar_right.barY + bar_right.margin + 12*16 + 7*35;
+  int w = bar_right.barW-2*bar_right.margin;
+  int h = int(0.8*(bar_right.barW-2*bar_right.margin));
+  textAlign(LEFT, TOP);
+  text("Use + / - keys to zoom in and out.\nClick and drag to pan.\nPress ' z ' to zoom extents.", x + 24, y + 4);
+  result.update(x, y, w, h);
+  result.drawPlot(x, y, w, h, 0, 60*60*24);
+  
 }
 
 PImage loadingBG;

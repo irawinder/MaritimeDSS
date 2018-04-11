@@ -212,6 +212,7 @@ void initSimResult() {
   result.name.add("SOx Emission");
   result.name.add("Waiting Time");
   result.name.add("Initial Cost");
+  result.updateRange();
 }
 
 void initToolbars() {
