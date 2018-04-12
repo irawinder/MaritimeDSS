@@ -405,6 +405,7 @@ class RadioButton {
   int valMin;
   int valMax;
   boolean value;
+  boolean active;
   boolean DEFAULT_VALUE;
   
   RadioButton() {
@@ -414,18 +415,28 @@ class RadioButton {
     keyToggle = ' ';
     keyCommand = true;
     value = false;
+    active = true;
     col = 200;
+  }
+  
+  void enable() {
+    active = true;
+  }
+  
+  void disable() {
+    active = false;
+    value  = false;
   }
   
   void listen() {
     
     // Mouse Controls
-    if( mousePressed && hover() ) {
+    if( mousePressed && hover() && active) {
       value = !value;
     }
     
     // Keyboard Controls
-    if (keyCommand) if ((keyPressed == true) && (key == keyToggle)) {value = !value;}
+    if (keyCommand) if ((keyPressed == true) && (key == keyToggle) && active) {value = !value;}
   }
   
   boolean hover() {
@@ -443,8 +454,9 @@ class RadioButton {
     
     // Button Info
     strokeWeight(1);
-    if (value) { fill(255); }
-    else       { fill(150); } 
+    if (value)       { fill(255); }
+    else if (active) { fill(150); } 
+    else             { fill( 50); } 
     textAlign(LEFT, CENTER);
     String label = "";
     if (keyCommand) label += "[" + keyToggle + "] ";

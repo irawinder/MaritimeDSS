@@ -55,7 +55,7 @@ class Ship {
     location_Canvas = new ArrayList<PVector>();
     fuelList  = new ArrayList<Integer>();
     cargoList = new ArrayList<Integer>();
-    maxFuel = 5000;
+    maxFuel = 2000;
     maxCargo = 300000;
     
     float range = 10;

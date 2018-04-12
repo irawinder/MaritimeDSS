@@ -32,6 +32,7 @@ float latCtr, lonCtr, bound, latMin, latMax, lonMin, lonMax;
 // Tables Containing current simulation configuration and results
 //
 Table simConfig, simResult, simResultOverall;
+int TIME_STEP; // amount of hours between each row of data output
 boolean validConfig;
 Fleet fleet;
 boolean showFleet;
@@ -213,6 +214,8 @@ void initSimResult() {
   result.name.add("Waiting Time");
   result.name.add("Initial Cost");
   result.updateRange();
+  
+  TIME_STEP = 4;
 }
 
 void initToolbars() {
@@ -300,7 +303,7 @@ void initToolbars() {
   bar_right.credit = "";
   bar_right.explanation = "";
   bar_right.controlY = BAR_Y + bar_right.margin + 2*bar_right.CONTROL_H;
-  bar_right.addSlider("Hour", "",  1,  simResult.getRowCount(), 1, 4, 'q', 'w', false);
+  bar_right.addSlider("Hour", "",  1,  simResult.getRowCount()*TIME_STEP, 1, TIME_STEP, 'q', 'w', false);
   bar_right.addRadio("Blank", 200, true, '1', false);
   bar_right.addRadio("Pause",  200, false, '1', false);
   bar_right.addRadio("30 hr / sec",  200, true, '1', false);

@@ -74,10 +74,10 @@ void listen() {
   } 
   
   if (bar_right.sliders.get(0).isDragged) {
-    fleet.time = int(bar_right.sliders.get(0).value);
+    fleet.time = int((bar_right.sliders.get(0).value)/TIME_STEP);
     fleet.pauseDuration = 0;
   } else {
-    bar_right.sliders.get(0).value = fleet.time;
+    bar_right.sliders.get(0).value = fleet.time*4+1;
   }
   
   if (validConfig) {
@@ -261,12 +261,25 @@ void constrainButtons() {
     }
   }
   
+  // Bunkering: Set Method to "Ship to Ship" if there are 0 bunkers ...
+  //
+  for (int i=0; i<3; i++) {
+    if(bar_left.radios.get(i*3).value) {
+      bar_left.radios.get(i*3 + 3*3 + 0).disable();
+      bar_left.radios.get(i*3 + 3*3 + 1).value = true;
+      bar_left.radios.get(i*3 + 3*3 + 2).disable();
+    } else {
+      bar_left.radios.get(i*3 + 3*3 + 0).enable();
+      bar_left.radios.get(i*3 + 3*3 + 2).enable();
+    }
+  }
+  
   // Check for valid bunker configuration
   //
   boolean valid1 = !bar_left.radios.get(0).value && !bar_left.radios.get(3).value;
   boolean valid2 = !bar_left.radios.get(6).value;
   if (!valid1 && !valid2 && hasLNG) {
-    errorBunker = "[LNG SHIPS NEED MORE BUNKERS]\ni.e. Sing. OR Japan+Persian Gulf";
+    errorBunker = "[LNG SHIPS NEED MORE BUNKERS]\ni.e. Singapore+Persian Gulf";
     validBunker = false;
   }
   

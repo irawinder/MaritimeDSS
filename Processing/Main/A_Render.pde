@@ -172,7 +172,7 @@ void render2D() {
   translate(bar_right.barX + bar_right.margin, bar_right.barY + bar_right.margin);
   fill(255); 
   textAlign(LEFT, TOP);
-  text("Simulation Time\n" + fleet.time/24 + " of " + fleet.duration/24 + " days", 0, 0);
+  text("Simulation Time\n" + TIME_STEP*fleet.time/24 + " of " + TIME_STEP*fleet.duration/24 + " days", 0, 0);
   text("Speed:", 0, 6*16);
   text("Compare Configurations (Filter Each Axis):", 0, 10*16);
   text("X-AXIS:", 20                                        , 12*16);
@@ -185,7 +185,7 @@ void render2D() {
   int y = bar_right.barY + bar_right.margin + 12*16 + 7*35;
   int w = bar_right.barW-2*bar_right.margin;
   int h = int(0.8*(bar_right.barW-2*bar_right.margin));
-  textAlign(LEFT, TOP);
+  textAlign(LEFT, TOP); fill(100);
   text("Use + / - keys to zoom in and out.\nClick and drag to pan.\nPress ' z ' to zoom extents.", x + 24, y + 4);
   result.update(x, y, w, h);
   result.drawPlot(x, y, w, h, 0, 60*60*24);
