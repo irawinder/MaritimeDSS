@@ -209,7 +209,7 @@ class Toolbar {
 class ControlSlider {
   String name;
   String unit;
-  int xpos;
+  int xpos, val_xpos;
   int ypos;
   int len;
   int diameter;
@@ -227,6 +227,7 @@ class ControlSlider {
   ControlSlider() {
     xpos = 0;
     ypos = 0;
+    val_xpos = 0;
     len = 200;
     diameter = 15;
     keyMinus = '-';
@@ -304,7 +305,8 @@ class ControlSlider {
     noStroke();
     fill(col, 225);
     if ( hover() ) fill(col, 255);
-    ellipse(xpos+0.5*diameter+(len-1.0*diameter)*(value-valMin)/(valMax-valMin),ypos,diameter,diameter);
+    val_xpos = int(xpos+0.5*diameter+(len-1.0*diameter)*(value-valMin)/(valMax-valMin));
+    ellipse(val_xpos,ypos,diameter,diameter);
   }
 }
 

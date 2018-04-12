@@ -104,6 +104,14 @@ void render2D() {
   bar_left.buttons.get(0).drawMe();
   textFont(f12);
   
+  // Draw Half/Circle over HFO + LNG slider button
+  //
+  int xS = bar_left.sliders.get(3).val_xpos;
+  int yS = bar_left.sliders.get(3).ypos;
+  int dS = bar_left.sliders.get(3).diameter;
+  int cS = bar_left.sliders.get(0).col;
+  fill(cS); arc(xS, yS, dS, dS, PI/2, PI+PI/2);
+  
   Button b = bar_left.buttons.get(0);
   if (!precalculated && validFleet && validBunker) {
     stroke(#FFFF00); strokeWeight(2); noFill();

@@ -1,6 +1,6 @@
 class GamePlot {
   ArrayList<Ilities> game;
-  ArrayList<String> name;
+  ArrayList<String> name, unit;
   ArrayList<Float> minRange, maxRange;
   int xIndex, yIndex;
   int col;
@@ -18,6 +18,7 @@ class GamePlot {
   GamePlot() {
     game = new ArrayList<Ilities>();
     name = new ArrayList<String>();
+    unit = new ArrayList<String>();
     minRange = new ArrayList<Float>();
     maxRange = new ArrayList<Float>();
     xIndex = 0;
@@ -108,8 +109,8 @@ class GamePlot {
   
       // Draw Y Axis Lable
       //
-      String nY = name.get(yIndex); 
-      if (nY.length() > 18) nY = nY.substring(0, 18);
+      String nY = name.get(yIndex) + " " + unit.get(yIndex); 
+      //if (nY.length() > 18) nY = nY.substring(0, 18);
       pushMatrix(); translate(0, h/2); rotate(-PI/2);
       textAlign(CENTER, BOTTOM); 
       text(nY, 0, -3);
@@ -119,7 +120,7 @@ class GamePlot {
   
         // Draw Y Axis Min Range
         //
-        nY = "" + min_y; 
+        nY = trimValue("" + min_y, 2); 
         pushMatrix(); translate(0, h); rotate(-PI/2);
         textAlign(LEFT, BOTTOM); 
         text(nY, 0, -3);
@@ -127,7 +128,7 @@ class GamePlot {
   
         // Draw Y Axis Max Range
         //
-        nY = "" + max_y; 
+        nY = trimValue("" + max_y, 2); 
         pushMatrix(); translate(0, 0); rotate(-PI/2);
         textAlign(RIGHT, BOTTOM); 
         text(nY, 0, -3);
@@ -136,9 +137,9 @@ class GamePlot {
   
       // Draw X Axis Lable
       //
-      String nX = name.get(xIndex); 
-      if (nX.length() > 18) nX = nX.substring(0, 18);
-      pushMatrix(); translate(w/2+MARGIN/2, h+3);
+      String nX = name.get(xIndex) + " " + unit.get(xIndex); 
+      //if (nX.length() > 18) nX = nX.substring(0, 18);
+      pushMatrix(); translate(w/2-MARGIN/2, h+3);
       textAlign(CENTER, TOP); 
       text(nX, 0, 0);
       popMatrix();
@@ -147,7 +148,7 @@ class GamePlot {
   
         // Draw X Axis Min Range
         //
-        nX = "" + min_x; 
+        nX = trimValue("" + min_x, 2); 
         pushMatrix(); translate(0, h+3);
         textAlign(LEFT, TOP); 
         text(nX, 0, 0);
@@ -155,7 +156,7 @@ class GamePlot {
   
         // Draw X Axis Max Range
         //
-        nX = "" + max_x;
+        nX = trimValue("" + max_x, 2); 
         pushMatrix(); translate(w-MARGIN, h+3);
         textAlign(RIGHT, TOP); 
         text(nX, 0, 0);
@@ -246,8 +247,13 @@ class GamePlot {
     } else if (game.size() == 1) {
       for (int i=0; i<name.size(); i++) {
         Ilities r = game.get(0);
-        minRange.add(r.value.get(i) - 0.2*r.value.get(i));
-        maxRange.add(r.value.get(i) + 0.2*r.value.get(i));
+        if (r.value.get(i) == 0) {
+          minRange.add(r.value.get(i) - 1.0);
+          maxRange.add(r.value.get(i) + 1.0);
+        } else {
+          minRange.add(r.value.get(i) - 0.2*r.value.get(i));
+          maxRange.add(r.value.get(i) + 0.2*r.value.get(i));
+        }
       }
     } else {
       for (int i=0; i<name.size(); i++) {
@@ -261,8 +267,13 @@ class GamePlot {
           minRange.add(min - 0.2*(max-min));
           maxRange.add(max + 0.2*(max-min));
         } else {
-          minRange.add(min - 0.2*min);
-          maxRange.add(max + 0.2*max);
+          if (min == 0) {
+            minRange.add(-1.0);
+            maxRange.add(+1.0);
+          } else {
+            minRange.add(min - 0.2*min);
+            maxRange.add(max + 0.2*max);
+          }
         }
       }
     }
@@ -286,4 +297,21 @@ class Ilities {
       value.add(scaler*result.getFloat (0, i));
     }
   }
+}
+
+// Truncates the decimals off of a very large or small float
+//
+String trimValue(String val, int figures) {
+  String trimmed = "";
+  int counter = 0;
+  boolean decimal = false;
+  for (int i=0; i<val.length(); i++) {
+    String letter = val.substring(i, i+1);
+    if (letter.equals(".")) decimal = true;
+    if (letter.equals("E")) decimal = false;
+    if (counter <= figures || !decimal) trimmed += letter;
+    if (decimal) counter ++;
+  }
+  
+  return trimmed;
 }

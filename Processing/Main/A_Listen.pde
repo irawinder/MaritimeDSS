@@ -257,7 +257,41 @@ void constrainButtons() {
       if(bar_left.radios.get(i+1).value) bar_left.radios.get(i+1).value = false;
       if(bar_left.radios.get(i+0).value) bar_left.radios.get(i+0).value = false;
     } else {
-      bar_left.radios.get(i+0).value = true;
+      if (bar_left.radios.get(i+0).active) bar_left.radios.get(i+0).value = true;
+      else if (bar_left.radios.get(i+1).active) bar_left.radios.get(i+1).value = true;
+      else if (bar_left.radios.get(i+2).active) bar_left.radios.get(i+2).value = true;
+    }
+  }
+  
+  // Bunkering: Constrain if using LNG ships
+  //
+  if (type3 > 0 || type4 > 0) {
+    
+    // Re-enable all Bunker Buttons ...
+    //
+    for (int i=0; i<3; i++) {
+      bar_left.radios.get(i*3 + 0).enable();
+      bar_left.radios.get(i*3 + 1).enable();
+      bar_left.radios.get(i*3 + 2).enable();
+    }
+    
+    // Disable "0" Bunker option for Persian Gulf
+    //
+    bar_left.radios.get(0).disable();
+    
+    // Disable "0" Bunker option for Singapore
+    //
+    bar_left.radios.get(6).disable();
+    
+  } else {
+    
+    // Disable "1" and "3" Bunker options for all ports
+    //
+    for (int i=0; i<3; i++) {
+      bar_left.radios.get(i*3 + 0).enable();
+      bar_left.radios.get(i*3 + 0).value = true;
+      bar_left.radios.get(i*3 + 1).disable();
+      bar_left.radios.get(i*3 + 2).disable();
     }
   }
   

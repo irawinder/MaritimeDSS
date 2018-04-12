@@ -49,8 +49,7 @@ int HOUR, MINUTE, SECOND; // Time when application starts
 int colorGTL    = #9bc151;
 int colorHFO    = #AA0000;
 int colorLSFO   = #6666FF;
-int colorLNG    = #FF00FF;
-int colorHFOLNG = #00FFFF;
+int colorLNG    = #00FFFF;
 
 // Simulation Timer Variables
 //
@@ -206,13 +205,26 @@ void initSimResult() {
   simResultOverall = loadTable("data/simulation/result/1_overall.csv", "header");
   
   result = new GamePlot();
-  result.name.add("Fuel Efficiency");
+  result.name.add("Fuel Cost");
+  result.unit.add("[$/ton*km]");
+  
   result.name.add("Cargo Moved");
+  result.unit.add("[ton*km]");
+  
   result.name.add("CO2 Emission");
+  result.unit.add("[ton/ton*km]");
+  
   result.name.add("NOx Emission");
+  result.unit.add("[ton/ton*km]");
+  
   result.name.add("SOx Emission");
+  result.unit.add("[ton/ton*km]");
+  
   result.name.add("Waiting Time");
-  result.name.add("Initial Cost");
+  result.unit.add("[%]");
+  
+  result.name.add("Capital Cost");
+  result.unit.add("[M$]");
   result.updateRange();
   
   TIME_STEP = 4;
@@ -241,7 +253,7 @@ void initToolbars() {
   bar_left.sliders.get(0).col = colorHFO;
   bar_left.sliders.get(1).col = colorLSFO;
   bar_left.sliders.get(2).col = colorLNG;
-  bar_left.sliders.get(3).col = colorHFOLNG;
+  bar_left.sliders.get(3).col = colorLNG;
   
   // # Bunkers
   bar_left.addRadio("Blank", 200, true, '1', false);
@@ -392,7 +404,6 @@ void initFleet() {
     if (s.fuelType.equals("HFO"))    s.col = colorHFO;
     if (s.fuelType.equals("LSFO"))   s.col = colorLSFO;
     if (s.fuelType.equals("LNG"))    s.col = colorLNG;
-    if (s.fuelType.equals("HFOLNG")) s.col = colorHFOLNG;
     
     fleet.ships.add(s);
   }
