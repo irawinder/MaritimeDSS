@@ -51,7 +51,8 @@ void listen() {
         int time = 60*60*hour() + 60*minute() + second();
         result.addResult(simResultOverall, time);
         userLog.addLog("Simulate");
-        println(f1.exists(), f2.exists());
+        userInput.addState(result.game.size()-1);
+        //println(f1.exists(), f2.exists());
       }
       
     }
@@ -105,8 +106,13 @@ void mousePressed() {
     bar_left.pressed();
     bar_right.pressed();
     constrainButtons();
-    userLog.addLog("Mouse Pressed");
     result.click();
+    if (result.nearest >=0) {
+      userInput.loadState(result.nearest);
+      userLog.addLog("PastSim_" + (result.nearest+1));
+    } else {
+      userLog.addLog("Mouse Pressed");
+    }
   }
 }
 
@@ -179,6 +185,8 @@ void keyPressed() {
         result.zoom = 0.0;
         result.offset_x = 0;
         result.offset_y = 0;
+        result.origin_x = 0;
+        result.origin_y = 0;
         break;
     }
     constrainButtons();

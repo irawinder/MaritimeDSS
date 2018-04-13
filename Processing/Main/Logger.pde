@@ -127,3 +127,61 @@ class Logger {
     saveTable(log, fileName);
   }
 }
+
+class InputState {
+  
+  Table state;
+  
+  InputState() {
+    state = new Table();
+    state.addColumn("Simulation");
+    for (ControlSlider s: bar_left.sliders) state.addColumn(s.name);
+    for (RadioButton   b: bar_left.radios ) state.addColumn(b.name);
+  }
+  
+  void addState(int index) {
+    
+    TableRow row = state.addRow();
+    
+    row.setInt("Simulation", index);
+    
+    int numS = bar_left.sliders.size();
+    int numR = bar_left.radios.size();
+    
+    for (int i=0; i<numS; i++) {
+      ControlSlider s = bar_left.sliders.get(i);
+      row.setFloat(i+1, s.value);
+    }
+    
+    for (int i=0; i<numR; i++) {
+      RadioButton b = bar_left.radios.get(i);
+      row.setInt(i+numS+1, int(b.value));
+    }
+    
+    save();
+  }
+  
+  void loadState(int index) {
+    
+    TableRow row = state.findRow("" + index, "Simulation");
+    
+    int numS = bar_left.sliders.size();
+    int numR = bar_left.radios.size();
+    
+    for (int i=0; i<numS; i++) {
+      ControlSlider s = bar_left.sliders.get(i);
+      s.value = row.getFloat(i+1);
+    }
+    
+    for (int i=0; i<numR; i++) {
+      RadioButton b = bar_left.radios.get(i);
+      b.value = boolean( row.getInt(i+numS+1) );
+    }
+  }
+  
+  void save() {
+    String fileName = "data/logs/";
+    fileName += HOUR + "_" + MINUTE + "_" + SECOND + "_state.csv";
+    saveTable(state, fileName);
+  }
+}

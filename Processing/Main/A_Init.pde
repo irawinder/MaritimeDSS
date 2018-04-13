@@ -42,6 +42,7 @@ ArrayList<Port> ports;
 //
 GamePlot result;
 Logger userLog;
+InputState userInput;
 int HOUR, MINUTE, SECOND; // Time when application starts
 
 // Colors
@@ -184,6 +185,10 @@ void init() {
     // Initialize key Logger
     //
     userLog = new Logger();
+    
+    // Initialize User Input State
+    //
+    userInput = new InputState();
     
   } else if (initPhase == 6) {
     

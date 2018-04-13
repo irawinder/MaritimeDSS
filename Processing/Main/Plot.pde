@@ -3,6 +3,7 @@ class GamePlot {
   ArrayList<String> name, unit;
   ArrayList<Float> minRange, maxRange;
   int xIndex, yIndex;
+  int nearest, nearestThreshold;
   int col;
 
   boolean showPath;
@@ -21,8 +22,10 @@ class GamePlot {
     unit = new ArrayList<String>();
     minRange = new ArrayList<Float>();
     maxRange = new ArrayList<Float>();
-    xIndex = 0;
-    yIndex = 0;
+    xIndex  = 0;
+    yIndex  = 0;
+    nearest = 0;
+    nearestThreshold = 10;
     showPath = true;
     showAxes = true;
     highlight = false;
@@ -164,8 +167,10 @@ class GamePlot {
       }
     }
     
-    // Plot points
+    // Plot Points AND Derive Nearest Architecture / Game State
     //
+    nearest = -1;
+    float minDist = Float.POSITIVE_INFINITY;
     float diameter = 10;
     float alpha, alphaScale;
     Ilities last = new Ilities();
@@ -174,6 +179,15 @@ class GamePlot {
       float val_y = game.get(i).value.get(yIndex);
       float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
       float y_plot = map(val_y, min_y, max_y, 0, h);
+      
+      // Update Nearest Game State Index
+      //
+      float dist = sqrt( sq(mouseX - x - MARGIN - x_plot) + sq(mouseY - y - h + y_plot) );
+      if (dist < nearestThreshold && dist < minDist) {
+        minDist = dist;
+        nearest = i;
+      }
+      
       if (showPath) {
         //alpha = 255.0*float(i+1)/game.size();
         alpha = 100;
@@ -205,6 +219,17 @@ class GamePlot {
       }
 
       last = game.get(i);
+    }
+    
+    // Draw Nearest Point Marker
+    //
+    if (nearest >=0 ) {
+      float val_x = game.get(nearest).value.get(xIndex);
+      float val_y = game.get(nearest).value.get(yIndex);
+      float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
+      float y_plot = map(val_y, min_y, max_y, 0, h);
+      strokeWeight(2); stroke(#FFFF00, 150); noFill();
+      ellipse(x_plot, h - y_plot, diameter+4, diameter+4);
     }
     
     // Draw point Labels
