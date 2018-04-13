@@ -32,32 +32,8 @@ void listen() {
   //
   if (bar_left.buttons.get(0).trigger) {
     
-    fleet.time = 0;
+    recallSim();
     
-    if (precalculated) {
-      
-      int caseNumber = caseNumber();
-      println("Found Case: " + caseNumber);
-      
-      if (caseNumber >= 0) {
-        String fileName1 = "simulation/result/" + caseNumber + ".csv";
-        String fileName2 = "simulation/result/" + caseNumber + "_overall.csv";
-        File f1 = new File(dataPath(fileName1));
-        File f2 = new File(dataPath(fileName2));
-        if (f1.exists()) simResult        = loadTable(fileName1, "header");
-        if (f2.exists()) simResultOverall = loadTable(fileName2, "header");
-        initFleet();
-        initPorts();
-        int time = 60*60*hour() + 60*minute() + second();
-        result.addResult(simResultOverall, time);
-        userLog.addLog("Simulate");
-        userInput.addState(result.game.size()-1);
-        //println(f1.exists(), f2.exists());
-      }
-      
-    }
-    
-    showFleet = true;
     bar_left.buttons.get(0).trigger = false;
   }
   
@@ -99,6 +75,37 @@ void listen() {
 
 }
 
+void recallSim() {
+  
+  fleet.time = 0;
+    
+  if (precalculated) {
+    
+    int caseNumber = caseNumber();
+    println("Found Case: " + caseNumber);
+    
+    if (caseNumber >= 0) {
+      String fileName1 = "simulation/result/" + caseNumber + ".csv";
+      String fileName2 = "simulation/result/" + caseNumber + "_overall.csv";
+      File f1 = new File(dataPath(fileName1));
+      File f2 = new File(dataPath(fileName2));
+      if (f1.exists()) simResult        = loadTable(fileName1, "header");
+      if (f2.exists()) simResultOverall = loadTable(fileName2, "header");
+      initFleet();
+      initPorts();
+      int time = 60*60*hour() + 60*minute() + second();
+      result.addResult(simResultOverall, time);
+      int stateNum = result.game.size();
+      userLog.addLog("Simulate_" + stateNum);
+      userInput.addState(stateNum-1);
+      //println(f1.exists(), f2.exists());
+    }
+    
+    showFleet = true;
+    
+  }
+}
+
 void mousePressed() {
   if (initialized) {
     if (displayMode.equals("flat"))  cam.pressed();
@@ -109,7 +116,8 @@ void mousePressed() {
     result.click();
     if (result.nearest >=0) {
       userInput.loadState(result.nearest);
-      userLog.addLog("PastSim_" + (result.nearest+1));
+      userLog.addLog("Recall_" + (result.nearest+1));
+      recallSim();
     } else {
       userLog.addLog("Mouse Pressed");
     }
