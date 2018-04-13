@@ -271,7 +271,7 @@ void constrainButtons() {
     }
   }
   
-  // Bunkering: Constrain if using LNG ships
+  // If LNG present ...
   //
   if (type3 > 0 || type4 > 0) {
     
@@ -283,14 +283,21 @@ void constrainButtons() {
       bar_left.radios.get(i*3 + 2).enable();
     }
     
-    // Disable "0" Bunker option for Persian Gulf
+    // Bunkering: Set Method to "Truck to Ship" if there are LNG AND bunk == 0...
     //
-    bar_left.radios.get(0).disable();
-    
-    // Disable "0" Bunker option for Singapore
-    //
-    bar_left.radios.get(6).disable();
-    
+    for (int i=0; i<3; i++) {
+      if(bar_left.radios.get(i*3).value) {
+        bar_left.radios.get(i*3 + 3*3 + 0).value = true;
+        bar_left.radios.get(i*3 + 3*3 + 1).disable();
+        bar_left.radios.get(i*3 + 3*3 + 2).disable();
+      } else {
+        bar_left.radios.get(i*3 + 3*3 + 1).enable();
+        bar_left.radios.get(i*3 + 3*3 + 2).enable();
+      }
+    }
+  
+  //If LNG note present ...
+  //
   } else {
     
     // Disable "1" and "3" Bunker options for all ports
@@ -301,19 +308,20 @@ void constrainButtons() {
       bar_left.radios.get(i*3 + 1).disable();
       bar_left.radios.get(i*3 + 2).disable();
     }
-  }
-  
-  // Bunkering: Set Method to "Ship to Ship" if there are 0 bunkers ...
-  //
-  for (int i=0; i<3; i++) {
-    if(bar_left.radios.get(i*3).value) {
-      bar_left.radios.get(i*3 + 3*3 + 0).disable();
-      bar_left.radios.get(i*3 + 3*3 + 1).value = true;
-      bar_left.radios.get(i*3 + 3*3 + 2).disable();
-    } else {
-      bar_left.radios.get(i*3 + 3*3 + 0).enable();
-      bar_left.radios.get(i*3 + 3*3 + 2).enable();
+    
+    // Bunkering: Set Method to "Ship to Ship" if there are no LNG ...
+    //
+    for (int i=0; i<3; i++) {
+      if(bar_left.radios.get(i*3).value) {
+        bar_left.radios.get(i*3 + 3*3 + 0).disable();
+        bar_left.radios.get(i*3 + 3*3 + 1).value = true;
+        bar_left.radios.get(i*3 + 3*3 + 2).disable();
+      } else {
+        bar_left.radios.get(i*3 + 3*3 + 0).enable();
+        bar_left.radios.get(i*3 + 3*3 + 2).enable();
+      }
     }
+  
   }
   
   // Check for valid bunker configuration
@@ -321,7 +329,7 @@ void constrainButtons() {
   boolean valid1 = !bar_left.radios.get(0).value && !bar_left.radios.get(3).value;
   boolean valid2 = !bar_left.radios.get(6).value;
   if (!valid1 && !valid2 && hasLNG) {
-    errorBunker = "[LNG SHIPS NEED MORE BUNKERS]\ni.e. Singapore+Persian Gulf";
+    errorBunker = "[LNG SHIPS NEED MORE BUNKERS]\ni.e. Sing. OR Japan+Persian Gulf";
     validBunker = false;
   }
   
