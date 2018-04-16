@@ -194,7 +194,7 @@ void render2D() {
   int w = bar_right.barW-2*bar_right.margin;
   int h = int(0.8*(bar_right.barW-2*bar_right.margin));
   textAlign(LEFT, TOP); fill(100);
-  text("Use mouse or left / right arrows to select point.\nUse + / - keys to zoom in and out.\nClick and drag to pan.\nPress ' z ' to zoom extents.", x + 24, y + 4);
+  text("Use mouse or left / right arrows to select point\nUse + / - keys to zoom in and out\nClick and drag to pan\nPress ' z ' to zoom extents", x + 24, y + 4);
   result.update(x, y, w, h);
   result.drawPlot(x, y, w, h, 0, 60*60*24);
   
