@@ -32,13 +32,16 @@ void listen() {
   //
   if (bar_left.buttons.get(0).trigger) {
     
-    recallSim();
+    boolean log = true;
+    recallSim(log);
     
     bar_left.buttons.get(0).trigger = false;
   }
   
   fleet.update();
   
+  // Update Simulation Time
+  //
   if (bar_right.radios.get(0).value) {
     fleet.timeIncrement = 0;
     fleet.pauseDuration = 0;
@@ -48,21 +51,21 @@ void listen() {
   } else if (bar_right.radios.get(2).value) {
     fleet.pauseDuration = 1;
     fleet.timeIncrement = 1;
-  } 
-  
+  }
   if (bar_right.sliders.get(0).isDragged) {
     fleet.time = int((bar_right.sliders.get(0).value)/TIME_STEP);
     fleet.pauseDuration = 0;
   } else {
     bar_right.sliders.get(0).value = fleet.time*4+1;
   }
-  
   if (validConfig) {
     bar_left.buttons.get(0).enabled = true;
   } else {
     bar_left.buttons.get(0).enabled = false;
   }
   
+  // Update GameResult() Axes
+  //
   for (int i=0; i<7; i++) {
     if (bar_right.radios.get(i+ 3).value) result.xIndex = i;
     if (bar_right.radios.get(i+10).value) result.yIndex = i;
@@ -75,7 +78,7 @@ void listen() {
 
 }
 
-void recallSim() {
+void recallSim(boolean log) {
   
   fleet.time = 0;
     
@@ -93,12 +96,14 @@ void recallSim() {
       if (f2.exists()) simResultOverall = loadTable(fileName2, "header");
       initFleet();
       initPorts();
-      int time = 60*60*hour() + 60*minute() + second();
-      result.addResult(simResultOverall, time);
-      int stateNum = result.game.size();
-      userLog.addLog("Simulate_" + stateNum);
-      userInput.addState(stateNum-1);
-      //println(f1.exists(), f2.exists());
+      if (log) {
+        int time = 60*60*hour() + 60*minute() + second();
+        result.addResult(simResultOverall, time);
+        int stateNum = result.game.size();
+        userLog.addLog("Simulate_" + stateNum);
+        userInput.addState(stateNum-1);
+        //println(f1.exists(), f2.exists());
+      }
     }
     
     showFleet = true;
@@ -116,8 +121,9 @@ void mousePressed() {
     result.click();
     if (result.nearest >=0) {
       userInput.loadState(result.nearest);
-      userLog.addLog("Recall_" + (result.nearest+1));
-      recallSim();
+      userLog.addLog("Recall_Click_" + (result.nearest+1));
+      boolean log = false;
+      recallSim(log);
     } else {
       userLog.addLog("Mouse Pressed");
     }
@@ -172,9 +178,9 @@ void keyPressed() {
         if (mapIndex >= maps.length) mapIndex = 0;
         map = maps[mapIndex];
         break;
-      case 'd':
-        nextDisplayMode();
-        break;
+      //case 'd':
+      //  nextDisplayMode();
+      //  break;
       case 'p':
         if (displayMode.equals("flat")) {
           println("cam.offset.x = " + cam.offset.x);
@@ -197,6 +203,32 @@ void keyPressed() {
         result.origin_y = 0;
         break;
     }
+    
+    if (key == CODED) {
+      
+      boolean changed = false;
+      
+      if (keyCode == UP) {
+        
+      } else if (keyCode == DOWN) {
+        
+      } else if (keyCode == LEFT) {
+        result.last();
+        changed = true;
+      } else if (keyCode == RIGHT) {
+        result.next();
+        changed = true;
+      } 
+      
+      if (changed) {
+        userInput.loadState(result.selected);
+        userLog.addLog("Recall_Click_" + (result.selected+1));
+        boolean log = false;
+        recallSim(log);
+      }
+      
+    }
+    
     constrainButtons();
   }
 }
@@ -299,6 +331,7 @@ void constrainButtons() {
         bar_left.radios.get(i*3 + 3*3 + 1).disable();
         bar_left.radios.get(i*3 + 3*3 + 2).disable();
       } else {
+        bar_left.radios.get(i*3 + 3*3 + 0).enable();
         bar_left.radios.get(i*3 + 3*3 + 1).enable();
         bar_left.radios.get(i*3 + 3*3 + 2).enable();
       }
