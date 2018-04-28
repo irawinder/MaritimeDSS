@@ -10,6 +10,7 @@ class GamePlot {
   boolean showPath;
   boolean showAxes;
   boolean highlight;
+  boolean allowSelect;
   
   float zoom;
   float offset_x, offset_y, origin_x, origin_y;
@@ -33,6 +34,7 @@ class GamePlot {
     showPath = true;
     showAxes = true;
     highlight = false;
+    allowSelect = true;
     col = 255;
     
     zoom = 0.0;
@@ -190,52 +192,56 @@ class GamePlot {
     // Derive Nearest Architecture / Game State
     //
     nearest = -1;
-    float minDist = Float.POSITIVE_INFINITY;
-    for (int i=0; i<game.size(); i++) {
-      float val_x = game.get(i).value.get(xIndex);
-      float val_y = game.get(i).value.get(yIndex);
-      float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
-      float y_plot = map(val_y, min_y, max_y, 0, h);
-      
-      // Update Nearest Game State Index
-      //
-      float dist = sqrt( sq(mouseX - x - MARGIN - x_plot) + sq(mouseY - y - h + y_plot) );
-      if (dist < nearestThreshold && dist < minDist) {
-        minDist = dist;
-        nearest = i;
+    if (allowSelect) {
+      float minDist = Float.POSITIVE_INFINITY;
+      for (int i=0; i<game.size(); i++) {
+        float val_x = game.get(i).value.get(xIndex);
+        float val_y = game.get(i).value.get(yIndex);
+        float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
+        float y_plot = map(val_y, min_y, max_y, 0, h);
+        
+        // Update Nearest Game State Index
+        //
+        float dist = sqrt( sq(mouseX - x - MARGIN - x_plot) + sq(mouseY - y - h + y_plot) );
+        if (dist < nearestThreshold && dist < minDist) {
+          minDist = dist;
+          nearest = i;
+        }
       }
     }
   
     // Plot links
     //
-    interior.beginDraw();
-    interior.clear();
     float alpha, alphaScale;
-    Ilities last = new Ilities();
-    for (int i=0; i<game.size(); i++) {
-      float val_x = game.get(i).value.get(xIndex);
-      float val_y = game.get(i).value.get(yIndex);
-      float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
-      float y_plot = map(val_y, min_y, max_y, 0, h);
-      
-      alpha = 150;
-      alphaScale = 1.0;
-      if (!inBounds(i, minTime, maxTime)) alphaScale = 0.1;
-      
-      if (i >= 1) {
-        val_x = last.value.get(xIndex);
-        val_y = last.value.get(yIndex);
-        float x_plot_last = map(val_x, min_x, max_x, 0, w-MARGIN);
-        float y_plot_last = map(val_y, min_y, max_y, 0, h);
-        //if ( (x_plot > 0 && x_plot < w-MARGIN && y_plot > 0 && y_plot < h) || 
-        //     (x_plot_last > 0 && x_plot_last < w-MARGIN && y_plot_last > 0 && y_plot_last < h) ) {
-          interior.stroke(col, alphaScale*alpha); interior.strokeWeight(3); 
-          interior.line(x_plot_last, h - y_plot_last, x_plot, h - y_plot);
-        //}
+    if (showPath) {
+      interior.beginDraw();
+      interior.clear();
+      Ilities last = new Ilities();
+      for (int i=0; i<game.size(); i++) {
+        float val_x = game.get(i).value.get(xIndex);
+        float val_y = game.get(i).value.get(yIndex);
+        float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
+        float y_plot = map(val_y, min_y, max_y, 0, h);
+        
+        alpha = 150;
+        alphaScale = 1.0;
+        if (!inBounds(i, minTime, maxTime)) alphaScale = 0.1;
+        
+        if (i >= 1) {
+          val_x = last.value.get(xIndex);
+          val_y = last.value.get(yIndex);
+          float x_plot_last = map(val_x, min_x, max_x, 0, w-MARGIN);
+          float y_plot_last = map(val_y, min_y, max_y, 0, h);
+          //if ( (x_plot > 0 && x_plot < w-MARGIN && y_plot > 0 && y_plot < h) || 
+          //     (x_plot_last > 0 && x_plot_last < w-MARGIN && y_plot_last > 0 && y_plot_last < h) ) {
+            interior.stroke(col, alphaScale*alpha); interior.strokeWeight(3); 
+            interior.line(x_plot_last, h - y_plot_last, x_plot, h - y_plot);
+          //}
+        }
+        last = game.get(i);
       }
-      last = game.get(i);
+      image(interior, 0, 0, w-MARGIN, h);
     }
-    image(interior, 0, 0, w-MARGIN, h);
     
     // Plot Points
     //
@@ -300,7 +306,7 @@ class GamePlot {
     
     // Draw Selected Point Marker
     //
-    if (selected >=0 && game.size() > 0) {
+    if (selected >=0 && game.size() > 0 && allowSelect) {
       float val_x = game.get(selected).value.get(xIndex);
       float val_y = game.get(selected).value.get(yIndex);
       float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
