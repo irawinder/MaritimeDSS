@@ -17,6 +17,8 @@ class GamePlot {
   boolean isDragged;
   int x_init, y_init;
   
+  PGraphics interior;
+  
   GamePlot() {
     game = new ArrayList<Ilities>();
     name = new ArrayList<String>();
@@ -38,6 +40,8 @@ class GamePlot {
     offset_y = 0;
     origin_x = 0;
     origin_y = 0;
+    
+    interior = createGraphics(10, 10);
   }
   
   void click() {
@@ -118,6 +122,7 @@ class GamePlot {
     max_x += - zoom*range_x + offset_x*range_x;
     
     int MARGIN = 20;
+    interior = createGraphics(w-MARGIN, h);
     pushMatrix(); translate(x+MARGIN, y);
     
     if (showAxes) {
@@ -203,6 +208,8 @@ class GamePlot {
   
     // Plot links
     //
+    interior.beginDraw();
+    interior.clear();
     float alpha, alphaScale;
     Ilities last = new Ilities();
     for (int i=0; i<game.size(); i++) {
@@ -211,24 +218,24 @@ class GamePlot {
       float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
       float y_plot = map(val_y, min_y, max_y, 0, h);
       
-      alpha = 75;
+      alpha = 150;
       alphaScale = 1.0;
       if (!inBounds(i, minTime, maxTime)) alphaScale = 0.1;
       
-      if (x_plot > 0 && x_plot < w-MARGIN && y_plot > 0 && y_plot < h) {
-        if (i >= 1) {
-          val_x = last.value.get(xIndex);
-          val_y = last.value.get(yIndex);
-          float x_plot_last = map(val_x, min_x, max_x, 0, w-MARGIN);
-          float y_plot_last = map(val_y, min_y, max_y, 0, h);
-          if (x_plot_last > 0 && x_plot_last < w-MARGIN && y_plot_last > 0 && y_plot_last < h) {
-            stroke(col, alphaScale*alpha); strokeWeight(3); 
-            line(x_plot_last, h - y_plot_last, x_plot, h - y_plot);
-          }
-        }
+      if (i >= 1) {
+        val_x = last.value.get(xIndex);
+        val_y = last.value.get(yIndex);
+        float x_plot_last = map(val_x, min_x, max_x, 0, w-MARGIN);
+        float y_plot_last = map(val_y, min_y, max_y, 0, h);
+        //if ( (x_plot > 0 && x_plot < w-MARGIN && y_plot > 0 && y_plot < h) || 
+        //     (x_plot_last > 0 && x_plot_last < w-MARGIN && y_plot_last > 0 && y_plot_last < h) ) {
+          interior.stroke(col, alphaScale*alpha); interior.strokeWeight(3); 
+          interior.line(x_plot_last, h - y_plot_last, x_plot, h - y_plot);
+        //}
       }
       last = game.get(i);
     }
+    image(interior, 0, 0, w-MARGIN, h);
     
     // Plot Points
     //
@@ -282,10 +289,12 @@ class GamePlot {
       float val_y = game.get(nearest).value.get(yIndex);
       float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
       float y_plot = map(val_y, min_y, max_y, 0, h);
-      strokeWeight(2); stroke(#DB8F00); noFill();
-      ellipse(x_plot, h - y_plot, diameter+4, diameter+4);
-      fill(#FFAA00); noStroke();
-      textAlign(LEFT, BOTTOM);
+      if (x_plot > 0 && x_plot < w-MARGIN && y_plot > 0 && y_plot < h) {
+        strokeWeight(2); stroke(#DB8F00); noFill();
+        ellipse(x_plot, h - y_plot, diameter+4, diameter+4);
+        fill(#FFAA00); noStroke();
+        textAlign(LEFT, BOTTOM);
+      }
       for (int i=0; i<3; i++) text((nearest+1), x_plot + 8, h - y_plot - 8);
     }
     
@@ -296,10 +305,12 @@ class GamePlot {
       float val_y = game.get(selected).value.get(yIndex);
       float x_plot = map(val_x, min_x, max_x, 0, w-MARGIN);
       float y_plot = map(val_y, min_y, max_y, 0, h);
-      fill(#DB8F00); noStroke();
-      ellipse(x_plot, h - y_plot, diameter+10, diameter+10);
-      textAlign(CENTER, CENTER); fill(255);
-      for (int i=0; i<3; i++) text(selected+1, x_plot, h - y_plot - 1);
+      if (x_plot > 0 && x_plot < w-MARGIN && y_plot > 0 && y_plot < h) {
+        fill(#DB8F00); noStroke();
+        ellipse(x_plot, h - y_plot, diameter+10, diameter+10);
+        textAlign(CENTER, CENTER); fill(255);
+        for (int i=0; i<3; i++) text(selected+1, x_plot, h - y_plot - 1);
+      }
       
       String values = "";
       values += name.get(xIndex) + ": " + trimValue("" + val_x, 2) + " " + unit.get(xIndex);
