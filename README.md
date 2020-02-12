@@ -1,5 +1,7 @@
 # MaritimeDSS
-MaritimeDSS is a front end environment to explore pre-calculated results of the "MOSES" simulation built by Shinnosuke Wanaka located at https://github.com/swanaka/ship-simulation
+MaritimeDSS (Decision Support System) is a front end environment to explore pre-calculated results of the "MOSES" simulation built by Shinnosuke Wanaka located at https://github.com/swanaka/ship-simulation
+
+![MaritimeDSS by Ira Winder](screenshots/screenshot.png?raw=true "Maritime Decision Support System Simulation by Ira Winder")
 
 ## How to Use
 
